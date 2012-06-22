@@ -1,0 +1,167 @@
+#include "InputListener.h"
+#include <iostream>
+
+
+
+
+InputListener::InputListener(Ogre::RenderWindow * aWindow, ViewerOgre3D * aViewer,Ogre::Camera * aCamera,Ogre::SceneManager * aSceneManager):
+mWindow(aWindow),mViewer(aViewer)
+
+{
+        // Camera Intiate
+	mCamera=aCamera;
+	mCameraMan= new CameraMan(mCamera);
+	
+	
+	//Window initiate
+	OIS::ParamList pl;
+	unsigned int windowHnd = 0;
+	std::stringstream windowHndStr;
+	aWindow->getCustomAttribute("WINDOW", &windowHnd);
+	windowHndStr << windowHnd;
+	pl.insert(std::make_pair("WINDOW", windowHndStr.str()));
+	
+	
+	// Input initate
+	mInputManager = OIS::InputManager::createInputSystem(pl);
+	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
+	mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, true));
+	mKeyboard->setEventCallback(this);
+	mMouse->setEventCallback(this);
+	
+	
+	
+	
+	// End flag initate
+	mShutdown= false;
+	
+	// Cursor initating
+	mMouseCursor = new MouseCursor();
+        mMouseCursor->setImage("cursor.png");
+        mMouseCursor->setVisible(true);
+        mMouseCursor->setWindowDimensions(mWindow->getWidth(), mWindow->getHeight());
+	const OIS::MouseState &ms = mMouse->getMouseState();
+	ms.width = mWindow->getWidth();
+	ms.height = mWindow->getHeight();
+	
+	
+	
+	// Other initating
+	isInShiftMode=false;
+	
+	
+	
+	
+	mSceneMgr = aSceneManager;
+}
+
+
+
+
+ InputListener::~InputListener()
+{
+	mInputManager->destroyInputObject(mKeyboard);
+	mInputManager->destroyInputObject(mMouse);
+	delete mCameraMan;
+	OIS::InputManager::destroyInputSystem(mInputManager);
+}
+
+
+bool InputListener::frameRenderingQueued(const Ogre::FrameEvent & evt)
+		{
+			if(mMouse)
+				mMouse->capture();
+			if(mKeyboard)
+				mKeyboard->capture();
+			if (mWindow->isClosed() || mShutdown)
+					return false;
+			mCameraMan->Render(evt);
+			
+
+			return true;
+		}
+
+bool InputListener::frameStarted(const Ogre::FrameEvent & evt)
+{
+	return true;
+}
+
+bool InputListener::keyPressed(const OIS::KeyEvent & evt)
+{
+	switch (evt.key)
+	{
+		case OIS::KC_ESCAPE:
+			mShutdown = true;
+			return false;
+			break;
+		case OIS::KC_LSHIFT:
+			isInShiftMode=true;
+			mMouseCursor->setVisible(false);
+			break;
+		default:
+		  break;
+
+	}
+	mCameraMan->handleKeyPress(evt);
+	return true;
+
+}
+
+
+bool InputListener::frameEnded (const Ogre::FrameEvent &evt)
+{
+
+
+	return true;
+}
+
+
+
+bool InputListener::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+{
+	mViewer->LookForIt(mMouse->getMouseState().X.abs,mMouse->getMouseState().Y.abs,mWindow->getHeight(),mWindow->getWidth());
+
+}
+
+bool InputListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id)
+{
+
+	return true;
+}
+
+bool InputListener::keyReleased(const OIS::KeyEvent &e)
+{
+  
+  switch (e.key)
+	{
+		case OIS::KC_LSHIFT:
+			isInShiftMode=false;
+			mMouseCursor->setVisible(true);
+			break;
+		default:
+		  break;
+
+	}
+  
+  
+	mCameraMan->handleKeyRelease(e);
+	return true;
+}
+
+
+bool InputListener::mouseMoved(const OIS::MouseEvent &e)
+{	if(!isInShiftMode)
+	{
+	  mMouseCursor->updatePosition(e.state.X.abs,e.state.Y.abs);
+	}
+	else
+	{
+	  mCameraMan->handleMouseMove(e);
+	}
+	
+	return true;
+}
+void InputListener::windowResized(Ogre::RenderWindow* rw)
+{
+         
+}

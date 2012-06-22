@@ -1,0 +1,308 @@
+
+#include "Ogre3DDisplayFactory.h"
+
+namespace DGtal{
+template <typename TDrawableWithDisplay3D>
+inline
+ViewerOgre3D & 
+ViewerOgre3D::operator<<( const TDrawableWithDisplay3D & object )
+{
+// BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+  
+  DGtal::Ogre3DDisplayFactory::draw(*this, object);
+  return *this;
+
+}
+
+
+ViewerOgre3D::ViewerOgre3D():
+mCurrentObject(0)
+{
+  mRoot = new Ogre::Root("plugins.cfg", "ogre.cfg", "Ogre.log");
+
+  //CHARGEMENT CONFIG & RESSOURCES
+  InitMaterials();
+  if (!InitConfigs())
+  {
+	  return ;
+  }
+  //Creation de la scene principale
+  mSceneMgr = mRoot->createSceneManager("DefaultSceneManager", "Fenetre Principale");
+  //DEVICES
+  mWindow = mRoot->initialise(true, "viewer3D");
+
+
+
+
+  //CREATION DE LA SCENE
+  CreateScene();
+
+  //Creation de l'input listener
+  CreateFrameListener();
+  // RAy scene
+  //but we also want to set up our raySceneQuery after everything has been initialized
+    mRayScnQuery = mSceneMgr->createRayQuery(Ogre::Ray());
+
+     SelectedDGtalNode=NULL;
+     UpperFatherNonRoot = NULL;
+
+}
+
+
+ViewerOgre3D::~ViewerOgre3D()
+{
+
+}
+
+
+void ViewerOgre3D::Start()
+{
+	
+		//DEBUT DE LA BOUCLE DE RENDU
+		mRoot->startRendering();
+
+
+		//-------------------------------------Phase destruction
+
+		mRoot->destroySceneManager(mSceneMgr);
+		delete mRoot;
+
+}
+
+void ViewerOgre3D::InitMaterials()
+{
+	//Chargement des matériaux , des meshs et de tout ce qu'on a comme ressource
+	Ogre::ConfigFile cf;
+	cf.load("resources.cfg");
+	Ogre::ConfigFile::SectionIterator sectionIter = cf.getSectionIterator();
+
+				Ogre::String sectionName, typeName, dataName;
+				Ogre::ConfigFile::SettingsMultiMap * settings;
+				Ogre::ConfigFile::SettingsMultiMap::iterator i;
+				while (sectionIter.hasMoreElements())
+				{
+					sectionName = sectionIter.peekNextKey();
+					settings = sectionIter.getNext();
+
+					for (i = settings->begin(); i != settings->end(); ++i)
+					{
+						typeName = i->first;
+						dataName = i->second;
+
+						Ogre::ResourceGroupManager::getSingleton().addResourceLocation(dataName, typeName, sectionName);
+					}
+				}
+
+				Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+	//fin chargement materials
+}
+
+bool ViewerOgre3D::InitConfigs()
+{
+	if(!mRoot->restoreConfig())
+	{
+		if(!mRoot->showConfigDialog())
+		{
+          return false; //erreur de chargement config
+		}
+	}
+	return true;
+}
+
+
+void ViewerOgre3D::CreateScene()
+{
+	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
+
+		mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
+
+
+		 Ogre::Light * light = mSceneMgr->createLight("Light");
+		 light->setType(Ogre::Light::LT_POINT);
+		 light->setDirection(Ogre::Vector3(1, -1, 0));
+		 light->setDiffuseColour(0.8, 0.8, 0.8);
+		 light->setSpecularColour(0.8, 0.5, 0.8);
+		 light->setPosition(100, 250, 100);
+
+		//Camera
+		mCamera = mSceneMgr->createCamera("mYCamera");
+		mCamera->setFarClipDistance(10000);
+		mCamera->setNearClipDistance(0.01);
+		mCamera->setPosition(Ogre::Vector3(0,10,500));
+		mCamera->lookAt(Ogre::Vector3(0,0,0));
+
+		//Screens
+		Ogre::Viewport* vp = mWindow->addViewport(mCamera);
+		vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+
+		// Parametrage du point de vue
+		mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+
+                mRootNode = new DGtalNode();
+                Representation * hisRepresentation = new Representation(getRootSceneNode(),getRootSceneNode()->getName());
+                mRootNode->setRepresentation(hisRepresentation);
+		mRootNode->setFather(NULL);
+                mRootNode->setRoot();
+
+}
+
+void ViewerOgre3D::CreateFrameListener()
+{
+	mInputManager= new InputListener(mWindow,this,mCamera,mSceneMgr);
+	mRoot->addFrameListener(mInputManager);
+}
+
+
+/*
+inline
+ViewerOgre3D & 
+ViewerOgre3D::operator<<(const Display3D::StreamKey  & key){
+  switch (key){
+  case Display3D::updateDisplay:
+    updateList();
+    break;
+    
+  case Display3D::addNewList:
+    createNewVoxelList();
+    break;
+    
+  case Display3D::shiftSurfelVisu:
+    myCurrentfShiftVisuKSSurfels+=0.3;
+    break;
+    
+  }
+  
+  return *this;
+}
+*/
+
+
+  
+Ogre::SceneNode * ViewerOgre3D::getANode()
+{
+return mSceneMgr->getRootSceneNode()->createChildSceneNode();
+}
+  
+void ViewerOgre3D::LookForIt(unsigned int x,unsigned int y,unsigned int h,unsigned int w)
+{
+
+    Representation * Temp =NULL;
+    double DistanceToCamera= -1;
+
+
+    Ogre::Ray mouseRay = mCamera->getCameraToViewportRay((double)x/(double)w,(double)y/(double)h);
+    mRayScnQuery->setRay(mouseRay);
+    Ogre::RaySceneQueryResult &result = mRayScnQuery->execute();
+    Ogre::RaySceneQueryResult::iterator itr;
+
+ 
+    for ( itr = result.begin( ); itr != result.end(); itr++ )
+    {
+        if ( itr->movable )
+        {
+	  Representation * Encloser= findRepresentation(itr->movable->getName());
+
+	  if(Encloser!=NULL)
+	  {
+	    Ogre::Vector3 AVector(mCamera->getPosition()-Encloser->getNode()->getPosition());
+	    double localDistance = AVector.length();
+            if(DistanceToCamera==-1)
+	    {
+		  DistanceToCamera = localDistance;
+		  Temp=Encloser;
+	    }
+	    else if((DistanceToCamera>=localDistance))
+	    {
+		  DistanceToCamera = localDistance;
+		  Temp=Encloser;
+	    }
+	  }
+	} 
+    }
+
+    if(SelectedDGtalNode!=NULL)   
+    {
+	SelectedDGtalNode->Unselect();
+    }
+    if(UpperFatherNonRoot!=NULL)   
+    { 
+	UpperFatherNonRoot ->Unselect();
+    }
+
+
+
+
+    if(Temp!=NULL)
+    {
+     SelectedDGtalNode=Temp->getAttachedParent();
+     UpperFatherNonRoot =SelectedDGtalNode->getUpperNonRootNode();
+
+
+     UpperFatherNonRoot ->GroupSelect();  
+     SelectedDGtalNode->Select();      
+    }
+    else
+    {
+     SelectedDGtalNode=NULL;
+     UpperFatherNonRoot =NULL;
+    }
+
+
+} 
+  
+ Representation  * ViewerOgre3D::addVoxel(double x,double y, double z,Ogre::SceneNode * aNode)
+ {
+      
+      Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+      Ogre::Entity  * m_ent = mSceneMgr->createEntity(Ogre::SceneManager::PT_CUBE);
+      m_ent->setMaterialName("Texture/Selected");
+      m_ent->setMaterialName("Texture/Unselected");
+      m_bodySceneNode->attachObject(m_ent);	
+      m_bodySceneNode->setPosition(Ogre::Vector3(x*40,y*40,z*40));
+      m_bodySceneNode->setScale(0.5,0.5,0.5);
+      DGtal::Representation * ARepresentation = new Representation(m_ent,m_bodySceneNode,m_ent->getName());
+      return ARepresentation;
+
+ }
+  }
+
+
+
+
+
+void ViewerOgre3D::addToList(DGtalNode * aNode)
+{
+  myObjects[aNode->getName()]=aNode;
+}
+
+
+
+Representation * ViewerOgre3D::findRepresentation(std::string aName)
+{
+
+
+    std::map<std::string,DGtalNode *>::iterator aNode=myObjects.begin();
+
+    Representation * theRepresentationToGet=NULL;
+ 
+    while ((aNode!=myObjects.end()) && (theRepresentationToGet==NULL) ) 
+    {
+
+
+      theRepresentationToGet = (*aNode).second->getRepresentation(aName);
+
+      if(theRepresentationToGet!=NULL)
+      {
+
+      }
+      else
+      {
+	  aNode++;
+      }
+    }
+    return (theRepresentationToGet);
+
+
+}

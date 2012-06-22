@@ -1,0 +1,117 @@
+
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file   Ogre3DDisplayFactory.ih
+ * @author Anis Benyoub 
+ * @date   mercredi 14 juin 2012
+ * 
+ * @brief
+ *
+ * Implementation of inline methods defined in Ogre3DDisplayFactory.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+template<Dimension dim, typename TComponent>
+inline
+void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer, 
+					  const PointVector<dim,TComponent> & p )
+{
+
+  ASSERT(dim == 3);
+  DGtalNode * newDGtalNode= new DGtalNode( );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  Representation * newPoint =viewer.addVoxel(NumberTraits<TComponent>::castToDouble(p.myArray[0]),
+		   NumberTraits<TComponent>::castToDouble(p.myArray[1]),
+		   NumberTraits<TComponent>::castToDouble(p.myArray[2]),theNode);
+
+  newDGtalNode->setName(newPoint->getName());
+  newDGtalNode->setRepresentation(newPoint);
+  newPoint->setAttachedParent(newDGtalNode);
+  newDGtalNode->setFather(viewer.getRootDGtalNode());
+  viewer.addToList(newDGtalNode);
+
+
+}
+
+
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void DGtal::Ogre3DDisplayFactory::draw (ViewerOgre3D &viewer,
+					  const DGtal::Object< TDigitalTopology, TDigitalSet > & set)
+{
+
+
+}
+
+
+
+// DigitalSetBySTLSet
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer, 
+                                                      const DGtal::DigitalSetBySTLSet<Domain> & s )
+{
+
+
+  typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
+  typedef typename std::set<Point>::const_iterator ConstIterator;
+ 
+  ASSERT(Domain::Space::dimension == 3);
+
+  DGtalNode * theDGtalSetNode= new DGtalNode( );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  Representation * theVirtualRepresentation = new Representation(theNode, theNode->getName());
+  
+
+
+
+
+  for (  ConstIterator it = s.begin(); it != s.end(); ++it )
+  {
+      Representation * newPoint =viewer.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]),
+                     NumberTraits<Component>::castToInt64_t((*it)[1]),
+                      NumberTraits<Component>::castToInt64_t((*it)[2]), 
+                      theNode->createChildSceneNode()); 
+
+
+      DGtalNode * newDGtalNode = new DGtalNode( );
+      newDGtalNode->setRepresentation(newPoint);
+
+
+      newPoint->setAttachedParent(newDGtalNode);
+      theDGtalSetNode->addSon(newDGtalNode);
+      newDGtalNode->setFather(theDGtalSetNode);
+      newDGtalNode->setName(newPoint->getEntityName());
+      viewer.addToList(newDGtalNode);
+    }
+  theDGtalSetNode->setName(theVirtualRepresentation->getName());
+  theDGtalSetNode->setRepresentation(theVirtualRepresentation);
+  theDGtalSetNode->setFather(viewer.getRootDGtalNode());
+  viewer.addToList(theDGtalSetNode);
+
+  }
