@@ -53,8 +53,8 @@ const double DefaultCameraRotationSpeed =200;
 
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-  {
+//namespace DGtal
+//  {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CameraMan
@@ -205,7 +205,7 @@ class CameraMan
 
   }; // end of class CameraMan
 
-} // namespace DGtal
+//} // namespace DGtal
 
 
 

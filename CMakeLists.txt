@@ -20,19 +20,19 @@ if(WIN32)
 endif(WIN32)
  
 if(UNIX)
-	if(EXISTS "/usr/local/lib/OGRE/cmake")
+	if(EXISTS "/Applications/OgreSDK/CMake")
  
-	  set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
-	  set(OGRE_SAMPLES_INCLUDEPATH "/usr/local/share/OGRE/samples/Common/include/") # We could just *assume* that developers uses this basepath : /usr/local
+	  set(CMAKE_MODULE_PATH "/Applications/OgreSDK/CMake/;${CMAKE_MODULE_PATH}")
+	  set(OGRE_SAMPLES_INCLUDEPATH "/Applications/OgreSDK/CMake/samples/Common/include/") # We could just *assume* that developers uses this basepath : /usr/local
  
-	elseif(EXISTS "/usr/lib/OGRE/cmake")
+	elseif(EXISTS "/Applications/OgreSDK/CMake")
  
 	  set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 	  set(OGRE_SAMPLES_INCLUDEPATH "/usr/share/OGRE/samples/Common/include/") # Otherwise, this one
  
 	else ()
 	  message(SEND_ERROR "Failed to find module path.")
-	endif(EXISTS "/usr/local/lib/OGRE")
+	endif(EXISTS "/Applications/OgreSDK/CMake")
 endif(UNIX)
  
 if (CMAKE_BUILD_TYPE STREQUAL "")
@@ -41,6 +41,21 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
  
+
+
+IF(APPLE)
+   #SET(GUI_TYPE MACOSX_BUNDLE)
+   FIND_LIBRARY(CARBON_LIBRARY Carbon)
+   FIND_LIBRARY(COCOA_LIBRARY Cocoa)
+   FIND_LIBRARY(IOKIT_LIBRARY IOKit )
+   FIND_LIBRARY(FOUNDATION_LIBRARY Foundation )
+     MARK_AS_ADVANCED (CARBON_LIBRARY
+COCOA_LIBRARY)
+   SET(EXTRA_LIBS ${CARBON_LIBRARY} ${COCOA_LIBRARY}  ${IOKIT_LIBRARY} ${FOUNDATION_LIBRARY})
+ENDIF (APPLE)
+
+
+
 set(CMAKE_DEBUG_POSTFIX "_d")
  
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/dist")
@@ -107,10 +122,10 @@ include_directories( ${OIS_INCLUDE_DIRS}
 	${OGRE_SAMPLES_INCLUDEPATH}
 )
  
-add_executable(DGtal-Ogre WIN32 ${HDRS} ${SRCS})
+add_executable(DGtal-Ogre WIN32 ${HDRS}  ${GUI_TYPE} ${SRCS})
  
 
-target_link_libraries(DGtal-Ogre ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES})
+target_link_libraries(DGtal-Ogre ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS} )
  
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/bin)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/media)

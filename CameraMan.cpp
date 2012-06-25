@@ -1,5 +1,6 @@
 #include "CameraMan.h"
 
+
 // Constructor
 CameraMan::CameraMan ( Ogre::Camera * aCamera, int aSpeed , int aRotationSpeed ) : myCamera ( aCamera )
 {
