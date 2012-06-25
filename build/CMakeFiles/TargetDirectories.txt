@@ -1,1 +1,0 @@
-/home/stagiaire/Documents/DGtalViewer/DGtalViewer/build/CMakeFiles/DGtal-Ogre.dir
