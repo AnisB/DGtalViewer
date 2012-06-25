@@ -19,7 +19,7 @@ if(WIN32)
 	)
 endif(WIN32)
  
-if(UNIX)
+if(Linux)
 
 if(EXISTS "/usr/local/lib/OGRE/cmake")
 
@@ -34,9 +34,9 @@ if(EXISTS "/usr/local/lib/OGRE/cmake")
      set(OGRE_SAMPLES_INCLUDEPATH "/usr/share/OGRE/samples/Common/include/")
    else ()
      message(SEND_ERROR "Failed to find module path.")
- endif(EXISTS "/usr/local/lib/OGRE")
+ endif(EXISTS "/usr/local/lib/OGRE/cmake")
 
- endif(UNIX)
+ endif(Linux)
 
 
 
@@ -237,5 +237,4 @@ if(UNIX)
 	)
  
 endif(UNIX)
-
 
