@@ -20,6 +20,27 @@ if(WIN32)
 endif(WIN32)
  
 if(UNIX)
+
+if(EXISTS "/usr/local/lib/OGRE/cmake")
+
+  set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+
+ set(OGRE_SAMPLES_INCLUDEPATH "/usr/local/share/OGRE/samples/Common/include/") 
+
+ elseif(EXISTS "/usr/lib/OGRE/cmake")
+
+     set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+
+     set(OGRE_SAMPLES_INCLUDEPATH "/usr/share/OGRE/samples/Common/include/")
+   else ()
+     message(SEND_ERROR "Failed to find module path.")
+ endif(EXISTS "/usr/local/lib/OGRE")
+
+ endif(UNIX)
+
+
+
+if(APPLE)
 	if(EXISTS "/Applications/OgreSDK/CMake")
  
 	  set(CMAKE_MODULE_PATH "/Applications/OgreSDK/CMake/;${CMAKE_MODULE_PATH}")
@@ -33,7 +54,7 @@ if(UNIX)
 	else ()
 	  message(SEND_ERROR "Failed to find module path.")
 	endif(EXISTS "/Applications/OgreSDK/CMake")
-endif(UNIX)
+endif(APPLE)
  
 if (CMAKE_BUILD_TYPE STREQUAL "")
   # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
