@@ -1,0 +1,44 @@
+material Texture/Selected
+ {
+    technique
+    {
+       pass
+        {
+          texture_unit
+          {
+            texture selected.jpg
+            scale 0.1 0.1
+          }
+       }   
+    }
+ }
+material Texture/Unselected
+ {
+    technique
+    {
+       pass
+        {
+          texture_unit
+          {
+            texture unselected.jpg
+            scale 0.1 0.1
+          }
+       }   
+    }
+ }
+
+
+material Texture/Group
+ {
+    technique
+    {
+       pass
+        {
+          texture_unit
+          {
+            texture unselected.jpg
+            scale 0.1 0.1
+          }
+       }   
+    }
+ }

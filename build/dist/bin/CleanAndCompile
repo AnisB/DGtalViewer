@@ -1,0 +1,6 @@
+#!/bin/bash
+rm DGtal-Ogre
+cd ../..
+make
+cd dist/bin
+

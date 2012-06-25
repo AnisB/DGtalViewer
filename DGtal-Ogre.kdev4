@@ -1,4 +1,4 @@
 [Project]
-Name=DGtal-Ogre
 Manager=KDevCMakeManager
+Name=DGtalViewer
 VersionControl=

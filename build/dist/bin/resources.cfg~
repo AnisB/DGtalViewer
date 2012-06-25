@@ -1,0 +1,30 @@
+# Resources required by the sample browser and most samples.
+[Essential]
+Zip=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/packs/SdkTrays.zip
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/thumbnails
+
+# Common sample resources needed by many of the samples.
+# Rarely used resources should be separately loaded by the
+# samples which require them.
+[Popular]
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/fonts
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/materials/programs
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/materials/scripts
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/materials/textures
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/materials/textures/nvidia
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/models
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/particle
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/DeferredShadingMedia
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/PCZAppMedia
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/RTShaderLib
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/RTShaderLib/materials
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/materials/scripts/SSAO
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/materials/textures/SSAO
+
+
+[General]
+FileSystem=../media
+
+# Materials for visual tests
+[Tests]
+FileSystem=/home/stagiaire/Téléchargements/ogre_src_v1-8-0/Samples/Media/../../Tests/Media
