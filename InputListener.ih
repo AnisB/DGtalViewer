@@ -16,17 +16,19 @@ mWindow(aWindow),mViewer(aViewer)
 	
 	std::cout<<"Creation de la fenetre"<<std::endl;
 	//Window initiate
+    
 	OIS::ParamList pl;
-	unsigned int windowHnd = 0;
+    unsigned long windowHnd = 0;
 	std::stringstream windowHndStr;
 	aWindow->getCustomAttribute("WINDOW", &windowHnd);
 	windowHndStr << windowHnd;
-	pl.insert(std::make_pair("WINDOW", windowHndStr.str()));
+	pl.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(aWindow)));
+
 	
 	std::cout<<"Creation des io"<<std::endl;
 	// Input initate
 		std::cout<<"Creation de l'input manager"<<std::endl;
-	mInputManager = OIS::InputManager::createInputSystem(pl);
+	mInputManager = OIS::InputManager::createInputSystem(windowHnd);
 		std::cout<<"Creation de la gestio clavier"<<std::endl;
 	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
 		std::cout<<"Creation de la gestion souris"<<std::endl;
