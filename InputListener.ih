@@ -8,11 +8,13 @@ InputListener::InputListener(Ogre::RenderWindow * aWindow, ViewerOgre3D * aViewe
 mWindow(aWindow),mViewer(aViewer)
 
 {
-        // Camera Intiate
+	std::cout<<"Creation du cameraman"<<std::endl;
+    // Camera Intiate
 	mCamera=aCamera;
 	mCameraMan= new CameraMan(mCamera);
 	
 	
+	std::cout<<"Creation de la fenetre"<<std::endl;
 	//Window initiate
 	OIS::ParamList pl;
 	unsigned int windowHnd = 0;
@@ -21,12 +23,17 @@ mWindow(aWindow),mViewer(aViewer)
 	windowHndStr << windowHnd;
 	pl.insert(std::make_pair("WINDOW", windowHndStr.str()));
 	
-	
+	std::cout<<"Creation des io"<<std::endl;
 	// Input initate
+		std::cout<<"Creation de l'input manager"<<std::endl;
 	mInputManager = OIS::InputManager::createInputSystem(pl);
+		std::cout<<"Creation de la gestio clavier"<<std::endl;
 	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
+		std::cout<<"Creation de la gestion souris"<<std::endl;
 	mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, true));
+		std::cout<<"Linkage clavier"<<std::endl;
 	mKeyboard->setEventCallback(this);
+		std::cout<<"Linkage souris"<<std::endl;
 	mMouse->setEventCallback(this);
 	
 	
@@ -35,6 +42,8 @@ mWindow(aWindow),mViewer(aViewer)
 	// End flag initate
 	mShutdown= false;
 	
+	
+	std::cout<<"Creation du curseur"<<std::endl;
 	// Cursor initating
 	mMouseCursor = new MouseCursor();
         mMouseCursor->setImage("cursor.png");

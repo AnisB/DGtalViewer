@@ -18,6 +18,8 @@ ViewerOgre3D::operator<<( const TDrawableWithDisplay3D & object )
 ViewerOgre3D::ViewerOgre3D():
 mCurrentObject(0)
 {
+	
+	
   mRoot = new Ogre::Root("plugins.cfg", "ogre.cfg", "Ogre.log");
 
   //CHARGEMENT CONFIG & RESSOURCES
@@ -33,12 +35,16 @@ mCurrentObject(0)
 
 
 
-
+  std::cout<<"Creation de la scene"<<std::endl;
   //CREATION DE LA SCENE
   CreateScene();
+  std::cout<<"Fin de la creation de la scene"<<std::endl;
 
+
+  std::cout<<"Creation du frame listenner"<<std::endl;
   //Creation de l'input listener
   CreateFrameListener();
+  std::cout<<"Fin de la creation du frame listenner"<<std::endl;
   // RAy scene
   //but we also want to set up our raySceneQuery after everything has been initialized
     mRayScnQuery = mSceneMgr->createRayQuery(Ogre::Ray());
