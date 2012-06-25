@@ -19,7 +19,9 @@ if(WIN32)
 	)
 endif(WIN32)
  
-if(Linux)
+
+
+if(UNIX AND NOT APPLE)
 
 if(EXISTS "/usr/local/lib/OGRE/cmake")
 
@@ -36,7 +38,9 @@ if(EXISTS "/usr/local/lib/OGRE/cmake")
      message(SEND_ERROR "Failed to find module path.")
  endif(EXISTS "/usr/local/lib/OGRE/cmake")
 
- endif(Linux)
+ endif(UNIX AND NOT APPLE)
+
+
 
 
 
@@ -62,6 +66,10 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
  
+
+
+
+
 
 
 IF(APPLE)
