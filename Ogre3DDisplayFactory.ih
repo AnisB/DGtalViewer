@@ -37,11 +37,12 @@
 template<Dimension dim, typename TComponent>
 inline
 void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer, 
-					  const PointVector<dim,TComponent> & p )
+					   const PointVector<dim,TComponent> & p )
 {
 
   ASSERT(dim == 3);
   DGtalNode * newDGtalNode= new DGtalNode( );
+  
   Ogre::SceneNode * theNode = viewer.getANode();
   Representation * newPoint =viewer.addVoxel(NumberTraits<TComponent>::castToDouble(p.myArray[0]),
 		   NumberTraits<TComponent>::castToDouble(p.myArray[1]),
@@ -52,6 +53,10 @@ void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
   newPoint->setAttachedParent(newDGtalNode);
   newDGtalNode->setFather(viewer.getRootDGtalNode());
   viewer.addToList(newDGtalNode);
+  PointVector<3u,double>  * k;
+  TDrawable<PointVector<3u,double> > * aPoint = new TDrawable<PointVector<3u,double> >(new PointVector<3u,double>(p) );
+  DrawableWithOgre * aDrawableObject = (DrawableWithOgre *)aPoint;
+  newDGtalNode->setDGtalObject(aDrawableObject);
 
 
 }
@@ -108,10 +113,17 @@ void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
       newDGtalNode->setFather(theDGtalSetNode);
       newDGtalNode->setName(newPoint->getEntityName());
       viewer.addToList(newDGtalNode);
+      TDrawable<PointVector<3u,double> > * aPoint = new TDrawable<PointVector<3u,double> >(new PointVector<3u,double>((*it)) );
+      DrawableWithOgre * aDrawableObject = (DrawableWithOgre *)aPoint;
+      newDGtalNode->setDGtalObject(aDrawableObject);
     }
   theDGtalSetNode->setName(theVirtualRepresentation->getName());
   theDGtalSetNode->setRepresentation(theVirtualRepresentation);
   theDGtalSetNode->setFather(viewer.getRootDGtalNode());
   viewer.addToList(theDGtalSetNode);
+
+  TDrawable<DigitalSetBySTLSet<Domain> >  * aSet = new TDrawable<DigitalSetBySTLSet<Domain> >(new DigitalSetBySTLSet<Domain>(s) );
+  DrawableWithOgre * theDrawableObject = (DrawableWithOgre *)aSet;
+  theDGtalSetNode->setDGtalObject(theDrawableObject);
 
   }

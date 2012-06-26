@@ -58,6 +58,8 @@ class ViewerOgre3D
 	DGtalNode * SelectedDGtalNode;
         DGtalNode * UpperFatherNonRoot;
 	
+	bool SelectionMode;
+	
 	
 
 
@@ -94,11 +96,14 @@ class ViewerOgre3D
 		
 		Representation  * addVoxel(double x,double y, double z,Ogre::SceneNode * aNode);
 		
-		
+		void Clean();
 		ViewerOgre3D & operator<< ( const DGtal::Color & aColor );
 		
 		template <typename TDrawableWithDisplay3D>
 		ViewerOgre3D & operator<< ( const  TDrawableWithDisplay3D & object );
+		
+		template <typename TDrawableWithDisplay3D>
+		ViewerOgre3D & operator>> (   TDrawableWithDisplay3D & object );
 
 };
 }

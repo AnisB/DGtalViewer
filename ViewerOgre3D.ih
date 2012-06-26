@@ -1,4 +1,3 @@
-
 #include "Ogre3DDisplayFactory.h"
 
 namespace DGtal{
@@ -13,10 +12,16 @@ ViewerOgre3D::operator<<( const TDrawableWithDisplay3D & object )
   return *this;
 
 }
-
+template <typename TDrawableWithDisplay3D>
+ViewerOgre3D & ViewerOgre3D::operator>> (   TDrawableWithDisplay3D & object )
+{
+  SelectionMode=true;
+  Start();
+  object=(TDrawableWithDisplay3D *)SelectedDGtalNode->getDGtalObject();
+}
 
 ViewerOgre3D::ViewerOgre3D():
-mCurrentObject(0)
+mCurrentObject(0),SelectionMode(false)
 {
 	
 	
@@ -255,7 +260,10 @@ void ViewerOgre3D::LookForIt(unsigned int x,unsigned int y,unsigned int h,unsign
      UpperFatherNonRoot =NULL;
     }
 
-
+    if(SelectionMode)
+    {
+      //Should quit
+    }
 } 
   
  Representation  * ViewerOgre3D::addVoxel(double x,double y, double z,Ogre::SceneNode * aNode)
@@ -312,3 +320,12 @@ Representation * ViewerOgre3D::findRepresentation(std::string aName)
 
 
 }
+
+
+
+void ViewerOgre3D::Clean()
+{
+  
+}
+
+

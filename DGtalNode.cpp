@@ -189,18 +189,18 @@ Ogre::SceneNode * DGtalNode::getNode()
 /**
 *  Sets the DGtal associated object
 */
-void DGtalNode::setDGtalEntity(DGtal::DrawableWithDisplay3D  * obj)
+void DGtalNode::setDGtalObject(DGtal::DrawableWithOgre  * obj)
 {
-//  myDGtalEntity=obj;
+   myDGtalObject=obj;
 }
 
 
 /**
 *  Returns back the DGtal associated object
 */
-DGtal::DrawableWithDisplay3D * DGtalNode::getDGtalEntity()
+DGtal::DrawableWithOgre * DGtalNode::getDGtalObject()
 {
-// return myDGtalEntity;
+  return myDGtalObject;
 }
 
 

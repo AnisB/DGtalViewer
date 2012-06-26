@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/topology/Object.h"
-
+#include "TDrawable.h"
 
 namespace DGtal
   {
@@ -70,8 +70,7 @@ namespace DGtal
       static void draw (ViewerOgre3D &display, const DGtal::Object< TDigitalTopology, TDigitalSet > &);
       
       template<typename Domain>
-      static void draw( ViewerOgre3D & viewer, 
-									  const DGtal::DigitalSetBySTLSet<Domain> & s );
+      static void draw( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
     }; // end of struct Ogre3DDisplayFactor
 
 } //  namespace DGtal

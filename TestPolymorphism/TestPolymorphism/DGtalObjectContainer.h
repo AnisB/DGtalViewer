@@ -5,11 +5,11 @@ using namespace std;
 	
 	
 
-	class TDrawableWithOgre
+	class DrawableWithOgre
 	{
 	  public:
-	    TDrawableWithOgre( ) { }
-	    ~TDrawableWithOgre() { }
+	    DrawableWithOgre( ) { }
+	    ~DrawableWithOgre() { }
 	    virtual const char * className() const { return "a";}
 	protected:
 	  int typeClass;

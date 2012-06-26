@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "OGRE/Ogre.h"
+#include "DrawableWithOgre.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -149,14 +150,14 @@ namespace DGtal
        /**
        *  Sets the DGtal associated object
        */
-       void setDGtalEntity(DGtal::DrawableWithDisplay3D  * obj);
+       void setDGtalObject(DGtal::DrawableWithOgre  * obj);
        
        
        
        /**
        *  Returns back the DGtal associated object
        */
-       DGtal::DrawableWithDisplay3D * getDGtalEntity( );
+       DGtal::DrawableWithOgre * getDGtalObject( );
        
        
        
@@ -265,8 +266,7 @@ namespace DGtal
       DGtalNode * myFather;
       std::map<string, DGtalNode* > mySons; 
       bool mIsRoot;
-//      std::string DGtalClassName;
-//      DrawableWithDisplay3D * myDGtalEntity;
+      DrawableWithOgre * myDGtalObject;
 
     }; // end of class DGtalNode
 

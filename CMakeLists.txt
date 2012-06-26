@@ -136,6 +136,8 @@ set(HDRS Representation.h
 	 ViewerOgre3D.h
 	 InputListener.h
 	 CameraMan.h
+	 TDrawable.h
+	 DrawableWithOgre.h
 )
  
 set(SRCS Representation.cpp 
@@ -143,6 +145,7 @@ set(SRCS Representation.cpp
          mousecursor.cpp
 	 CameraMan.cpp
 	 InputListener.cpp
+	 DrawableWithOgre.cpp
 	 main.cpp
 )
  
