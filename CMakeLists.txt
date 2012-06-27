@@ -153,10 +153,9 @@ include_directories( ${OIS_INCLUDE_DIRS}
 	${OGRE_INCLUDE_DIRS}
 	${OGRE_SAMPLES_INCLUDEPATH}
 )
- 
+
 add_executable(DGtal-Ogre WIN32 ${HDRS}  ${GUI_TYPE} ${SRCS})
  
-
 target_link_libraries(DGtal-Ogre ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS} )
  
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/bin)

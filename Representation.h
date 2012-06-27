@@ -68,14 +68,14 @@ public:
  /**
 * Constructor for a real Representation
 */
-  Representation(  Ogre::Entity * aEntity,
+  Representation( Ogre::SceneManager * aSceneMgr, Ogre::Entity * aEntity,
   Ogre::SceneNode *aSceneNode, std::string aName);
   
   
 /**
 * Constructor  for a virtual representation
 */
-  Representation( Ogre::SceneNode *aSceneNode, std::string aName);
+  Representation( Ogre::SceneManager * aSceneMgr,Ogre::SceneNode *aSceneNode, std::string aName);
   
  
   
@@ -160,6 +160,15 @@ void GroupSelect();
 bool isVirtual();
 
 
+/**
+* Tells if the representation is virtual, is means that is has or not an associated entity 
+*
+*/
+bool Clear();
+
+
+
+
 
 /**
 * Set this entity as a unselected
@@ -208,6 +217,7 @@ protected :
   std::string myName;
   DGtalNode * myParent;
   bool mVirtual;
+  Ogre::SceneManager * mySceneMgr;
 
 }; // end of class Representation
 

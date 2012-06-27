@@ -46,24 +46,25 @@ using namespace std;
 /**
 * Constructor for a real representation
 */
-  DGtal::Representation::Representation(  Ogre::Entity * aEntity,
+  DGtal::Representation::Representation(  Ogre::SceneManager * aSceneMgr, Ogre::Entity * aEntity,
   Ogre::SceneNode *aSceneNode, std::string aName)
   {
     myEntity=aEntity;
     mySceneNode=aSceneNode;
     myName=aName;
     mVirtual=false;
-    
+    mySceneMgr = aSceneMgr;
   }
 
 /**
 * Constructor for a virtual representation
 */
-  DGtal::Representation::Representation( Ogre::SceneNode *aSceneNode, std::string aName)
+  DGtal::Representation::Representation( Ogre::SceneManager * aSceneMgr, Ogre::SceneNode *aSceneNode, std::string aName)
   {
     mySceneNode=aSceneNode;
     myName=aName;
     mVirtual=true;
+    mySceneMgr = aSceneMgr;
   }
   
  
@@ -212,6 +213,25 @@ bool Representation::isVirtual()
 {
   return mVirtual;
 }
+
+
+
+
+/**
+* Tells if the representation is virtual, is means that is has or not an associated entity 
+*
+*/
+bool  Representation::Clear()
+{
+
+  if(!mVirtual)
+  {
+    mySceneNode->detachAllObjects();
+    mySceneMgr->destroyEntity(myEntity);
+  }
+  mySceneMgr->destroySceneNode(mySceneNode);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :

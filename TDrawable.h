@@ -63,7 +63,7 @@ namespace DGtal
 /**
 * Constructor.
 */
-    TDrawable(T* anObject);
+    TDrawable(const T & anObject);
     
 
     /**
@@ -97,11 +97,11 @@ virtual const char * className() const;
 /**
 * Returns the Dgtal object
 */  
-T*  getDgtalObject() ;
+const T*  getDgtalObject() ;
 
     // ------------------------- Protected Datas ------------------------------
 protected :
-  T * myObject;
+  const T * myObject;
     // ------------------------- Private Datas --------------------------------
   private:
 

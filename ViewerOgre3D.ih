@@ -13,11 +13,21 @@ ViewerOgre3D::operator<<( const TDrawableWithDisplay3D & object )
 
 }
 template <typename TDrawableWithDisplay3D>
-ViewerOgre3D & ViewerOgre3D::operator>> (   TDrawableWithDisplay3D & object )
+TDrawableWithDisplay3D & ViewerOgre3D::operator>> (   TDrawableWithDisplay3D & object )
+{
+if(object.className()=="PointVector")
 {
   SelectionMode=true;
   Start();
-  object=(TDrawableWithDisplay3D *)SelectedDGtalNode->getDGtalObject();
+  
+const TDrawableWithDisplay3D * myPoint  = (( TDrawable<TDrawableWithDisplay3D> * )SelectedDGtalNode->getDGtalObject())->getDgtalObject(); 
+cout<<"Fin de l'operateur"<<endl;
+cout<<SelectedDGtalNode->getName()<<endl;
+  cout<<(*myPoint)<<endl;
+  object=(*myPoint);
+  SelectionMode=false;
+//  return (*myPoint);
+}
 }
 
 ViewerOgre3D::ViewerOgre3D():
@@ -71,12 +81,12 @@ void ViewerOgre3D::Start()
 	
 		//DEBUT DE LA BOUCLE DE RENDU
 		mRoot->startRendering();
-
+		mInputManager->startRendering();
 
 		//-------------------------------------Phase destruction
 
-		mRoot->destroySceneManager(mSceneMgr);
-		delete mRoot;
+//		mRoot->destroySceneManager(mSceneMgr);
+//		delete mRoot;
 
 }
 
@@ -151,8 +161,8 @@ void ViewerOgre3D::CreateScene()
 		// Parametrage du point de vue
 		mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
 
-                mRootNode = new DGtalNode();
-                Representation * hisRepresentation = new Representation(getRootSceneNode(),getRootSceneNode()->getName());
+                mRootNode = new DGtalNode(mSceneMgr);
+                Representation * hisRepresentation = new Representation(mSceneMgr,getRootSceneNode(),getRootSceneNode()->getName());
                 mRootNode->setRepresentation(hisRepresentation);
 		mRootNode->setFather(NULL);
                 mRootNode->setRoot();
@@ -248,8 +258,13 @@ void ViewerOgre3D::LookForIt(unsigned int x,unsigned int y,unsigned int h,unsign
     if(Temp!=NULL)
     {
      SelectedDGtalNode=Temp->getAttachedParent();
+     cout<<(*SelectedDGtalNode)<<endl;
      UpperFatherNonRoot =SelectedDGtalNode->getUpperNonRootNode();
-
+     
+      if(SelectionMode)
+      {
+	  mInputManager->stopRendering();
+      }
 
      UpperFatherNonRoot ->GroupSelect();  
      SelectedDGtalNode->Select();      
@@ -260,10 +275,7 @@ void ViewerOgre3D::LookForIt(unsigned int x,unsigned int y,unsigned int h,unsign
      UpperFatherNonRoot =NULL;
     }
 
-    if(SelectionMode)
-    {
-      //Should quit
-    }
+
 } 
   
  Representation  * ViewerOgre3D::addVoxel(double x,double y, double z,Ogre::SceneNode * aNode)
@@ -276,7 +288,7 @@ void ViewerOgre3D::LookForIt(unsigned int x,unsigned int y,unsigned int h,unsign
       m_bodySceneNode->attachObject(m_ent);	
       m_bodySceneNode->setPosition(Ogre::Vector3(x*40,y*40,z*40));
       m_bodySceneNode->setScale(0.5,0.5,0.5);
-      DGtal::Representation * ARepresentation = new Representation(m_ent,m_bodySceneNode,m_ent->getName());
+      DGtal::Representation * ARepresentation = new Representation(mSceneMgr,m_ent,m_bodySceneNode,m_ent->getName());
       return ARepresentation;
 
  }
@@ -323,9 +335,9 @@ Representation * ViewerOgre3D::findRepresentation(std::string aName)
 
 
 
-void ViewerOgre3D::Clean()
+void ViewerOgre3D::ClearScene()
 {
-  
+  mRootNode->Clear();
 }
 
 

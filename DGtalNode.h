@@ -67,13 +67,13 @@ namespace DGtal
       /**
       * Constructor with a predefined name.
       */
-      DGtalNode( std::string aName);
+      DGtalNode( std::string aName, Ogre::SceneManager * aSceneMgr);
 
       
        /**
       * Constructor without a name
       */
-      DGtalNode();
+      DGtalNode(Ogre::SceneManager * aSceneMgr);
 
 
       /**
@@ -219,6 +219,18 @@ namespace DGtal
       *  Returns the UNRN
       */
       DGtalNode  * getUpperNonRootNode();
+      
+      
+      /**
+       * Delete the Node's sons and it's self
+       * 
+       */
+        void Clear();
+
+	/**
+	*  Returns the DGtalObject type
+	*/
+	std::string  getType();
 
 
       // ------------------------- Protected Datas ------------------------------
@@ -267,6 +279,8 @@ namespace DGtal
       std::map<string, DGtalNode* > mySons; 
       bool mIsRoot;
       DrawableWithOgre * myDGtalObject;
+      Ogre::SceneManager * mySceneMgr;
+      std::string mType;
 
     }; // end of class DGtalNode
 
@@ -297,7 +311,6 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined DGtalNode_h
-
 #undef DGtalNode_RECURSES
 #endif // else defined(DGtalNode_RECURSES)
 

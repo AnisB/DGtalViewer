@@ -42,10 +42,10 @@
 */
 template <typename T>
 inline
-DGtal::TDrawable<T>::TDrawable(T* anObject)
+DGtal::TDrawable<T>::TDrawable( const T & anObject) 
 {
-  myObject=anObject;
-  typeObject =anObject->className();
+  myObject=&anObject;
+  typeObject =anObject.className();
 }
   
     
@@ -94,7 +94,7 @@ inline
 const char* 
 DGtal::TDrawable<T>::className() const
 {
-    return  (static_cast <T*>(myObject)->className()).c_str(); 
+    return  (static_cast < const T *>(myObject)->className()).c_str(); 
 }
 
 
@@ -103,11 +103,12 @@ DGtal::TDrawable<T>::className() const
 */  
 template <typename T>
 inline
-T*  DGtal::TDrawable<T>::getDgtalObject() 
+const T *  DGtal::TDrawable<T>::getDgtalObject() 
 {
     return myObject; 
 }
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////>className()).c_str(); 
+////////////////////////////////////////////////
 // Implementation of inline functions //
 
 template <typename T>

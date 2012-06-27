@@ -54,7 +54,7 @@ class ViewerOgre3D
 	
 	std::map<std::string,DGtalNode *> myObjects;
 	DGtalNode * mRootNode;
-	
+
 	DGtalNode * SelectedDGtalNode;
         DGtalNode * UpperFatherNonRoot;
 	
@@ -90,20 +90,23 @@ class ViewerOgre3D
 		
 		void DrawInitialItems();
 		
+		Ogre::SceneManager * getSceneMgr() { return mSceneMgr;}		
+		
 		void LookForIt(unsigned int x,unsigned int y,unsigned int h,unsigned int w);
 		
 		Representation * findRepresentation(std::string aName);
 		
 		Representation  * addVoxel(double x,double y, double z,Ogre::SceneNode * aNode);
 		
-		void Clean();
+		void ClearScene();
+		
 		ViewerOgre3D & operator<< ( const DGtal::Color & aColor );
 		
 		template <typename TDrawableWithDisplay3D>
 		ViewerOgre3D & operator<< ( const  TDrawableWithDisplay3D & object );
 		
 		template <typename TDrawableWithDisplay3D>
-		ViewerOgre3D & operator>> (   TDrawableWithDisplay3D & object );
+		TDrawableWithDisplay3D & operator>> (   TDrawableWithDisplay3D & object );
 
 };
 }

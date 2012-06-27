@@ -176,3 +176,15 @@ void InputListener::windowResized(Ogre::RenderWindow* rw)
 {
          
 }
+
+
+void InputListener::stopRendering ( )
+{
+  mShutdown=true;
+}
+
+void InputListener::startRendering ( )
+{
+  mShutdown=false;
+}
+

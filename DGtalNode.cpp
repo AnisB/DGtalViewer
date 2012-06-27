@@ -24,11 +24,11 @@
 /**
 * Constructor.
 */
-DGtalNode::DGtalNode(std::string aName) : myName(aName) 
+DGtalNode::DGtalNode( std::string aName, Ogre::SceneManager * aSceneMgr) : myName(aName), mySceneMgr(aSceneMgr)
 {
   mIsRoot=false;
 }
-DGtalNode::DGtalNode() 
+DGtalNode::DGtalNode(Ogre::SceneManager * aSceneMgr) :mySceneMgr(aSceneMgr)
 {
   mIsRoot=false;
 }
@@ -42,6 +42,13 @@ DGtalNode::~DGtalNode()
 {
 
 }
+void
+DGtalNode::selfDisplay ( std::ostream & out ) const
+{
+    out << "[DGtalNode]";
+}
+
+
 
 bool DGtalNode::setRepresentation(Representation * newRepresentation) 
 {
@@ -192,6 +199,7 @@ Ogre::SceneNode * DGtalNode::getNode()
 void DGtalNode::setDGtalObject(DGtal::DrawableWithOgre  * obj)
 {
    myDGtalObject=obj;
+   mType=myDGtalObject->className();
 }
 
 
@@ -252,6 +260,25 @@ bool  DGtalNode::isRoot( )
 
 
 /**
+* Delete the Node's sons and it's self
+* 
+*/
+void DGtalNode::Clear()
+{
+    std::map<std::string , DGtalNode * >::iterator it= mySons.begin();
+    while(it!=mySons.end())
+    {
+      (*it).second->Clear();
+      it++;
+    }
+    if(!mIsRoot)
+    {
+      myRepresentation->Clear();
+    }
+}
+  
+
+/**
 *  Returns the UNRN
 */
 DGtalNode  * DGtalNode::getUpperNonRootNode()
@@ -265,3 +292,12 @@ DGtalNode  * DGtalNode::getUpperNonRootNode()
   }
   return UNRN;
 }
+
+/**
+*  Returns the DGtalObject type
+*/
+std::string   DGtalNode::getType()
+{
+    return mType;
+}
+

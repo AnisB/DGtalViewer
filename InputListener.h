@@ -52,6 +52,9 @@ class InputListener :public Ogre::FrameListener, public OIS::KeyListener, OIS::M
     bool mouseMoved ( const OIS::MouseEvent &e );
     virtual bool frameEnded ( const Ogre::FrameEvent &evt );
     virtual void windowResized ( Ogre::RenderWindow* rw );
+    
+     void stopRendering ( );
+     void startRendering ( );
 
 
   private:
