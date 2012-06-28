@@ -17,9 +17,9 @@
 
 /**
  * @file   Ogre3DDisplayFactory.ih
- * @author Anis Benyoub 
+ * @author Anis Benyoub
  * @date   mercredi 14 juin 2012
- * 
+ *
  * @brief
  *
  * Implementation of inline methods defined in Ogre3DDisplayFactory.h
@@ -36,41 +36,41 @@
 
 template<Dimension dim, typename TComponent>
 inline
-void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer, 
-					   const PointVector<dim,TComponent> & p )
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+    const PointVector<dim, TComponent> & p )
 {
 
-  ASSERT(dim == 3);
-  DGtalNode * newDGtalNode= new DGtalNode(viewer.getSceneMgr() );
-  
+  ASSERT ( dim == 3 );
+  DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+
   Ogre::SceneNode * theNode = viewer.getANode();
-  Representation * newPoint =viewer.addVoxel(NumberTraits<TComponent>::castToDouble(p.myArray[0]),
-		   NumberTraits<TComponent>::castToDouble(p.myArray[1]),
-		   NumberTraits<TComponent>::castToDouble(p.myArray[2]),theNode);
+  Representation * newPoint = viewer.addVoxel ( NumberTraits<TComponent>::castToDouble ( p.myArray[0] ),
+                              NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
+                              NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode );
 
-  newDGtalNode->setName(newPoint->getName());
-  newDGtalNode->setRepresentation(newPoint);
-  newPoint->setAttachedParent(newDGtalNode);
-  newDGtalNode->setFather(viewer.getRootDGtalNode());
-  viewer.addToList(newDGtalNode);
-  TDrawable<PointVector<dim,TComponent> > *  aPoint= new TDrawable<PointVector<dim,TComponent> >(p );
+  ASSERT(newPoint);
+  ASSERT(theNode);
+  
+  newDGtalNode->setName ( newPoint->getName() );
+  newDGtalNode->setRepresentation ( newPoint );
+  newPoint->setAttachedParent ( newDGtalNode );
+  newDGtalNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.addToList ( newDGtalNode );
+  TDrawable<PointVector<dim, TComponent> > *  aPoint = new TDrawable<PointVector<dim, TComponent> > ( p );
 
-
-  DrawableWithOgre * aDrawableObject = (DrawableWithOgre *)aPoint;
-  newDGtalNode->setDGtalObject(aDrawableObject);
-  cout<<newDGtalNode->getName()<<endl;
-        const PointVector<dim,TComponent> *a  = ((TDrawable<PointVector<dim,TComponent> > * )newDGtalNode->getDGtalObject())->getDgtalObject();
-      cout<<(*a)<<endl;
-      
-
+  ASSERT(aPoint);	
+  DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+  newDGtalNode->setDGtalObject ( aDrawableObject );
+  viewer.getRootDGtalNode()->addSon ( newDGtalNode );
+  
 }
 
 
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void DGtal::Ogre3DDisplayFactory::draw (ViewerOgre3D &viewer,
-					  const DGtal::Object< TDigitalTopology, TDigitalSet > & set)
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
+    const DGtal::Object< TDigitalTopology, TDigitalSet > & set )
 {
 
 
@@ -81,59 +81,57 @@ void DGtal::Ogre3DDisplayFactory::draw (ViewerOgre3D &viewer,
 // DigitalSetBySTLSet
 template<typename Domain>
 inline
-void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer, 
-                                                      const DGtal::DigitalSetBySTLSet<Domain> & s )
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+    const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
 
 
   typedef typename Domain::Point Point;
   typedef typename Domain::Point::Component Component;
   typedef typename std::set<Point>::const_iterator ConstIterator;
- 
-  ASSERT(Domain::Space::dimension == 3);
 
-  DGtalNode * theDGtalSetNode= new DGtalNode(viewer.getSceneMgr() );
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  Representation * theVirtualRepresentation = new Representation(viewer.getSceneMgr(),theNode, theNode->getName());
-  
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
 
 
 
 
-  for (  ConstIterator it = s.begin(); it != s.end(); ++it )
-  {
-      Representation * newPoint =viewer.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                     NumberTraits<Component>::castToInt64_t((*it)[1]),
-                      NumberTraits<Component>::castToInt64_t((*it)[2]), 
-                      theNode->createChildSceneNode()); 
+
+  for ( ConstIterator it = s.begin(); it != s.end(); ++it )
+    {
+      Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+                                  theNode->createChildSceneNode() );
 
 
-      DGtalNode * newDGtalNode = new DGtalNode(viewer.getSceneMgr() );
-      newDGtalNode->setRepresentation(newPoint);
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
 
+      typedef typename Domain::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      TDrawable<Point > * aPoint = new TDrawable<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
 
-      newPoint->setAttachedParent(newDGtalNode);
-      theDGtalSetNode->addSon(newDGtalNode);
-      newDGtalNode->setFather(theDGtalSetNode);
-      newDGtalNode->setName(newPoint->getEntityName());
-      viewer.addToList(newDGtalNode);
-      TDrawable<PointVector<3u,double> > * aPoint = new TDrawable<PointVector<3u,double> >((*it)) ;
-      cout<<"Zut"<<endl;
-      cout<<(*it)<<endl;
-      DrawableWithOgre * aDrawableObject = (DrawableWithOgre *)aPoint;
-      newDGtalNode->setDGtalObject(aDrawableObject);
-      const PointVector<3u,double> *a  = ((TDrawable<PointVector<3u,double> > * )newDGtalNode->getDGtalObject())->getDgtalObject();
-      cout<<(*a)<<endl;
-            cout<<"Flute"<<endl;
     }
-  theDGtalSetNode->setName(theVirtualRepresentation->getName());
-  theDGtalSetNode->setRepresentation(theVirtualRepresentation);
-  theDGtalSetNode->setFather(viewer.getRootDGtalNode());
-  viewer.getRootDGtalNode()->addSon(theDGtalSetNode);
-  viewer.addToList(theDGtalSetNode);
 
-  TDrawable<DigitalSetBySTLSet<Domain> >  * aSet = new TDrawable<DigitalSetBySTLSet<Domain> >(s);
-  DrawableWithOgre * theDrawableObject = (DrawableWithOgre *)aSet;
-  theDGtalSetNode->setDGtalObject(theDrawableObject);
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
 
-  }
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  TDrawable<DigitalSetBySTLSet<Domain> >  * aSet = new TDrawable<DigitalSetBySTLSet<Domain> > ( s );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+
+}

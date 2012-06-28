@@ -56,6 +56,7 @@ namespace DGtal
 class DrawableWithOgre
 {
     // ----------------------- Standard services ------------------------------
+    
 public:
 
 /**
@@ -138,8 +139,6 @@ operator<< ( std::ostream & out, const DrawableWithOgre & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#if !defined(BUILD_INLINE)
-#endif
 
 
 // //

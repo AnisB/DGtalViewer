@@ -100,13 +100,15 @@ class ViewerOgre3D
 		
 		void ClearScene();
 		
+		void sceneDisplay();
+		
 		ViewerOgre3D & operator<< ( const DGtal::Color & aColor );
 		
 		template <typename TDrawableWithDisplay3D>
 		ViewerOgre3D & operator<< ( const  TDrawableWithDisplay3D & object );
 		
 		template <typename TDrawableWithDisplay3D>
-		TDrawableWithDisplay3D & operator>> (   TDrawableWithDisplay3D & object );
+		void operator>> (   TDrawableWithDisplay3D & object );
 
 };
 }

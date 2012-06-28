@@ -18,7 +18,7 @@ CameraMan::CameraMan ( Ogre::Camera * aCamera, int aSpeed , int aRotationSpeed )
   isOnShiftMode=false;
 
   // Initial Camera position and orientation
-  myCamera->setPosition ( Ogre::Vector3 ( 300,300,300 ) );
+  myCamera->setPosition ( Ogre::Vector3 ( 300,400,300 ) );
   myCamera->lookAt ( Ogre::Vector3 ( 0,0,0 ) );
 }
 
@@ -86,7 +86,7 @@ bool CameraMan::handleKeyRelease ( const OIS::KeyEvent & evt )
 }
 bool CameraMan::handleMouseMove ( const OIS::MouseEvent & evt )
 {
-  TempMouseMove=Ogre::Vector3 ( -0.05f*evt.state.X.rel,-0.05f*evt.state.Y.rel,-0.05f*evt.state.Z.rel );
+  TempMouseMove=Ogre::Vector3 ( -0.05f*evt.state.X.rel,-0.05f*evt.state.Y.rel, -evt.state.Z.rel );
   return false;
 }
 bool CameraMan::handleMouseClick ( const OIS::MouseEvent &e, OIS::MouseButtonID id )
@@ -157,12 +157,18 @@ void CameraMan::Render ( const Ogre::FrameEvent & evt )
             {
               this->myCamera->pitch ( Ogre::Degree ( TempMouseMove.y ) );
             }
-          if ( TempMouseMove.z != 0 )
-            {
-              this->myCamera->roll ( Ogre::Degree ( TempMouseMove.z ) );
-            }
-          TempMouseMove = Ogre::Vector3::ZERO;
+            TempMouseMove = Ogre::Vector3::ZERO;
+            
         }
+    }
+    else
+    {
+            if ( TempMouseMove.z != 0 )
+            {
+              this->myCamera->move ( myCamera->getOrientation().zAxis()*TempMouseMove.z );
+            }
+            TempMouseMove = Ogre::Vector3::ZERO;
+
     }
 }
 

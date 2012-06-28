@@ -19,7 +19,9 @@
 
 #include "DGtalNode.h"
 #include <iostream>
-
+#include "TDrawable.h"
+#include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 
 /**
 * Constructor.
@@ -123,6 +125,34 @@ void DGtalNode::Select()
   }
 }
 
+
+/**
+  *  Displays on the stanard input the node's content
+  */
+  void DGtalNode::display(int level)
+  {
+    if(mType=="PointVector")
+    {
+      /*
+       TDrawable<PointVector<3u,double> > * aPoint = (TDrawable<PointVector<3u,double> > * ) myDGtalObject;
+       for(int j =0;j<level;j++)
+       cout<<"\t";
+       cout<<(*aPoint->getDgtalObject())<<endl;*/
+       cout<<"PointVector"<<endl;
+    }
+    else if(mType=="DigitalSetBySTLSet")
+    {
+             cout<<"DigitalSetBySTLSet"<<endl;
+    }
+     std::map<std::string , DGtalNode * >::iterator it= mySons.begin();
+    while(it!=mySons.end())
+    {
+      (*it).second->display(level+1);
+      it++;
+    }
+  }
+  
+  
 
 
 /**
@@ -263,18 +293,19 @@ bool  DGtalNode::isRoot( )
 * Delete the Node's sons and it's self
 * 
 */
-void DGtalNode::Clear()
+void DGtalNode::clear()
 {
     std::map<std::string , DGtalNode * >::iterator it= mySons.begin();
     while(it!=mySons.end())
     {
-      (*it).second->Clear();
+      (*it).second->clear();
       it++;
     }
     if(!mIsRoot)
     {
       myRepresentation->Clear();
     }
+    mySons.clear();
 }
   
 

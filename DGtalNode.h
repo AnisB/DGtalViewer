@@ -135,6 +135,11 @@ namespace DGtal
        */
        void setRoot();
        
+     /**
+       *  Displays on the stanard input the node's content
+       */
+       void display(int level);
+       
        /**
       *  Says if this node is the root node of the DGtal tree or not.
       */
@@ -225,7 +230,7 @@ namespace DGtal
        * Delete the Node's sons and it's self
        * 
        */
-        void Clear();
+        void clear();
 
 	/**
 	*  Returns the DGtalObject type
