@@ -8,9 +8,6 @@
 
 
 
-
-
-
 int main( int argc, char** argv )
 {
   
@@ -50,19 +47,19 @@ int main( int argc, char** argv )
  DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball( shape_set1, DGtal::Z3i::Point( 7, 7, 7 ), 4 );
  View << shape_set1;
  
- DGtal::Z3i::Point p10( 15, 15 ,15 );
+ DGtal::Z3i::Point p10( 30, 30 ,30);
  View <<p10;
- View << p10;
+
  
  DGtal::Z3i::Point p1( 0, 0, 0 );
  DGtal::Z3i::Point p2( 0, 0 ,0 );
 
  
- 
+ /*
  cout<<" Begin Scene display "<<endl;
  View.sceneDisplay();
  cout<<" End scene display "<<endl;
-
+*/
  
  
  View>>p1;
@@ -76,10 +73,10 @@ int main( int argc, char** argv )
  View.ClearScene();
  
 // On met le nouvel objet
-View<<shape_set1;
- 
+ View<<shape_set1;
+ View <<p10;
 
- 
+ View.functionApply(p10, translatePoint  ,10, 50);
  
  View.Start();
  return 0;

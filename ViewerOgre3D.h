@@ -40,9 +40,8 @@ class ViewerOgre3D
 	Ogre::RenderWindow* 	mWindow;
 	Ogre::SceneManager* 	mSceneMgr;
 	Ogre::Camera  * mCamera;
-	
 	static Ogre::SceneNode * RootSceneNode;
-
+	
 	// Input items
 	InputListener * mInputManager;
 	
@@ -50,65 +49,86 @@ class ViewerOgre3D
 	// Selection items
 	Ogre::SceneNode *mCurrentObject;	//pointer to our currently selected object
 	Ogre::RaySceneQuery* mRayScnQuery;	//pointer to our ray scene query
-	
-	
 	std::map<std::string,DGtalNode *> myObjects;
 	DGtalNode * mRootNode;
-
 	DGtalNode * SelectedDGtalNode;
         DGtalNode * UpperFatherNonRoot;
-	
 	bool SelectionMode;
+	Ogre::ManualObject* myAxis;
+	Ogre::SceneNode * myAxisNode;
+	Ogre::Vector3 mySceneCenter;
 	
 	
+	// Flags
+	bool myManupilatingFlag;
+	
+protected:
+  
+  
+      void drawAxes();
 
 
-	public:
-		ViewerOgre3D();
-		
-		virtual ~ViewerOgre3D();
-		
-		void Start();
-		
-		void InitMaterials();
-		
-		bool InitConfigs();
-		
-		void CreateScene();
-		
-		void CreateFrameListener();
-		
-		void draw();
-		
-		Ogre::SceneNode * getANode();
-		
-		Ogre::SceneNode * getRootSceneNode() { return mSceneMgr->getRootSceneNode();}
-		
-		DGtalNode * getRootDGtalNode() { return mRootNode;}
-		
-		void addToList(DGtalNode * anObject);
-		
-		void DrawInitialItems();
-		
-		Ogre::SceneManager * getSceneMgr() { return mSceneMgr;}		
-		
-		void LookForIt(unsigned int x,unsigned int y,unsigned int h,unsigned int w);
-		
-		Representation * findRepresentation(std::string aName);
-		
-		Representation  * addVoxel(double x,double y, double z,Ogre::SceneNode * aNode);
-		
-		void ClearScene();
-		
-		void sceneDisplay();
-		
-		ViewerOgre3D & operator<< ( const DGtal::Color & aColor );
-		
-		template <typename TDrawableWithDisplay3D>
-		ViewerOgre3D & operator<< ( const  TDrawableWithDisplay3D & object );
-		
-		template <typename TDrawableWithDisplay3D>
-		void operator>> (   TDrawableWithDisplay3D & object );
+
+public:
+      ViewerOgre3D();
+      
+      virtual ~ViewerOgre3D();
+      
+      void Start();
+      
+      void InitMaterials();
+      
+      bool InitConfigs();
+      
+      void CreateScene();
+      
+      void CreateFrameListener();
+      
+      void draw();
+      
+      void rotateWorld(double x, double y);
+      
+      void translateWorld(double x, double y);
+      
+      Ogre::SceneNode * getANode();
+      
+      Ogre::SceneNode * getRootSceneNode() { return mSceneMgr->getRootSceneNode();}
+      
+      DGtalNode * getRootDGtalNode() { return mRootNode;}
+      
+      void addToList(DGtalNode * anObject);
+      
+      void DrawInitialItems();
+            
+      void changeAxisVisibility();
+      
+      Ogre::SceneManager * getSceneMgr() { return mSceneMgr;}		
+      
+      void LookForIt(unsigned int x,unsigned int y,unsigned int h,unsigned int w);
+      
+      Representation * findRepresentation(std::string aName);
+      
+      Representation  * addVoxel(double x,double y, double z,Ogre::SceneNode * aNode);
+      
+      void ClearScene();
+      
+      void sceneDisplay();
+      
+      Ogre::Vector3 getLowerPosition();
+      
+      Ogre::Vector3 getUpperPosition();
+  
+      ViewerOgre3D & operator<< ( const DGtal::Color & aColor );
+      
+      template <typename TDrawableWithDisplay3D>
+      ViewerOgre3D & operator<< ( const  TDrawableWithDisplay3D & object );
+      
+      template <typename TDrawableWithDisplay3D>
+      void operator>> (   TDrawableWithDisplay3D & object );
+      
+      
+      template <typename TDrawableWithDisplay3D>
+      void functionApply(TDrawableWithDisplay3D & anObject, void (*ptrfonction)(TDrawableWithDisplay3D,int), int minValue, int maxValue);
 
 };
 }

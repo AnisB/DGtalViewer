@@ -16,23 +16,30 @@
 
 /**
  * @file DGtalNode.ih
- * @author AUTHOR (\c EMAIL )
- * INSTITUTION
- *
- * @date 2000/??/??
- *
- * Implementation of inline methods defined in DGtalNode.h
- *
- * This file is part of the DGtal library.
- */
+* @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+* Liris CNRS
+*
+* @date 2012/06/10
+*
+* Header file for module DGtalNode.ih
+*
+* This file is part of the DGtal library.
+*/
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
-#include <cstdlib>
+
+
 //////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 
 

@@ -58,6 +58,8 @@ class InputListener :public Ogre::FrameListener, public OIS::KeyListener, OIS::M
 
 
   private:
+    bool myMouseRightClicked;
+    bool myMouseLeftClicked;
     ViewerOgre3D * mViewer;
     Ogre::RenderWindow * mWindow;
     bool mShutdown;

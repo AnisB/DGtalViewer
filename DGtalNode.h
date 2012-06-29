@@ -177,21 +177,21 @@ namespace DGtal
       * Set this object as a selected one
       *
       */
-      void Select();
+      void select();
       
       
       /**
       * Set this virtual object as a selected one
       *
       */
-      void GroupSelect();
+      void groupSelect();
 
 
       /**
       * Set this object as a unselected
       *
       */
-      void Unselect();
+      void unselect();
       
       
       
@@ -282,10 +282,10 @@ namespace DGtal
       Representation * myRepresentation;
       DGtalNode * myFather;
       std::map<string, DGtalNode* > mySons; 
-      bool mIsRoot;
+      bool myIsRoot;
       DrawableWithOgre * myDGtalObject;
       Ogre::SceneManager * mySceneMgr;
-      std::string mType;
+      std::string myType;
 
     }; // end of class DGtalNode
 

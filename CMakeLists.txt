@@ -129,7 +129,8 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
 endif()
  
-set(HDRS Representation.h
+set(HDRS Functions.h
+	 Representation.h
          DGtalNode.h
          Ogre3DDisplayFactory.h
 	 mousecursor.h
@@ -143,8 +144,6 @@ set(HDRS Representation.h
 set(SRCS Representation.cpp 
          DGtalNode.cpp 
          mousecursor.cpp
-	 CameraMan.cpp
-	 InputListener.cpp
 	 DrawableWithOgre.cpp
 	 main.cpp
 )

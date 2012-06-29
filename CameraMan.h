@@ -19,7 +19,7 @@
 /**
 * @file CameraMan.h
 * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
-* INSTITUTION
+* Liris CNRS
 *
 * @date 2012/06/10
 *
@@ -116,8 +116,8 @@ class CameraMan
 
       /**
        *  Public method that acts on the camera geometric attributes
-      */  
-      void Render ( const Ogre::FrameEvent & evt );
+      */
+      void render ( const Ogre::FrameEvent & evt );
 
       
       
@@ -132,13 +132,13 @@ class CameraMan
 
     
     // Control flags
-    bool isOnShiftMode;
+    bool myIsOnShiftMode;
     
     // Moving flags
-    bool isGoingFoward;
-    bool isGoingBackward;
-    bool isGoingLeftward;
-    bool isGoingRightward;
+    bool myIsGoingFoward;
+    bool myIsGoingBackward;
+    bool myIsGoingLeftward;
+    bool myIsGoingRightward;
     Ogre::Vector3 TempMouseMove;
 
     // Moving attributes
@@ -159,19 +159,19 @@ class CameraMan
     // Starting a motion
     void startGoingFoward()
     {
-      isGoingFoward=true;
+      myIsGoingFoward=true;
     }
     void startGoingBackward()
     {
-      isGoingBackward=true;
+      myIsGoingBackward=true;
     }
     void startGoingLeftward()
     {
-      isGoingLeftward=true;
+      myIsGoingLeftward=true;
     }
     void startGoingRightward()
     {
-      isGoingRightward=true;
+      myIsGoingRightward=true;
     }
 
     
@@ -182,19 +182,19 @@ class CameraMan
     // Ending a motion
     void stopGoingFoward()
     {
-      isGoingFoward=false;
+      myIsGoingFoward=false;
     }
     void stopGoingBackward()
     {
-      isGoingBackward=false;
+      myIsGoingBackward=false;
     }
     void stopGoingLeftward()
     {
-      isGoingLeftward=false;
+      myIsGoingLeftward=false;
     }
     void stopGoingRightward()
     {
-      isGoingRightward=false;
+      myIsGoingRightward=false;
     }
 
     
@@ -212,7 +212,7 @@ class CameraMan
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CameraMan_h
-
+#include "CameraMan.ih"
 #undef CameraMan_RECURSES
 #endif // else defined(CameraMan_RECURSES)
 
