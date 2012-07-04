@@ -14,6 +14,7 @@ namespace DGtal
       Ogre::Vector3 upper = getUpperPosition();
       Ogre::Vector3 lower = getLowerPosition();
       mySceneCenter=(upper+lower)/2.0;
+      myWristNode->setPosition(mySceneCenter);
       return *this;
 
     }
@@ -24,7 +25,7 @@ namespace DGtal
       if ( object.className() == "PointVector" )
         {
           SelectionMode = true;
-          Start();
+          start();
           const TDrawableWithDisplay3D * myPoint  = ( ( TDrawable<TDrawableWithDisplay3D> * ) ( SelectedDGtalNode->getDGtalObject() ) )->getDgtalObject();
           object = ( *myPoint );
           SelectionMode = false;
@@ -33,11 +34,22 @@ namespace DGtal
 
 
     template <typename TDrawableWithDisplay3D>
-    void ViewerOgre3D::functionApply(TDrawableWithDisplay3D & anObject, void (*ptrfonction)(TDrawableWithDisplay3D,int), int minValue, int maxValue)
+    void ViewerOgre3D::manipulate(TDrawableWithDisplay3D & anObject, TDrawableWithDisplay3D & (*ptrfonction)(TDrawableWithDisplay3D,int), int minValue, int maxValue, int step)
     {
-      ClearScene();
-      Start();
-      TDrawableWithDisplay3D & Object = ptrfonction ( anObject,  minValue );
+      myManupilatingFlag=true;
+      myMaxManupulating=maxValue;
+      myMinManupulating=minValue;
+      myCurrentManupulating=minValue;
+      myStep=step;
+      
+      while(myManupilatingFlag)
+      {
+	clearScene();
+ 	TDrawableWithDisplay3D & Object = ptrfonction ( anObject,  myCurrentManupulating );
+	(*this)<<(Object);
+	start();
+	delete &Object;
+      }
     }
 
 
@@ -50,9 +62,9 @@ namespace DGtal
       mRoot = new Ogre::Root ( "plugins.cfg", "ogre.cfg", "Ogre.log" );
 
       //CHARGEMENT CONFIG & RESSOURCES
-      InitMaterials();
+      initMaterials();
 
-      if ( !InitConfigs() )
+      if ( !initConfigs() )
         {
           return ;
         }
@@ -68,7 +80,7 @@ namespace DGtal
       std::cout << "Creation de la scene" << std::endl;
 
       //CREATION DE LA SCENE
-      CreateScene();
+      createScene();
 
       std::cout << "Fin de la creation de la scene" << std::endl;
 
@@ -76,7 +88,7 @@ namespace DGtal
       std::cout << "Creation du frame listenner" << std::endl;
 
       //Creation de l'input listener
-      CreateFrameListener();
+      createFrameListener();
 
       std::cout << "Fin de la creation du frame listenner" << std::endl;
 
@@ -89,18 +101,19 @@ namespace DGtal
       UpperFatherNonRoot = NULL;
       
       
-      myManipulatingFlag=false;
+//      myManipulatingFlag=false;
 
     }
 
 
     ViewerOgre3D::~ViewerOgre3D()
     {
-
+	mRoot->destroySceneManager(mSceneMgr);
+	delete mRoot;
     }
 
 
-    void ViewerOgre3D::Start()
+    void ViewerOgre3D::start()
     {
 
       //DEBUT DE LA BOUCLE DE RENDU
@@ -109,12 +122,10 @@ namespace DGtal
 
       //-------------------------------------Phase destruction
 
-//  mRoot->destroySceneManager(mSceneMgr);
-//  delete mRoot;
 
     }
 
-    void ViewerOgre3D::InitMaterials()
+    void ViewerOgre3D::initMaterials()
     {
       //Chargement des matériaux , des meshs et de tout ce qu'on a comme ressource
       Ogre::ConfigFile cf;
@@ -144,7 +155,7 @@ namespace DGtal
       //fin chargement materials
     }
 
-    bool ViewerOgre3D::InitConfigs()
+    bool ViewerOgre3D::initConfigs()
     {
       if ( !mRoot->restoreConfig() )
         {
@@ -158,7 +169,7 @@ namespace DGtal
     }
 
 
-    void ViewerOgre3D::CreateScene()
+    void ViewerOgre3D::createScene()
     {
       Ogre::TextureManager::getSingleton().setDefaultNumMipmaps ( 200 );
       Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
@@ -194,49 +205,11 @@ namespace DGtal
       mRootNode->setFather ( NULL );
       mRootNode->setRoot();
 
-      Ogre::ManualObject * circle = mSceneMgr->createManualObject ( "circle_name" );
-
-      float const radius = 70,
-                           thickness = 1, // Of course this must be less than the radius value.
-                                       accuracy = 35;
-
-      circle->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_TRIANGLE_LIST );
-
-      unsigned point_index = 0;
-
-      for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
-        {
-          circle->position ( radius * cos ( theta ),
-                             0,
-                             radius * sin ( theta ) );
-          circle->position ( radius * cos ( theta - Ogre::Math::PI / accuracy ),
-                             0,
-                             radius * sin ( theta - Ogre::Math::PI / accuracy ) );
-          circle->position ( ( radius - thickness ) * cos ( theta - Ogre::Math::PI / accuracy ),
-                             0,
-                             ( radius - thickness ) * sin ( theta - Ogre::Math::PI / accuracy ) );
-          circle->position ( ( radius - thickness ) * cos ( theta ),
-                             0,
-                             ( radius - thickness ) * sin ( theta ) );
-          // Join the 4 vertices created above to form a quad.
-          circle->quad ( point_index, point_index + 1, point_index + 2, point_index + 3 );
-          point_index += 4;
-        }
-
-      circle->end();
-
-      mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject ( circle );
-
-
-
       drawAxes();
-
-
-
-
+      drawWrist();
     }
 
-    void ViewerOgre3D::CreateFrameListener()
+    void ViewerOgre3D::createFrameListener()
     {
       mInputManager = new InputListener ( mWindow, this, mCamera, mSceneMgr );
       mRoot->addFrameListener ( mInputManager );
@@ -325,26 +298,68 @@ namespace DGtal
 
     }
 
+    
+    
+    
+    
     Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::SceneNode * aNode )
     {
 
       Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
       Ogre::Entity  * m_ent = mSceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
+      
       m_ent->setMaterialName ( "Texture/Selected" );
       m_ent->setMaterialName ( "Texture/Unselected" );
       m_bodySceneNode->attachObject ( m_ent );
-      m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*40, y*40, z*40 ) );
-      m_bodySceneNode->setScale ( 0.4, 0.4, 0.4 );
-      DGtal::Representation * ARepresentation = new Representation ( mSceneMgr, m_ent, m_bodySceneNode, m_ent->getName() );
+      m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
+      m_bodySceneNode->setScale ( scaleFactor/100.0, scaleFactor/100.0, scaleFactor/100.0);
+      DGtal::Representation * ARepresentation = new Representation ( mSceneMgr, m_ent, m_bodySceneNode, m_ent->getName(),"Entity" );
       return ARepresentation;
 
     }
-  }
+  
 
 
+      Representation * ViewerOgre3D::addLine(double x1, double y1, double z1, double x2, double y2,double z2,Ogre::SceneNode * aNode)
+      {
+	  Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+	  Ogre::ManualObject  * m_ent  = mSceneMgr->createManualObject ( "Wrist" );
+	  m_ent->begin ( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
+	  m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
+          myAxis->position ( x2*scaleFactor, y2*scaleFactor, z2*scaleFactor );
+	  m_bodySceneNode->attachObject ( m_ent );
+ 	  DGtal::Representation * ARepresentation = new Representation ( mSceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "ManualObject" );
+	  return ARepresentation;
+      }
 
 
+      Representation * ViewerOgre3D::addPoint (double x, double y, double z,Ogre::SceneNode * aNode )
+      {
+	     
+	
+	Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+      Ogre::Entity  * m_ent = mSceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE);
+      
+      m_ent->setMaterialName ( "Texture/Selected" );
+      m_ent->setMaterialName ( "Texture/Unselected" );
+      m_bodySceneNode->attachObject ( m_ent );
+      m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
+      m_bodySceneNode->setScale ( scaleFactor/1000.0, scaleFactor/1000.0, scaleFactor/1000.0);
+      DGtal::Representation * ARepresentation = new Representation ( mSceneMgr, m_ent, m_bodySceneNode, m_ent->getName(),"Entity" );
+      return ARepresentation;
+      }
+      
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 void ViewerOgre3D::addToList ( DGtalNode * aNode )
 {
   myObjects[aNode->getName() ] = aNode;
@@ -383,7 +398,7 @@ Representation * ViewerOgre3D::findRepresentation ( std::string aName )
 
 
 
-void ViewerOgre3D::ClearScene()
+void ViewerOgre3D::clearScene()
 {
   mRootNode->clear();
   SelectedDGtalNode = NULL;
@@ -434,34 +449,69 @@ void ViewerOgre3D::drawAxes()
   myAxisNode->attachObject ( myAxis );
 }
 
+
+
+
+
+void ViewerOgre3D::drawWrist()
+{
+
+ myWrist = mSceneMgr->createManualObject ( "Wrist" );
+ 
+
+      float const radius = 200,
+                           thickness = 7, // Of course this must be less than the radius value.
+                                       accuracy = 35;
+
+      myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST   );
+
+      unsigned point_index = 0;
+
+      for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
+        {
+          myWrist->position ( radius * cos ( theta ),
+                             0,
+                             radius * sin ( theta ) );
+          myWrist->position ( radius * cos ( theta - Ogre::Math::PI / accuracy ),
+                             0,
+                             radius * sin ( theta - Ogre::Math::PI / accuracy ) );
+          myWrist->position ( ( radius - thickness ) * cos ( theta - Ogre::Math::PI / accuracy ),
+                             0,
+                             ( radius - thickness ) * sin ( theta - Ogre::Math::PI / accuracy ) );
+          myWrist->position ( ( radius - thickness ) * cos ( theta ),
+                             0,
+                             ( radius - thickness ) * sin ( theta ) );
+        }
+        
+        
+        
+      for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
+        {
+          myWrist->position ( 0,radius * cos ( theta ),
+                             radius * sin ( theta ) );
+          myWrist->position ( 0,radius * cos ( theta - Ogre::Math::PI / accuracy ),
+                             radius * sin ( theta - Ogre::Math::PI / accuracy ) );
+          myWrist->position (0, ( radius - thickness ) * cos ( theta - Ogre::Math::PI / accuracy ),
+                             ( radius - thickness ) * sin ( theta - Ogre::Math::PI / accuracy ) );
+          myWrist->position ( 0,( radius - thickness ) * cos ( theta ),
+                             ( radius - thickness ) * sin ( theta ) );
+        }
+
+      myWrist->end();
+
+      myWristNode=mSceneMgr->getRootSceneNode()->createChildSceneNode();
+      myWristNode->attachObject ( myWrist );
+}
+
+
+
+
+
 void ViewerOgre3D::changeAxisVisibility()
 {
   myAxisNode->flipVisibility();
 }
 
-void ViewerOgre3D::rotateWorld ( double x, double y )
-{
-
-  mCamera->lookAt(mySceneCenter);
-  Ogre::Vector3 temp = mCamera->getOrientation().yAxis() * ( -y ) + mCamera->getOrientation().xAxis() *x;
-    
-    
- 
-  mCamera->setPosition(mCamera->getPosition() +temp);
-  mCamera->lookAt(mySceneCenter);
-
-
-/*
-  mSceneMgr->getRootSceneNode()->setInitialState();
-  mSceneMgr->getRootSceneNode()->rotate ( temp, Ogre::Degree ( 0.1 ), Ogre::Node::TS_PARENT );
-  */
-}
-
-void ViewerOgre3D::translateWorld ( double x, double y )
-{
-
-  mCamera->setPosition ( mCamera->getPosition() - ( mCamera->getOrientation().yAxis() * ( -y ) + mCamera->getOrientation().xAxis() *x ) );
-}
 
 
 Ogre::Vector3 ViewerOgre3D::getLowerPosition()
@@ -495,3 +545,76 @@ Ogre::Vector3 ViewerOgre3D::getUpperPosition()
   }
   return up;
 }
+
+void ViewerOgre3D::newManipulatingValue(int change)
+{
+  if(change >0)
+  {
+     if((myCurrentManupulating+myStep)< myMaxManupulating)
+     {
+       myCurrentManupulating+=myStep;
+       mInputManager->stopRendering();
+       std::cout<<"New upper Manipulating value"<<std::endl;
+     }
+  }
+  else
+  {
+     if((myCurrentManupulating-myStep)> myMinManupulating)
+     {
+       myCurrentManupulating-=myStep;
+       mInputManager->stopRendering();
+       std::cout<<"New lower Manipulating value"<<std::endl;
+     }
+  }
+  
+}
+
+
+void ViewerOgre3D::abortManupulating()
+{
+  mInputManager->stopRendering();
+  myManupilatingFlag=false;
+}
+
+
+
+void ViewerOgre3D::setNearFar(double near,double far)
+{
+  mCamera->setNearClipDistance(scaleFactor*near);
+  mCamera->setFarClipDistance(scaleFactor*far);
+}
+
+
+void ViewerOgre3D::setCameraUpVector(Ogre::Vector3   anUp)
+{
+  mCamera->setFixedYawAxis(true,anUp);
+}
+
+}
+
+
+
+
+void ViewerOgre3D::setCameraDirection(Ogre::Vector3  aPoint)
+{
+  mCamera->lookAt(aPoint);
+}
+
+
+
+void ViewerOgre3D::setCameraPosition(Ogre::Vector3  aPosition)
+{
+  mCamera->setPosition(aPosition);	
+}
+
+
+void ViewerOgre3D::addClippingPlane(double a,double b,double c, double d)
+{
+  mRoot->getRenderSystem()->addClipPlane(Ogre::Plane(a,b,c,d));
+}
+
+  
+
+  
+  
+  

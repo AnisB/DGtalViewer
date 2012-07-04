@@ -1,81 +1,243 @@
-/*
- * InputListener.h
- *
- *  Created on: 26 janv. 2012
- *      Author: dev
- */
+/**
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+**/
 
-/*
-#if defined(InputListener_RECURSES)
- #error Recursive header files inclusion detected in InputListener.h
- #else // defined(InputListener_RECURSES)
- /** Prevents recursive inclusion of headers.
- #define InputListener_RECURSES
+#pragma once
+
+/**
+* @file InputListener.h
+* @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+* Liris CNRS
+*
+* @date 2012/06/10
+*
+* Header file for module InputListener.cpp
+*
+* This file is part of the DGtal library.
 */
 
+#if defined(InputListener_RECURSES)
+#error Recursive header files inclusion detected in InputListener.h
+#else // defined(InputListener_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define InputListener_RECURSES
 
-#if !defined (InputListener_h)
+#if !defined InputListener_h
+/** Prevents repeated inclusion of headers. */
 #define InputListener_h
 
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
 //----------------------------------------------------Includes OIS
 #include <OIS/OIS.h>
-#include <map>
-//----------------------------------------------------Includes personnels
-
 #include "OGRE/Ogre.h"
-
-
 #include "CameraMan.h"
 #include "mousecursor.h"
 
-namespace DGtal {
-class ViewerOgre3D;
+//////////////////////////////////////////////////////////////////////////////
 
-class InputListener :public Ogre::FrameListener, public OIS::KeyListener, OIS::MouseListener
+namespace DGtal
   {
-  public:
-    //----------------------------------------------------Constructeur et destructeur
-    InputListener ( Ogre::RenderWindow * aWindow,
-                    ViewerOgre3D * aViewer,
-                    Ogre::Camera * aCamera,
-                    Ogre::SceneManager * aSceneManager );
-    ~InputListener();
 
-    //----------------------------------------------------Rendu
-    virtual bool frameStarted ( const Ogre::FrameEvent & evt );
-    virtual bool frameRenderingQueued ( const Ogre::FrameEvent&	);
-    //----------------------------------------------------Gestion des entree
-    bool keyPressed ( const OIS::KeyEvent &e );
-    bool mousePressed ( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-    bool mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-    bool keyReleased ( const OIS::KeyEvent &e );
-    bool mouseMoved ( const OIS::MouseEvent &e );
-    virtual bool frameEnded ( const Ogre::FrameEvent &evt );
-    virtual void windowResized ( Ogre::RenderWindow* rw );
-    
-     void stopRendering ( );
-     void startRendering ( );
+/////////////////////////////////////////////////////////////////////////////
+// class InputListener
+    /**
+    * Description of class 'InputListener' <p>
+    * \brief Aim:  Manage the inputs for the Ogre3D viewer
+    */
 
+        class ViewerOgre3D;
 
-  private:
-    bool myMouseRightClicked;
-    bool myMouseLeftClicked;
-    ViewerOgre3D * mViewer;
-    Ogre::RenderWindow * mWindow;
-    bool mShutdown;
-    OIS::Keyboard * mKeyboard;
-    OIS::Mouse * mMouse;
-    OIS::InputManager * mInputManager;
-    Ogre::Camera * mCamera;
-    CameraMan * mCameraMan;
-    MouseCursor * mMouseCursor;
-    bool isInShiftMode;
-    Ogre::SceneManager * mSceneMgr;
+        class InputListener : public Ogre::FrameListener, public OIS::KeyListener, OIS::MouseListener
+          {
+
+              // ----------------------- Standard services ------------------------------
+
+            public:
+
+              /**
+               * Destructor.
+               */
+              ~InputListener();
+
+              /**
+               * Constructor.
+               */
+              InputListener ( Ogre::RenderWindow * aWindow,
+                              ViewerOgre3D * aViewer,
+                              Ogre::Camera * aCamera,
+                              Ogre::SceneManager * aSceneManager );
 
 
 
-  };
-}
+              // ----------------------- Interface --------------------------------------
+
+            public:
+
+
+              /**
+               * Method that initiate the inputManager (First frame)
+               */
+              virtual bool frameStarted ( const Ogre::FrameEvent & evt );
+
+
+              /**
+               * the rendering method 
+               */
+              virtual bool frameRenderingQueued ( const Ogre::FrameEvent& );
+
+              /**
+                * The last frame
+                */
+              virtual bool frameEnded ( const Ogre::FrameEvent &evt );
+
+
+              /**
+               * Handles a key press
+               */
+              bool keyPressed ( const OIS::KeyEvent &e );
+
+
+              /**
+               * Handles a mouse press
+               */
+              bool mousePressed ( const OIS::MouseEvent &e, OIS::MouseButtonID id );
+
+
+              /**
+               * Handles a mouse release
+               */
+              bool mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID id );
+
+
+              /**
+               * Handles a key release
+               */
+              bool keyReleased ( const OIS::KeyEvent &e );
+
+
+              /**
+               * Handles a mouse move
+               */
+              bool mouseMoved ( const OIS::MouseEvent &e );
+
+
+              /**
+               * Handles a window resize
+               */
+              virtual void windowResized ( Ogre::RenderWindow* rw );
+
+	     /**
+               * makes the render loop stop
+               */
+              void stopRendering ( );
+	      
+	      
+              /**
+               * makes the render loop starts
+               */
+              void startRendering ( );
+
+
+	      
+	                    // ----------------------- Private members --------------------------------------
+            private:
+              /**
+              * Flag that manage the right clic
+              */	    
+              bool myMouseRightClicked;
+	      
+	      /**
+              * Flag that manage the left clic
+              */
+              bool myMouseLeftClicked;
+	      
+	      /**
+              * The viewer
+              */	      
+              ViewerOgre3D * myViewer;
+	      
+	      
+	     /**
+              * The window
+              */
+              Ogre::RenderWindow * myWindow;
+	      
+	      
+	     /**
+              * Flag that the rendering
+              */  
+              bool myShutdown;
+	      
+	      
+	      /**
+              * The keyboard
+              */
+              OIS::Keyboard * myKeyboard;
+	      
+	      
+	      /**
+              * The mouse
+              */	      
+              OIS::Mouse * myMouse;
+	      
+	      /**
+              * The OIS input listenner
+              */		      
+              OIS::InputManager * myInputManager;
+	      
+	      
+	     /**
+              * The Camera Object
+              */		   
+              Ogre::Camera * myCamera;
+	      
+	      /**
+              * The CameraMan
+              */		   
+              CameraMan * myCameraMan;
+	      
+	      /**
+              * The mouse cursor
+              */		     
+              MouseCursor * myMouseCursor;
+	     
+	      
+	      /**
+              *  Free 3D moving flag
+              */	      
+              bool myIsInShiftMode;
+	      
+	      
+	      /**
+              * The ogre scene manager
+              */	
+              Ogre::SceneManager * mySceneMgr;
+
+          };
+      }
+
 #include "ViewerOgre3D.h"
 #include "InputListener.ih"
-#endif /* INPUTLISTENER_H_ */
+
+  
+
+// //
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // !defined InputListener_h
+
+#undef XXX_RECURSES
+#endif // else defined(InputListener_RECURSES)

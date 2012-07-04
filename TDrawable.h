@@ -90,7 +90,7 @@ namespace DGtal
 /**
 * Returns the object's class name
 */   
-virtual const char * className() const;
+virtual const string className() const;
 
 
 

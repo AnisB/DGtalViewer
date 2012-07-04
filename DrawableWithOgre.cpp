@@ -21,7 +21,7 @@
 *
 * @date 2012/06/26
 *
-* Implementation of methods defined in DrawableWithOgre.h
+* Implementation of methods defined in DrawableWithOgre.cpp
 *
 * This file is part of the DGtal library.
 */
@@ -81,9 +81,9 @@ DGtal::DrawableWithOgre::isValid() const
 /**
 * Returns the name of the associated DGtalObject
 */
- const char * DGtal::DrawableWithOgre::className() const 
+ const string DGtal::DrawableWithOgre::className() const 
 {
-  return typeObject.c_str();
+  return typeObject;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

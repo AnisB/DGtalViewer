@@ -68,8 +68,8 @@ public:
  /**
 * Constructor for a real Representation
 */
-  Representation( Ogre::SceneManager * aSceneMgr, Ogre::Entity * aEntity,
-  Ogre::SceneNode *aSceneNode, std::string aName);
+  Representation( Ogre::SceneManager * aSceneMgr, Ogre::MovableObject * aMovableObject,
+  Ogre::SceneNode *aSceneNode, std::string aName,std::string aMovableObjectType);
   
   
 /**
@@ -212,7 +212,8 @@ private:
   
   //---------------------------- Attributes ------------------------------------
 protected :
-  Ogre::Entity * myEntity;
+  Ogre::MovableObject * myMovableObject;
+  std::string myMovableObjectType;
   Ogre::SceneNode *mySceneNode;
   std::string myName;
   DGtalNode * myParent;

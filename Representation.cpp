@@ -46,14 +46,15 @@ using namespace std;
 /**
 * Constructor for a real representation
 */
-  DGtal::Representation::Representation(  Ogre::SceneManager * aSceneMgr, Ogre::Entity * aEntity,
-  Ogre::SceneNode *aSceneNode, std::string aName)
+  DGtal::Representation::Representation(  Ogre::SceneManager * aSceneMgr, Ogre::MovableObject * aMovableObject,
+  Ogre::SceneNode *aSceneNode, std::string aName,std::string aMovableObjectType)
   {
-    myEntity=aEntity;
+    myMovableObject=aMovableObject;
     mySceneNode=aSceneNode;
     myName=aName;
     mVirtual=false;
     mySceneMgr = aSceneMgr;
+    myMovableObjectType=aMovableObjectType;
   }
 
 /**
@@ -120,7 +121,7 @@ std::string DGtal::Representation::getName()
 std::string DGtal::Representation::getEntityName()
 {
   
-   return myEntity->getName();
+   return myMovableObject->getName();
 }
 
 
@@ -177,7 +178,10 @@ Representation& Representation::operator=(const Representation& other)
 */
 void Representation::Select()
 {
-  myEntity->setMaterialName("Texture/Selected");
+  if(myMovableObjectType=="Entity")
+  { 
+    ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Selected");
+  }
 }
 
 
@@ -188,7 +192,10 @@ void Representation::Select()
 */
 void Representation::GroupSelect()
 {
-  myEntity->setMaterialName("Texture/Group");
+  if(myMovableObjectType=="Entity")
+  { 
+    ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Group");
+  }
 }
 
 
@@ -199,7 +206,10 @@ void Representation::GroupSelect()
 */
 void Representation::Unselect()
 {
-    myEntity->setMaterialName("Texture/Unselected");
+  if(myMovableObjectType=="Entity")
+  { 
+    ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Unselected");
+  }
 }
 
 
@@ -227,7 +237,8 @@ bool  Representation::Clear()
   if(!mVirtual)
   {
     mySceneNode->detachAllObjects();
-    mySceneMgr->destroyEntity(myEntity);
+    if(myMovableObjectType=="Entity")
+    mySceneMgr->destroyEntity((Ogre::Entity*)myMovableObject);
   }
   mySceneMgr->destroySceneNode(mySceneNode);
 }

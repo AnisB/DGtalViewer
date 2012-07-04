@@ -23,7 +23,7 @@
 *
 * @date 2012/06/26
 *
-* Implementation of methods defined in DrawableWithOgre.h
+* Header file for module DrawableWithOgre.cpp
 *
 * This file is part of the DGtal library.
 */
@@ -88,12 +88,15 @@ public:
 /**
 * Returns the name of the associated DGtalObject
 */
-virtual const char * className() const ;
+virtual const string className() const ;
 
 
 
     // ------------------------- Protected Datas ------------------------------
 protected:
+  
+  
+  // the object type
   std::string typeObject;
   
 

@@ -47,9 +47,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Static variables
-  
-const double DefaultCameraSpeed =700;
-const double DefaultCameraRotationSpeed =200;
+
+const double DefaultCameraSpeed = 700;
+const double DefaultCameraRotationSpeed = 200;
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -58,59 +58,61 @@ const double DefaultCameraRotationSpeed =200;
 
 /////////////////////////////////////////////////////////////////////////////
 // class CameraMan
-  /**
-  * Description of class 'CameraMan' <p>
-  * \brief Aim: Acts on the camera of the viewer
-  */
+/**
+* Description of class 'CameraMan' <p>
+* \brief Aim: Acts on the camera of the viewer
+*/
 
 class CameraMan
   {
 
-    // ----------------------- Standard services ------------------------------
+      // ----------------------- Standard services ------------------------------
+
     public:
       /**
-      * Constructor 
+      * Constructor
       */
-      CameraMan ( Ogre::Camera * aCamera, int aSpeed = DefaultCameraSpeed, 
-			      int aRotationSpeed = DefaultCameraRotationSpeed );
+      CameraMan ( Ogre::Camera * aCamera, int aSpeed = DefaultCameraSpeed,
+                  int aRotationSpeed = DefaultCameraRotationSpeed );
 
-   
+
       /**
       * Destructor.
       */
-       virtual ~CameraMan( );
-       
-        // ----------------------- Interface --------------------------------------
+      virtual ~CameraMan( );
+
+      // ----------------------- Interface --------------------------------------
+
     public:
 
-     /**
-       * Public method that handles the user key press
-      */ 
+      /**
+        * Public method that handles the user key press
+       */
       bool handleKeyPress ( const OIS::KeyEvent & evt );
-   
-     /**
-       * Public method that handles the user key Release
-      */
+
+      /**
+        * Public method that handles the user key Release
+       */
       bool handleKeyRelease ( const OIS::KeyEvent & evt );
-   
-      
-      
-     /**
-       * Public method that handles the user mouse move
-      */  
+
+
+
+      /**
+        * Public method that handles the user mouse move
+       */
       bool handleMouseMove ( const OIS::MouseEvent & evt );
-      
-      
-      
+
+
+
       /**
        *  Public method that handles the user mouse click
-      */   
+      */
       bool handleMouseClick ( const OIS::MouseEvent &e, OIS::MouseButtonID id );
-    
-      
+
+
       /**
        *  Public method that handles the user mouse release
-      */   
+      */
       bool handleMouseRelease ( const OIS::MouseEvent &e, OIS::MouseButtonID id );
 
 
@@ -119,89 +121,146 @@ class CameraMan
       */
       void render ( const Ogre::FrameEvent & evt );
 
-      
-      
-      
-       //--------------------------- Protected attributes---------------------------
-  
-  
-  protected :
 
-    // The camera Object
-    Ogre::Camera * myCamera;
-
-    
-    // Control flags
-    bool myIsOnShiftMode;
-    
-    // Moving flags
-    bool myIsGoingFoward;
-    bool myIsGoingBackward;
-    bool myIsGoingLeftward;
-    bool myIsGoingRightward;
-    Ogre::Vector3 TempMouseMove;
-
-    // Moving attributes
-    int mySpeed;
-    int myRotationSpeed;
+      /**
+       *  Public method that makes the camera turns around the centralNode
+       *
+       */
+      void turnCamera ( double x, double y );
 
 
+      /**
+      *  Public method that makes the camera translate
+      *
+      */
+      void translateCamera ( double x, double y );
 
- 
+
+      /**
+      *  Public method that updates the scene center
+      *
+      */
+      void setSceneCenter ( Ogre::Vector3 aSceneCenter );
+
+      /**
+      *  Public method returns the new  scene center
+      *
+      */
+      Ogre::Vector3 & getNewSceneCenter()
+      {
+        return mySceneCenter;
+      }
 
 
- // ------------------------- Hidden services ------------------------------
+
+
+      //--------------------------- Protected attributes---------------------------
+
+
+    protected :
+
+      // The camera Object
+      Ogre::Camera * myCamera;
+
+
+      // Control flags
+      bool myIsOnShiftMode;
+
+      // Moving flags
+      bool myIsGoingFoward;
+      bool myIsGoingBackward;
+      bool myIsGoingLeftward;
+      bool myIsGoingRightward;
+
+
+      // Moving vectors
+      Ogre::Vector3 myTempMouseMove;
+      Ogre::Vector3 mySceneCenter;
+
+      // Moving attributes
+      int mySpeed;
+      int myRotationSpeed;
+
+
+
+// ------------------------- Hidden services ------------------------------
+
     protected:
-    /**
-     *  private method that starts a motion
-    */ 
-    
-    // Starting a motion
-    void startGoingFoward()
-    {
-      myIsGoingFoward=true;
-    }
-    void startGoingBackward()
-    {
-      myIsGoingBackward=true;
-    }
-    void startGoingLeftward()
-    {
-      myIsGoingLeftward=true;
-    }
-    void startGoingRightward()
-    {
-      myIsGoingRightward=true;
-    }
+      /**
+       *  private method that starts a motion
+      */
 
-    
-   /**
-     *  private method that starts a motion
-    */ 
-    
-    // Ending a motion
-    void stopGoingFoward()
-    {
-      myIsGoingFoward=false;
-    }
-    void stopGoingBackward()
-    {
-      myIsGoingBackward=false;
-    }
-    void stopGoingLeftward()
-    {
-      myIsGoingLeftward=false;
-    }
-    void stopGoingRightward()
-    {
-      myIsGoingRightward=false;
-    }
+      void startGoingFoward()
+      {
+        myIsGoingFoward = true;
+      }
 
-    
-   /**
-     *  private method that adds a camera moving
-    */ 
-    void updateCamera ( double x, double y, double z );
+      /**
+       *  private method that starts a motion
+      */
+      void startGoingBackward()
+      {
+        myIsGoingBackward = true;
+      }
+
+      /**
+       *  private method that starts a motion
+      */
+      void startGoingLeftward()
+      {
+        myIsGoingLeftward = true;
+      }
+
+
+      /**
+       *  private method that starts a motion
+      */
+      void startGoingRightward()
+      {
+        myIsGoingRightward = true;
+      }
+
+
+      /**
+        *  private method that ends a motion
+       */
+      void stopGoingFoward()
+      {
+        myIsGoingFoward = false;
+      }
+
+
+      /**
+        *  private method that ends a motion
+       */
+      void stopGoingBackward()
+      {
+        myIsGoingBackward = false;
+      }
+
+
+      /**
+        *  private method that ends a motion
+       */
+      void stopGoingLeftward()
+      {
+        myIsGoingLeftward = false;
+      }
+
+
+      /**
+        *  private method that ends a motion
+       */
+      void stopGoingRightward()
+      {
+        myIsGoingRightward = false;
+      }
+
+
+      /**
+        *  private method that adds a camera moving
+       */
+      void updateCamera ( double x, double y, double z );
 
   }; // end of class CameraMan
 
@@ -215,8 +274,4 @@ class CameraMan
 #include "CameraMan.ih"
 #undef CameraMan_RECURSES
 #endif // else defined(CameraMan_RECURSES)
-
-
-
-
 

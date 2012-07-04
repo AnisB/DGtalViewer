@@ -91,10 +91,10 @@ DGtal::TDrawable<T>::isValid() const
 */   
 template <typename T>
 inline
-const char* 
+const string 
 DGtal::TDrawable<T>::className() const
 {
-    return  (static_cast < const T *>(myObject)->className()).c_str(); 
+    return  (static_cast < const T *>(myObject)->className()); 
 }
 
 

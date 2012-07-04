@@ -40,19 +40,21 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/topology/Object.h"
 #include "TDrawable.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/Object.h"
+#include "DGtal/kernel/PointVector.h"
 
 namespace DGtal
   {
 
   class ViewerOgre3D;
-
-
-
 
 /////////////////////////////////////////////////////////////////////////////
   struct Ogre3DDisplayFactory
@@ -61,16 +63,60 @@ namespace DGtal
          * \brief Ogre Factory for Display3D:
          */
     {
-
+      // ArithmeticalDSS
+      template < typename TIterator,typename TInteger, int connectivity>
+      static void draw ( ViewerOgre3D & display, const DGtal::ArithmeticalDSS3d <TIterator, TInteger,connectivity> & c);
+      
+      //DGtalSetBySTLSet
+      template<typename Domain>
+      static void draw( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
+      
+      //DigitalSetBySTLVector
+      template<typename Domain>
+      static void draw( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s );
+      
+      
+      //HyperRectDomain      
+      template<typename TSpace>
+      static void draw( ViewerOgre3D & viewer, const DGtal::HyperRectDomain<TSpace> & s );
+ 
+      //KhalimskyCell
+      template<Dimension dim, typename TInteger>
+      static void draw ( ViewerOgre3D & display, const DGtal::KhalimskyCell<dim,TInteger> & kc );
+      
+      
+      //Object
+      template <typename TDigitalTopology, typename TDigitalSet>
+      static void draw (ViewerOgre3D &display, const DGtal::Object< TDigitalTopology, TDigitalSet > &);
+      
+      //PointVector
       template<Dimension dim, typename TComponent>
       static void draw ( ViewerOgre3D & display, const PointVector<dim,TComponent> & );
       
       
-      template <typename TDigitalTopology, typename TDigitalSet>
-      static void draw (ViewerOgre3D &display, const DGtal::Object< TDigitalTopology, TDigitalSet > &);
+     //SignedKhalimskyCell
+     template< Dimension dim,typename TInteger>
+     static void draw ( ViewerOgre3D & display, const DGtal::SignedKhalimskyCell<dim,TInteger> & skc);
+     
+     
+     
+
+  /*
+     static void draw( ViewerOgre3D & display, const DGtal::SetMode3D & );
+     static void draw( ViewerOgre3D & display, const DGtal::CustomStyle3D & );
+     static void draw( ViewerOgre3D & display, const DGtal::CustomColors3D & );
+ */
+  
+     static void draw( ViewerOgre3D & display, const DGtal::ClippingPlane & );
+     //Camera 
+     static void draw( ViewerOgre3D & display, const DGtal::CameraPosition & );
+     static void draw( ViewerOgre3D & display, const DGtal::CameraDirection & );
+     static void draw( ViewerOgre3D & display, const DGtal::CameraUpVector & );
+     static void draw( ViewerOgre3D & display, const DGtal::CameraZNearFar & );
+
       
-      template<typename Domain>
-      static void draw( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
+
+
     }; // end of struct Ogre3DDisplayFactor
 
 } //  namespace DGtal

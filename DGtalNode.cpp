@@ -25,36 +25,63 @@
 * This file is part of the DGtal library.
 */
 
-
+///////////////////////////////////////////////////////////////////////////////
 #include "DGtalNode.h"
 #include <iostream>
 #include "TDrawable.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+
+///////////////////////////////////////////////////////////////////////////////
+// class XXX
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
 
 /**
-* Constructor.
+* Constructor with a predefined name.
 */
 DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myName ( aName ), mySceneMgr ( aSceneMgr )
 {
   myIsRoot = false;
 }
 
+
+/**
+* Constructor without a name
+*/
 DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr )
 {
   myIsRoot = false;
 }
 
+/**
+* Copy constructor
+*/
 DGtalNode::DGtalNode ( const DGtalNode& other )
 {
   myIsRoot = false;
 }
 
+
+/**
+* Destructor
+*/
 DGtalNode::~DGtalNode()
 {
 
 }
 
+
+/**
+* Writes/Displays the object on an output stream.
+* @param out the output stream where the object is written.
+*/
 void
 DGtalNode::selfDisplay ( std::ostream & out ) const
   {
@@ -62,18 +89,34 @@ DGtalNode::selfDisplay ( std::ostream & out ) const
   }
 
 
-
+/**
+* Adds a representation to the attributes of this object.
+*/
 bool DGtalNode::setRepresentation ( Representation * newRepresentation )
 {
   myRepresentation = newRepresentation;
 }
 
 
+
+/**
+* Assignment.
+* @param other the object to copy.
+* @return a reference on 'this'.
+* Forbidden by default.
+*/
 DGtalNode& DGtalNode::operator= ( const DGtalNode & other )
 {
   return *this;
 }
 
+
+
+/**
+* Assignment.
+* @param other the object to compare.
+* @return a bool wich defines if this two object are the same.
+*/
 bool DGtalNode::operator== ( const DGtalNode& other ) const
   {
     return ( myName == other.myName );
