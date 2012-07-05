@@ -72,7 +72,7 @@ class CameraMan
       /**
       * Constructor
       */
-      CameraMan ( Ogre::Camera * aCamera, int aSpeed = DefaultCameraSpeed,
+      CameraMan ( Ogre::SceneNode * aNode,Ogre::Camera * aCamera, int aSpeed = DefaultCameraSpeed,
                   int aRotationSpeed = DefaultCameraRotationSpeed );
 
 
@@ -150,7 +150,21 @@ class CameraMan
       {
         return mySceneCenter;
       }
-
+      
+      
+      
+      /**
+      *  Public method that translates the cameraMan by aVector
+      *
+      */
+      void moveCameraman ( Ogre::Vector3 aVector );
+      
+      
+      /**
+      *  Public method that returns the node
+      *
+      */
+      Ogre::SceneNode * getSceneNode ( );
 
 
 
@@ -161,6 +175,7 @@ class CameraMan
 
       // The camera Object
       Ogre::Camera * myCamera;
+      Ogre::SceneNode * myCameraNode;
 
 
       // Control flags

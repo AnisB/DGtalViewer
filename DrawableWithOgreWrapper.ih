@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file TDrawable.ih
+ * @file DrawableWithOgreWrapper.ih
 * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
 * Liris CNRS
 *
 * @date 2012/06/26
 *
-* Implementation of methods defined in DrawableWithOgre.h
+* Implementation of methods defined in DrawableWithOgreWrapper.h
 *
 * This file is part of the DGtal library.
 */
@@ -30,7 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
-#include "TDrawable.h"
+#include "DrawableWithOgreWrapper.h"
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@
 */
 template <typename T>
 inline
-DGtal::TDrawable<T>::TDrawable( const T & anObject) 
+DGtal::DrawableWithOgreWrapper<T>::DrawableWithOgreWrapper( const T & anObject) 
 {
   myObject=&anObject;
   typeObject =anObject.className();
@@ -54,7 +54,7 @@ DGtal::TDrawable<T>::TDrawable( const T & anObject)
  */
 template <typename T>
 inline
-DGtal::TDrawable<T>::~TDrawable()
+DGtal::DrawableWithOgreWrapper<T>::~DrawableWithOgreWrapper()
 {
 }
 
@@ -68,9 +68,9 @@ DGtal::TDrawable<T>::~TDrawable()
 template <typename T>
 inline
 void
-DGtal::TDrawable<T>::selfDisplay ( std::ostream & out ) const
+DGtal::DrawableWithOgreWrapper<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[XXX]";
+  out << "[DrawableWithOgreWrapper]";
 }
 
 /**
@@ -80,7 +80,7 @@ DGtal::TDrawable<T>::selfDisplay ( std::ostream & out ) const
 template <typename T>
 inline
 bool
-DGtal::TDrawable<T>::isValid() const
+DGtal::DrawableWithOgreWrapper<T>::isValid() const
 {
     return true;
 }
@@ -92,7 +92,7 @@ DGtal::TDrawable<T>::isValid() const
 template <typename T>
 inline
 const string 
-DGtal::TDrawable<T>::className() const
+DGtal::DrawableWithOgreWrapper<T>::className() const
 {
     return  (static_cast < const T *>(myObject)->className()); 
 }
@@ -103,7 +103,7 @@ DGtal::TDrawable<T>::className() const
 */  
 template <typename T>
 inline
-const T *  DGtal::TDrawable<T>::getDgtalObject() 
+const T *  DGtal::DrawableWithOgreWrapper<T>::getDgtalObject() 
 {
     return myObject; 
 }
@@ -114,7 +114,7 @@ const T *  DGtal::TDrawable<T>::getDgtalObject()
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, const DGtal::TDrawable<T> & object )
+DGtal::operator<< ( std::ostream & out, const DGtal::DrawableWithOgreWrapper<T> & object )
 {
   object.selfDisplay( out );
   return out;

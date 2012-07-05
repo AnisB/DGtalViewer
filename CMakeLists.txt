@@ -137,7 +137,7 @@ set(HDRS Functions.h
 	 ViewerOgre3D.h
 	 InputListener.h
 	 CameraMan.h
-	 TDrawable.h
+	 DrawableWithOgreWrapper.h
 	 DrawableWithOgre.h
 )
  

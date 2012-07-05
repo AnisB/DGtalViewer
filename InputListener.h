@@ -149,7 +149,21 @@ namespace DGtal
                * makes the render loop starts
                */
               void startRendering ( );
-
+	      
+	      
+	      /**
+	      * Resets the position of the scene center
+	      */
+	      void resetSCPosition();
+	      
+	      /**
+	       *  Returns a pointer on the cameraman
+	       * 
+	       */
+	        CameraMan * getCameraMan() 
+		{
+		  return myCameraMan;
+		}
 
 	      
 	                    // ----------------------- Private members --------------------------------------
@@ -225,6 +239,7 @@ namespace DGtal
               * The ogre scene manager
               */	
               Ogre::SceneManager * mySceneMgr;
+	      
 
           };
       }

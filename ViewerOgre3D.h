@@ -47,6 +47,8 @@
 #include "DGtal/base/Common.h"
 #include "OgreEntity.h"
 #include "DGtalNode.h"
+#include "DGtal/base/CountedPtr.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -266,7 +268,24 @@ public:
        *  Stops the manipulating mode
        */
       void abortManupulating();
-  
+      
+      
+      /**
+	*  Computes the scene center
+	*/
+      void  computeSceneCenter (  );
+
+      /**
+	*  Updates the wrist position
+	*/
+      void  updateWrist (  );
+
+
+      /**
+      *  
+      */
+      void turn(double x, double y);
+	
       /**
        *  Sets the color
        */

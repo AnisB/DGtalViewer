@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/Common.h"
-#include "TDrawable.h"
+#include "DrawableWithOgreWrapper.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"

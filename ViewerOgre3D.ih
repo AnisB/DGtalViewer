@@ -53,10 +53,8 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
 {
 //      BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
   DGtal::Ogre3DDisplayFactory::draw ( *this, object );
-  Ogre::Vector3 upper = getUpperPosition();
-  Ogre::Vector3 lower = getLowerPosition();
-  mySceneCenter = ( upper + lower ) / 2.0;
-  myWristNode->setPosition ( mySceneCenter );
+  computeSceneCenter (  );
+  updateWrist();
   return *this;
 }
 
@@ -72,7 +70,7 @@ void ViewerOgre3D::operator>> ( TDrawableWithDisplay3D & object )
     {
       mySelectionMode = true;
       start();
-      const TDrawableWithDisplay3D * myPoint  = ( ( TDrawable<TDrawableWithDisplay3D> * ) ( mySelectedDGtalNode->getDGtalObject() ) )->getDgtalObject();
+      const TDrawableWithDisplay3D * myPoint  = ( ( DrawableWithOgreWrapper<TDrawableWithDisplay3D> * ) ( mySelectedDGtalNode->getDGtalObject() ) )->getDgtalObject();
       object = ( *myPoint );
       mySelectionMode = false;
     }
@@ -311,7 +309,7 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
 
           if ( Encloser != NULL )
             {
-              Ogre::Vector3 AVector ( myCamera->getPosition() - Encloser->getNode()->_getDerivedPosition() );// mSceneMgr->getRootSceneNode()->convertLocalToWorldPosition ( Encloser->getNode()->getPosition() ) );
+              Ogre::Vector3 AVector ( myInputManager->getCameraMan()->getSceneNode()->getPosition() - Encloser->getNode()->_getDerivedPosition() );// mSceneMgr->getRootSceneNode()->convertLocalToWorldPosition ( Encloser->getNode()->getPosition() ) );
               double localDistance = AVector.length();
               if ( DistanceToCamera == -1 )
                 {
@@ -379,8 +377,8 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::S
   m_bodySceneNode->attachObject ( m_ent );
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
   m_bodySceneNode->setScale ( scaleFactor / 100.0, scaleFactor / 100.0, scaleFactor / 100.0 );
-  DGtal::Representation * ARepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
-  return ARepresentation;
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+  return aRepresentation;
 
 }
 
@@ -420,6 +418,66 @@ Representation * ViewerOgre3D::addPoint ( double x, double y, double z, Ogre::Sc
 }
 
 
+
+
+/**
+  *  adds a kalimsky surfel
+  */
+Representation * ViewerOgre3D::addKSSurfel (double x, double y, double z,Ogre::SceneNode * aNode)
+{
+  
+}
+
+/**
+  *  adds a kalimsky voxel
+  */
+Representation * ViewerOgre3D::addKSVoxel (int x, int y, int z,Ogre::SceneNode * aNode)
+{
+  Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+  Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
+
+  m_ent->setMaterialName ( "Texture/Selected" );
+  m_ent->setMaterialName ( "Texture/Unselected" );
+  m_bodySceneNode->attachObject ( m_ent );
+  m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
+  m_bodySceneNode->setScale ( scaleFactor / 100.0, scaleFactor / 100.0, scaleFactor / 100.0 );
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+  return aRepresentation;
+}
+
+
+/**
+  * adds a kalimsky pointel
+  */
+Representation * ViewerOgre3D::addKSPointel (double x, double y, double z,Ogre::SceneNode * aNode)
+{
+   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+  Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );
+
+  m_ent->setMaterialName ( "Texture/Selected" );
+  m_ent->setMaterialName ( "Texture/Unselected" );
+  m_bodySceneNode->attachObject ( m_ent );
+  m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
+  m_bodySceneNode->setScale ( scaleFactor / 500.0, scaleFactor / 500.0, scaleFactor / 500.0 );
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+  return aRepresentation;
+}
+
+/** 
+  * adds a kalimsky pointel
+  */
+Representation * ViewerOgre3D::addKSLinel (double x1, double y1, double z1,Ogre::SceneNode * aNode)
+{
+  Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+  Ogre::ManualObject  * m_ent  = mySceneMgr->createManualObject (  );
+  m_ent->begin ( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
+  m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
+  m_ent->position ( (x1+1)*scaleFactor, (y1)*scaleFactor, (z1)*scaleFactor );
+  m_ent->end();
+  m_bodySceneNode->attachObject ( m_ent );
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "ManualObject" );
+  return aRepresentation;
+}
 
 
 
@@ -716,7 +774,27 @@ void ViewerOgre3D::addClippingPlane ( double a, double b, double c, double d )
 }
 
 
+/**
+  *  Computes the scene center
+  */
+void  ViewerOgre3D::computeSceneCenter (  )
+{
+  Ogre::Vector3 upper = getUpperPosition();
+  Ogre::Vector3 lower = getLowerPosition();
+  mySceneCenter = ( upper + lower ) / 2.0;
+}
 
 
 
 
+/**
+  * Updates the wrist position
+  */
+void  ViewerOgre3D::updateWrist (  )
+{
+  myWristNode->setPosition ( mySceneCenter );
+  
+}
+
+
+      

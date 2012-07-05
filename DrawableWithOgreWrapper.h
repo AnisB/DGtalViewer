@@ -17,26 +17,26 @@
 #pragma once
 
 /**
-* @file TDrawable.h
+* @file DrawableWithOgreWrapper.h
 * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
 * Liris CNRS
 *
 * @date 2012/06/26
 *
-* Implementation of methods defined in DrawableWithOgre.h
+* Implementation of methods defined in DrawableWithOgreWrapper.h
 *
 * This file is part of the DGtal library.
 */
 
-#if defined(TDrawable_RECURSES)
-#error Recursive header files inclusion detected in TDrawable.h
-#else // defined(TDrawable_RECURSES)
+#if defined(DrawableWithOgreWrapper_RECURSES)
+#error Recursive header files inclusion detected in DrawableWithOgreWrapper.h
+#else // defined(DrawableWithOgreWrapper_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define TDrawable_RECURSES
+#define DrawableWithOgreWrapper_RECURSES
 
-#if !defined TDrawable_h
+#if !defined DrawableWithOgreWrapper_h
 /** Prevents repeated inclusion of headers. */
-#define TDrawable_h
+#define DrawableWithOgreWrapper_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,13 +49,13 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class TDrawable
+  // template class DrawableWithOgreWrapper
   /**
-* Description of template class 'TDrawable' <p>
+* Description of template class 'DrawableWithOgreWrapper' <p>
 * \brief Aim:
 */
   template <typename T> 
-  class TDrawable : public DrawableWithOgre
+  class DrawableWithOgreWrapper : public DrawableWithOgre
   {
     // ----------------------- Standard services ------------------------------
   public :
@@ -63,13 +63,13 @@ namespace DGtal
 /**
 * Constructor.
 */
-    TDrawable(const T & anObject);
+    DrawableWithOgreWrapper(const T & anObject);
     
 
     /**
 * Destructor.
 */
-    ~TDrawable();
+    ~DrawableWithOgreWrapper();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -112,7 +112,7 @@ protected :
 * Constructor.
 * Forbidden by default (protected to avoid g++ warnings).
 */
-    TDrawable();
+    DrawableWithOgreWrapper();
 
   private:
 
@@ -121,7 +121,7 @@ protected :
 * @param other the object to clone.
 * Forbidden by default.
 */
-    TDrawable ( const TDrawable & other );
+    DrawableWithOgreWrapper ( const DrawableWithOgreWrapper & other );
 
     /**
 * Assignment.
@@ -129,35 +129,35 @@ protected :
 * @return a reference on 'this'.
 * Forbidden by default.
 */
-    TDrawable & operator= ( const TDrawable & other );
+    DrawableWithOgreWrapper & operator= ( const DrawableWithOgreWrapper & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class TDrawable
+  }; // end of class DrawableWithOgreWrapper
 
 
   /**
-* Overloads 'operator<<' for displaying objects of class 'TDrawable'.
+* Overloads 'operator<<' for displaying objects of class 'DrawableWithOgreWrapper'.
 * @param out the output stream where the object is written.
-* @param object the object of class 'TDrawable' to write.
+* @param object the object of class 'DrawableWithOgreWrapper' to write.
 * @return the output stream after the writing.
 */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const TDrawable<T> & object );
+  operator<< ( std::ostream & out, const DrawableWithOgreWrapper<T> & object );
 
 } // namespace DGTal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "TDrawable.ih"
+#include "DrawableWithOgreWrapper.ih"
 
 // //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined TDrawable_h
+#endif // !defined DrawableWithOgreWrapper_h
 
-#undef TDrawable_RECURSES
-#endif // else defined(TDrawable_RECURSES)
+#undef DrawableWithOgreWrapper_RECURSES
+#endif // else defined(DrawableWithOgreWrapper_RECURSES)

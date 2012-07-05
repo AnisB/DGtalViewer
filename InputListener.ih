@@ -50,8 +50,8 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
 {
   // Camera Intiate
   myCamera = aCamera;
-  myCameraMan = new CameraMan ( myCamera );
-
+  Ogre::SceneNode * aNode=myViewer->getANode();
+  myCameraMan = new CameraMan (aNode, myCamera );
 
   //Window initiate
   OIS::ParamList pl;
@@ -196,7 +196,17 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 
         myViewer->changeAxisVisibility();
         break;
-
+	
+	
+      case OIS::KC_C :
+	  resetSCPosition();
+       break;
+       
+       
+      case OIS::KC_R :
+//	  resetOrientation();
+       break;
+      
       default:
         break;
 
@@ -343,3 +353,34 @@ void InputListener::startRendering ( )
   myShutdown = false;
 }
 
+
+/**
+* Resets the position of the scene center
+*/
+void InputListener::resetSCPosition()
+{
+         Ogre::Vector3 OldPosition=myViewer->getSceneCenter();
+         myViewer->computeSceneCenter();
+	 myViewer->updateWrist();
+  	 Ogre::Vector3 resetpos(myViewer->getSceneCenter());
+	 Ogre::Vector3 transPos=resetpos + myCameraMan->getSceneNode()->getPosition();
+	 myCameraMan->setSceneCenter (resetpos);
+	 myCameraMan->moveCameraman(OldPosition);
+	 
+}
+
+/**
+* Resets the upAxis of the camera
+*/
+/*
+void InputListener::resetupAxis()
+{
+         Ogre::Vector3 OldPosition=myViewer->getSceneCenter();
+         myViewer->computeSceneCenter();
+	 myViewer->updateWrist();
+  	 Ogre::Vector3 resetpos(myViewer->getSceneCenter());
+	 Ogre::Vector3 transPos=resetpos + myCameraMan->getSceneNode()->getPosition();
+	 myCameraMan->setSceneCenter (resetpos);
+	 myCameraMan->moveCameraman(OldPosition);
+	 
+}*/
