@@ -120,13 +120,13 @@ public:
       /**
        *  get the root scene node (Ogre)
        */
-      Ogre::SceneNode * getRootSceneNode() { return mSceneMgr->getRootSceneNode();}
+      Ogre::SceneNode * getRootSceneNode() { return mySceneMgr->getRootSceneNode();}
       
       
       /**
        *  get the root scene node (DGtal one) 
        */
-      DGtalNode * getRootDGtalNode() { return mRootNode;}
+      DGtalNode * getRootDGtalNode() { return myRootNode;}
       
       
       
@@ -168,20 +168,14 @@ public:
       /**
        *  Returns back a pointer to the scene manager
        */
-      Ogre::SceneManager * getSceneMgr() { return mSceneMgr;}		
+      Ogre::SceneManager * getSceneMgr() { return mySceneMgr;}		
       
       
       /**
        *  looks for a point and changes the current selection if found (x, y) 
        *  the mouse coordinates and (h,w) the window dimension
        */
-      void LookForIt(unsigned int x,unsigned int y,unsigned int h,unsigned int w);
-      
-      
-      /**
-       *  Find the representation coressponding to a point
-       */
-      Representation * findRepresentation(std::string aName);
+      void lookForIt(unsigned int x,unsigned int y,unsigned int h,unsigned int w);
       
       
       /**
@@ -236,7 +230,7 @@ public:
       
       
       /**
-       *   Displays the scene
+	*   Displays the scene on the standard output
        */
       void sceneDisplay();
       
@@ -267,18 +261,7 @@ public:
 	      myWristNode->setPosition(mySceneCenter);
       }
       
-      /**
-       *   Returns the lower point of the scene
-       */
-      Ogre::Vector3 getLowerPosition();
-      
-      
-      /**
-       *  Returns the lower point
-       */
-      Ogre::Vector3 getUpperPosition();
-      
-      
+
       /**
        *  Stops the manipulating mode
        */
@@ -302,45 +285,73 @@ public:
       void operator>> (   TDrawableWithDisplay3D & object );
       
       /**
-       *  
+       * Using manipulate on a DGtal Object
+       *  @param ptrfonction is a pointer on the function you want to useful
+       *  @param anObject is the initial Object
+       *  @param minValue && @param @maxValue  are the range you want to study the object on
+       *  @param step is the evolution step.
        */
       template <typename TDrawableWithDisplay3D>
       void manipulate(TDrawableWithDisplay3D & anObject, TDrawableWithDisplay3D & (*ptrfonction)(TDrawableWithDisplay3D,int), int minValue, int maxValue, int step);
 
 protected:
 	  
-	// Scene items
-	Ogre::Root* 	mRoot;
-	Ogre::RenderWindow* 	mWindow;
-	Ogre::SceneManager* 	mSceneMgr;
-	Ogre::Camera  * mCamera;
-	static Ogre::SceneNode * RootSceneNode;
+      /**
+       *  Ogre Objects
+       */
+	Ogre::Root* 	myRoot;
+	Ogre::RenderWindow* 	myWindow;
+	Ogre::SceneManager* 	mySceneMgr;
+	Ogre::Camera  * myCamera;
+	static Ogre::SceneNode * myRootSceneNode;
 	
-	// Input items
-	InputListener * mInputManager;
+	/**
+	*  OIS Objects
+	*/	
+	InputListener * myInputManager;
 	
 	
-	// Selection items
-	Ogre::SceneNode *mCurrentObject;	//pointer to our currently selected object
-	Ogre::RaySceneQuery* mRayScnQuery;	//pointer to our ray scene query
-	std::map<std::string,DGtalNode *> myObjects;
-	DGtalNode * mRootNode;
-	DGtalNode * SelectedDGtalNode;
-        DGtalNode * UpperFatherNonRoot;
-	bool SelectionMode;
+	/**
+	 *  Objects useful for selection
+	 */
+	Ogre::SceneNode * myCurrentObject;	//pointer to our currently selected object
+	Ogre::RaySceneQuery* myRayScnQuery;	//pointer to our ray scene query
+	DGtalNode * mySelectedDGtalNode;
+        DGtalNode * myUpperFatherNonRoot;
+	
+	
+	/**
+	*  Node Pointer and lists
+	*/
+	std::map<std::string,DGtalNode *> myNodes;
+	DGtalNode * myRootNode;
+	
+	
+	
+	/**
+	 * Other objects
+	 */
 	Ogre::ManualObject* myAxis;
-	
 	Ogre::ManualObject * myWrist;
 	Ogre::SceneNode *myWristNode;
-	
 	Ogre::SceneNode * myAxisNode;
+	
+	/**
+	 * Scene center
+	 */
 	Ogre::Vector3 mySceneCenter;
 	
 	
-	// Flags
+	/**
+	 * Flags
+	 */
+	bool mySelectionMode;
 	bool myManupilatingFlag;
 	
 	
+	/**
+	 *  Manipulating data
+	 */
 	int myMaxManupulating;
 	int myMinManupulating;
 	int myCurrentManupulating;
@@ -348,9 +359,35 @@ protected:
 	
 protected:
   
-  
+      /**
+	* draws the axes
+	*/  
       void drawAxes();
+      
+      
+      /**
+	* draws the wrist
+	*/
       void drawWrist();
+      
+     /**
+       *   Returns the lower point of the scene
+       */
+      Ogre::Vector3 getLowerPosition();
+      
+      
+      /**
+       *  Returns the lower point
+       */
+      Ogre::Vector3 getUpperPosition();
+      
+     /**
+       *  Find the representation coressponding to a point
+       */
+      Representation * findRepresentation(std::string aName);
+      
+      
+      
 
 
 

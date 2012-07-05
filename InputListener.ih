@@ -217,7 +217,7 @@ bool InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonI
 {
   if ( !myIsInShiftMode && ( id == OIS::MB_Left ) )
     {
-      myViewer->LookForIt ( myMouse->getMouseState().X.abs, myMouse->getMouseState().Y.abs, myWindow->getHeight(), myWindow->getWidth() );
+      myViewer->lookForIt ( myMouse->getMouseState().X.abs, myMouse->getMouseState().Y.abs, myWindow->getHeight(), myWindow->getWidth() );
     }
 
   if ( id == OIS::MB_Left )
