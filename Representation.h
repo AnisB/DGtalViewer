@@ -142,14 +142,14 @@ DGtalNode * getAttachedParent();
 * Set this Representation as a selected one
 *
 */
-void Select();
+void select();
 
 
 /**
 * Set this Representation as in a selected group
 *
 */
-void GroupSelect();
+void groupSelect();
 
 
 
@@ -164,9 +164,7 @@ bool isVirtual();
 * Tells if the representation is virtual, is means that is has or not an associated entity 
 *
 */
-bool Clear();
-
-
+bool clear();
 
 
 
@@ -174,7 +172,19 @@ bool Clear();
 * Set this entity as a unselected
 *
 */
-void Unselect();
+void unselect();
+
+/**
+ *  Adds a new material to apply
+ */
+void addMaterial(std::string aMaterial);
+
+/**
+ *  Returns the material List
+ */
+std::list<std::string> & getMaterials();
+
+
     // ------------------------- Protected Datas ------------------------------
 private:
     // ------------------------- Private Datas --------------------------------
@@ -219,6 +229,7 @@ protected :
   DGtalNode * myParent;
   bool mVirtual;
   Ogre::SceneManager * mySceneMgr;
+  std::list<std::string> myMaterials;
 
 }; // end of class Representation
 

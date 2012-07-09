@@ -66,14 +66,16 @@ void test1()
   DGtal::Z3i::Point p4 ( 30, 30 , 30 );
   DGtal::Z3i::Point p5 ( -30, -30 , -30 );
   DGtal::Z3i::Domain domain ( p4, p5 );
+  
+  
 
-
+  View << DGtal::SetMode3D(p1.className(),"Paving");
   View << p1;
   View << p2;
   View << p3;
-
   DGtal::Z3i::DigitalSet shape_set1 ( domain );
   DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
+  View << DGtal::SetMode3D(shape_set1.className(),"Grid");
   View << shape_set1;
 
 
@@ -223,10 +225,10 @@ void test2()
  }
 int main ( int argc, char** argv )
 {
-//  test1();
+ test1();
 //  test2();
 //  test3();
-  test4(); 
+//  test4(); 
 //    test5();
 
   return 0;

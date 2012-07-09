@@ -67,45 +67,73 @@ namespace DGtal
       template < typename TIterator,typename TInteger, int connectivity>
       static void draw ( ViewerOgre3D & display, const DGtal::ArithmeticalDSS3d <TIterator, TInteger,connectivity> & c);
       
-      //DGtalSetBySTLSet
+      
+      
+      //---------------------------------------------------------------------------DGtalSetBySTLSet
+      
+      //Generic method
       template<typename Domain>
       static void draw( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
       
-      //DigitalSetBySTLVector
+      // Paving/Voxel drawing
+      template<typename Domain>
+      static void drawAsPaving( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
+      
+      
+      // Grid/Point drawing
+      template<typename Domain>
+      static void drawAsGrid( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
+      
+      
+     
+      //---------------------------------------------------------------------------DigitalSetBySTLVector
       template<typename Domain>
       static void draw( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s );
       
+      template<typename Domain>
+      static void drawAsPaving( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & );
       
-      //HyperRectDomain      
+      template<typename Domain>
+      static void drawAsGrid( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & );
+    
+    
+    
+      //---------------------------------------------------------------------------HyperRectDomain      
       template<typename TSpace>
       static void draw( ViewerOgre3D & viewer, const DGtal::HyperRectDomain<TSpace> & s );
  
       //KhalimskyCell
       template<Dimension dim, typename TInteger>
-      static void draw ( ViewerOgre3D & display, const DGtal::KhalimskyCell<dim,TInteger> & kc );
+      static void draw ( ViewerOgre3D & viewer, const DGtal::KhalimskyCell<dim,TInteger> & kc );
       
       
       //Object
       template <typename TDigitalTopology, typename TDigitalSet>
-      static void draw (ViewerOgre3D &display, const DGtal::Object< TDigitalTopology, TDigitalSet > &);
+      static void draw (ViewerOgre3D &viewer, const DGtal::Object< TDigitalTopology, TDigitalSet > &);
       
-      //PointVector
+      //---------------------------------------------------------------------------PointVector
       template<Dimension dim, typename TComponent>
-      static void draw ( ViewerOgre3D & display, const PointVector<dim,TComponent> & );
+      static void draw ( ViewerOgre3D & viewer, const PointVector<dim,TComponent> & );
+       
+      template<Dimension dim, typename TComponent>
+      static void drawAsGrid( ViewerOgre3D & viewer, const DGtal::PointVector<dim,TComponent> & );
+
+      template<Dimension dim, typename TComponent>
+      static void drawAsPaving( ViewerOgre3D & viewer, const DGtal::PointVector<dim,TComponent> & );
       
       
-     //SignedKhalimskyCell
+     //---------------------------------------------------------------------------SignedKhalimskyCell
      template< Dimension dim,typename TInteger>
      static void draw ( ViewerOgre3D & display, const DGtal::SignedKhalimskyCell<dim,TInteger> & skc);
      
      
      
 
-  /*
+  
      static void draw( ViewerOgre3D & display, const DGtal::SetMode3D & );
      static void draw( ViewerOgre3D & display, const DGtal::CustomStyle3D & );
-     static void draw( ViewerOgre3D & display, const DGtal::CustomColors3D & );
- */
+//     static void draw( ViewerOgre3D & display, const DGtal::CustomColors3D & );
+     
   
      static void draw( ViewerOgre3D & display, const DGtal::ClippingPlane & );
      //Camera 

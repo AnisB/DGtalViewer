@@ -176,7 +176,7 @@ Representation& Representation::operator=(const Representation& other)
 * Set this entity as a selected one
 *
 */
-void Representation::Select()
+void Representation::select()
 {
   if(myMovableObjectType=="Entity")
   { 
@@ -190,7 +190,7 @@ void Representation::Select()
 * Set this entity as in a selected group
 *
 */
-void Representation::GroupSelect()
+void Representation::groupSelect()
 {
   if(myMovableObjectType=="Entity")
   { 
@@ -204,11 +204,11 @@ void Representation::GroupSelect()
 * Set this entity as a unselected
 *
 */
-void Representation::Unselect()
+void Representation::unselect()
 {
   if(myMovableObjectType=="Entity")
   { 
-    ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Unselected");
+    ((Ogre::Entity*) myMovableObject)->setMaterialName(myMaterials.front());
   }
 }
 
@@ -231,7 +231,7 @@ bool Representation::isVirtual()
 * Tells if the representation is virtual, is means that is has or not an associated entity 
 *
 */
-bool  Representation::Clear()
+bool  Representation::clear()
 {
 
   if(!mVirtual)
@@ -243,6 +243,21 @@ bool  Representation::Clear()
   mySceneMgr->destroySceneNode(mySceneNode);
 }
 
+/**
+ *  Adds a new material to apply
+ */
+void Representation::addMaterial(std::string aMaterial)
+{
+  myMaterials.push_front(aMaterial);
+}
+
+/**
+ *  Returns the material List
+ */
+std::list<std::string> & Representation::getMaterials()
+{
+  return myMaterials;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :

@@ -51,12 +51,12 @@ inline
 ViewerOgre3D &
 ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
 {
-//      BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+//  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
   DGtal::Ogre3DDisplayFactory::draw ( *this, object );
-  computeSceneCenter (  );
+  computeSceneCenter ( );
   updateInitialCameraPosition( );
   updateWrist();
-  
+
   return *this;
 }
 
@@ -106,6 +106,20 @@ void ViewerOgre3D::manipulate ( TDrawableWithDisplay3D & anObject, TDrawableWith
     }
 }
 
+/**
+* @param objectName the name of the object (generally obtained
+* with a 'object.className()').
+*
+* @return the current mode for the given object name or "" if no
+* specific mode has been set.
+*/
+inline
+std::string
+DGtal::ViewerOgre3D::getMode ( const std::string & objectName ) const
+  {
+    ModeMapping::const_iterator itm = myModes.find ( objectName );
+    return itm == myModes.end() ? "" : itm->second;
+  }
 
 
 /**
@@ -162,7 +176,7 @@ ViewerOgre3D::~ViewerOgre3D()
 
 /**
   *  Rendering launch method.
-  */   
+  */
 void ViewerOgre3D::start()
 {
 
@@ -173,7 +187,7 @@ void ViewerOgre3D::start()
 
 
 /**
-  * Initiate ressources 
+  * Initiate ressources
   */
 void ViewerOgre3D::initMaterials()
 {
@@ -208,7 +222,7 @@ void ViewerOgre3D::initMaterials()
 
 /**
   *  Config initiate
-  */      
+  */
 bool ViewerOgre3D::initConfigs()
 {
   if ( !myRoot->restoreConfig() )
@@ -224,7 +238,7 @@ bool ViewerOgre3D::initConfigs()
 
 /**
   *  Scene create
-  */  
+  */
 void ViewerOgre3D::createScene()
 {
   Ogre::TextureManager::getSingleton().setDefaultNumMipmaps ( 5 );
@@ -250,7 +264,7 @@ void ViewerOgre3D::createScene()
 
   //Screens
   Ogre::Viewport* vp = myWindow->addViewport ( myCamera );
-  vp->setBackgroundColour ( Ogre::ColourValue ( 0.2, 0.2, 0.2) );
+  vp->setBackgroundColour ( Ogre::ColourValue ( 0.2, 0.2, 0.2 ) );
 
   // Parametrage du point de vue
   myCamera->setAspectRatio ( Ogre::Real ( vp->getActualWidth() ) / Ogre::Real ( vp->getActualHeight() ) );
@@ -263,7 +277,7 @@ void ViewerOgre3D::createScene()
 
   drawAxes();
   drawWrist();
-  
+
 }
 
 
@@ -287,14 +301,14 @@ Ogre::SceneNode * ViewerOgre3D::getANode()
 
 
 /**
-*  looks for a point and changes the current selection if found (x, y) 
+*  looks for a point and changes the current selection if found (x, y)
 *  the mouse coordinates and (h,w) the window dimension
 */
 
 void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, unsigned int w )
 {
-  
-  cout<<"COucou"<<endl;
+
+  cout << "COucou" << endl;
   Representation * temp = NULL;
   double DistanceToCamera = -1;
 
@@ -316,6 +330,7 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
             {
               Ogre::Vector3 AVector ( myInputManager->getCameraMan()->getSceneNode()->getPosition() - Encloser->getNode()->_getDerivedPosition() );// mSceneMgr->getRootSceneNode()->convertLocalToWorldPosition ( Encloser->getNode()->getPosition() ) );
               double localDistance = AVector.length();
+
               if ( DistanceToCamera == -1 )
                 {
                   DistanceToCamera = localDistance;
@@ -330,6 +345,7 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
             }
         }
     }
+
   if ( mySelectedDGtalNode != NULL )
     {
       mySelectedDGtalNode->unselect();
@@ -351,17 +367,17 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
           myInputManager->stopRendering();
         }
 
-  if ( myUpperFatherNonRoot != NULL )
-    {
-      myUpperFatherNonRoot ->groupSelect();
-    }
-      
-      
-      
- if ( mySelectedDGtalNode != NULL )
-    {
-      mySelectedDGtalNode->select();
-    }
+      if ( myUpperFatherNonRoot != NULL )
+        {
+          myUpperFatherNonRoot ->groupSelect();
+        }
+
+
+
+      if ( mySelectedDGtalNode != NULL )
+        {
+          mySelectedDGtalNode->select();
+        }
     }
   else
     {
@@ -386,48 +402,64 @@ Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::ManualObject  * m_ent  = mySceneMgr->createManualObject ( );
   m_ent->begin ( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
-  m_ent->colour( 0.5,0.0,1.0);
+  m_ent->colour ( 0.5, 0.0, 1.0 );
   m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
   m_ent->position ( x2*scaleFactor, y2*scaleFactor, z2*scaleFactor );
   m_ent->end();
   m_bodySceneNode->attachObject ( m_ent );
-  
-  DGtal::Representation * ARepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "ManualObject" );
-  return ARepresentation;
+
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "ManualObject" );
+  aRepresentation->addMaterial ( aNode->getName()  );
+  return aRepresentation;
 }
 
 /**
   *  adds a point
   */
-Representation * ViewerOgre3D::addPoint ( double x, double y, double z, Ogre::SceneNode * aNode )
+Representation * ViewerOgre3D::addPoint ( double x, double y, double z,
+    Ogre::SceneNode * aNode, double factor )
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );
   m_ent->setMaterialName ( "Texture/Selected" );
   m_ent->setMaterialName ( "Texture/Unselected" );
+  m_ent->setMaterialName ( aNode->getName() );
+
   m_bodySceneNode->attachObject ( m_ent );
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
-  m_bodySceneNode->setScale ( scaleFactor / 1000.0, scaleFactor / 1000.0, scaleFactor / 1000.0 );
-  DGtal::Representation * ARepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
-  return ARepresentation;
+  m_bodySceneNode->setScale ( factor*scaleFactor / 1000.0, factor*scaleFactor / 1000.0, factor*scaleFactor / 1000.0 );
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+  aRepresentation->addMaterial (  aNode->getName() );
+  return aRepresentation;
 }
 
 
 /**
   *  adds a voxel
   */
-Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::SceneNode * aNode )
+Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::SceneNode * aNode,
+    DGtal::Color aColor )
 {
 
+
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+  
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
 
   m_ent->setMaterialName ( "Texture/Selected" );
   m_ent->setMaterialName ( "Texture/Unselected" );
+  m_ent->setMaterialName ( aNode->getName() );
   m_bodySceneNode->attachObject ( m_ent );
+  
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
-  m_bodySceneNode->setScale ( scaleFactor / 100.0, scaleFactor / 100.0, scaleFactor / 100.0 );
-  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+  m_bodySceneNode->setScale ( scaleFactor / 100.0,
+			      scaleFactor / 100.0, 
+			      scaleFactor / 100.0 );
+  
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr,
+								 m_ent, m_bodySceneNode,
+								 m_ent->getName(), "Entity" );
+  aRepresentation->addMaterial ( aNode->getName() );
   return aRepresentation;
 
 }
@@ -436,17 +468,27 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::S
 /**
   *  adds a kalimsky voxel
   */
-Representation * ViewerOgre3D::addKSVoxel (int x, int y, int z,Ogre::SceneNode * aNode)
+Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z, Ogre::SceneNode * aNode )
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
 
   m_ent->setMaterialName ( "Texture/Selected" );
   m_ent->setMaterialName ( "Texture/Unselected" );
+    m_ent->setMaterialName ( aNode->getName() );
+
   m_bodySceneNode->attachObject ( m_ent );
-  m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x+0.5)*scaleFactor, (y+0.5)*scaleFactor, (z+0.5)*scaleFactor ) );
+  
+  m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor,
+						 ( y + 0.5 ) *scaleFactor,
+						 ( z + 0.5 ) *scaleFactor ) );
+  
+  
   m_bodySceneNode->setScale ( scaleFactor / 120.0, scaleFactor / 120.0, scaleFactor / 120.0 );
-  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr,
+								 m_ent, m_bodySceneNode, 
+								 m_ent->getName(), "Entity" );
+  aRepresentation->addMaterial (  aNode->getName());
   return aRepresentation;
 }
 
@@ -454,7 +496,9 @@ Representation * ViewerOgre3D::addKSVoxel (int x, int y, int z,Ogre::SceneNode *
 /**
   *  adds a kalimsky surfel
   */
-Representation * ViewerOgre3D::addKSSurfel (double x, double y, double z,bool xSurfel, bool ySurfel, bool zSurfel, Ogre::SceneNode * aNode)
+Representation * ViewerOgre3D::addKSSurfel ( double x, double y, double z,
+    bool xSurfel, bool ySurfel, bool zSurfel,
+    Ogre::SceneNode * aNode )
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
@@ -462,34 +506,38 @@ Representation * ViewerOgre3D::addKSSurfel (double x, double y, double z,bool xS
 
   m_ent->setMaterialName ( "Texture/Selected" );
   m_ent->setMaterialName ( "Texture/Unselected" );
-  
-  if(!xSurfel)
-  {
+  m_ent->setMaterialName ( aNode->getName() );
+  if ( !xSurfel )
+    {
       m_bodySceneNode->setScale ( scaleFactor / 2500.0, scaleFactor / 175.0, scaleFactor / 175.0 );
-     
-     m_bodySceneNode->attachObject ( m_ent );
-     m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x+0.5)*scaleFactor, (y+0.5)*scaleFactor, (z+0.5)*scaleFactor ) +Ogre::Vector3::UNIT_X*(-0.5*scaleFactor) );
-  }
-  else if(!ySurfel)
-  {
-      m_bodySceneNode->setScale ( scaleFactor / 175.0, scaleFactor / 2500.0, scaleFactor / 175.0 );
 
       m_bodySceneNode->attachObject ( m_ent );
-      
-      m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x+0.5)*scaleFactor, (y+0.5)*scaleFactor, (z+0.5)*scaleFactor )  +Ogre::Vector3::UNIT_Y*(-0.5*scaleFactor));
-  }  
-  else if(!zSurfel)
-  {
-       m_bodySceneNode->setScale ( scaleFactor / 175.0, scaleFactor / 175.0, scaleFactor / 2500.0 );
+      m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor, ( y + 0.5 ) *scaleFactor, ( z + 0.5 ) *scaleFactor ) + Ogre::Vector3::UNIT_X* ( -0.5*scaleFactor ) );
+    }
+  else
+    if ( !ySurfel )
+      {
+        m_bodySceneNode->setScale ( scaleFactor / 175.0, scaleFactor / 2500.0, scaleFactor / 175.0 );
 
-      m_bodySceneNode->attachObject ( m_ent );
-      m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x+0.5)*scaleFactor, (y+0.5)*scaleFactor, (z+0.5)*scaleFactor ) +Ogre::Vector3::UNIT_Z*(-0.5*scaleFactor) );
+        m_bodySceneNode->attachObject ( m_ent );
 
-  }
-	
+        m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor, ( y + 0.5 ) *scaleFactor, ( z + 0.5 ) *scaleFactor )  + Ogre::Vector3::UNIT_Y* ( -0.5*scaleFactor ) );
+      }
+    else
+      if ( !zSurfel )
+        {
+          m_bodySceneNode->setScale ( scaleFactor / 175.0, scaleFactor / 175.0, scaleFactor / 2500.0 );
 
-  DGtal::Representation * ARepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
-  return ARepresentation;
+          m_bodySceneNode->attachObject ( m_ent );
+          m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor, ( y + 0.5 ) *scaleFactor, ( z + 0.5 ) *scaleFactor ) + Ogre::Vector3::UNIT_Z* ( -0.5*scaleFactor ) );
+
+        }
+
+
+  DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+
+  aRepresentation->addMaterial ( aNode->getName());
+  return aRepresentation;
 }
 
 
@@ -497,52 +545,60 @@ Representation * ViewerOgre3D::addKSSurfel (double x, double y, double z,bool xS
 /**
   * adds a kalimsky pointel
   */
-Representation * ViewerOgre3D::addKSPointel (double x, double y, double z,Ogre::SceneNode * aNode)
+Representation * ViewerOgre3D::addKSPointel ( double x, double y, double z, Ogre::SceneNode * aNode )
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );
 
   m_ent->setMaterialName ( "Texture/Selected" );
   m_ent->setMaterialName ( "Texture/Unselected" );
+  m_ent->setMaterialName ( aNode->getName());
   m_bodySceneNode->attachObject ( m_ent );
-  m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x+0.5)*scaleFactor, (y+0.5)*scaleFactor, (z+0.5)*scaleFactor ) );
+  m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor, ( y + 0.5 ) *scaleFactor, ( z + 0.5 ) *scaleFactor ) );
   m_bodySceneNode->setScale ( scaleFactor / 900.0, scaleFactor / 900.0, scaleFactor / 900.0 );
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+  aRepresentation->addMaterial ( aNode->getName());
   return aRepresentation;
 }
 
-/** 
+/**
   * adds a kalimsky pointel
   */
-Representation * ViewerOgre3D::addKSLinel (double x1, double y1, double z1,double x2, double y2, double z2,Ogre::SceneNode * aNode)
+Representation * ViewerOgre3D::addKSLinel ( double x1, double y1, double z1, double x2, double y2, double z2, Ogre::SceneNode * aNode )
 {
-  
+
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
 
   m_ent->setMaterialName ( "Texture/Selected" );
   m_ent->setMaterialName ( "Texture/Unselected" );
+    m_ent->setMaterialName ( aNode->getName() );
   m_bodySceneNode->attachObject ( m_ent );
-  if(fabs((x1-x2))>0.001)
-  {
-    m_bodySceneNode->setScale ( scaleFactor / 150.0, scaleFactor / 2000.0, scaleFactor / 2000.0 );
-    m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x1+1.0)*scaleFactor, (y1+0.5)*scaleFactor, (z1+0.5)*scaleFactor ) );
-  }
-  else if(fabs((y1-y2))>0.001)
-  {
-    m_bodySceneNode->setScale ( scaleFactor / 2000.0, scaleFactor / 150.0, scaleFactor / 2000.0 );
-    m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x1+0.5)*scaleFactor, (y1+1.0)*scaleFactor, (z1+0.5)*scaleFactor ) );
-  }
-  else if(fabs((z1-z2))>0.001)
-  {
-    m_bodySceneNode->setScale ( scaleFactor / 2000.0, scaleFactor / 2000.0, scaleFactor / 150.0 );
-    m_bodySceneNode->setPosition ( Ogre::Vector3 ( (x1+0.5)*scaleFactor, (y1+0.5)*scaleFactor, (z1+1.0)*scaleFactor ) );
-  }
- 
+
+  if ( fabs ( ( x1 - x2 ) ) > 0.001 )
+    {
+      m_bodySceneNode->setScale ( scaleFactor / 150.0, scaleFactor / 2000.0, scaleFactor / 2000.0 );
+      m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x1 + 1.0 ) *scaleFactor, ( y1 + 0.5 ) *scaleFactor, ( z1 + 0.5 ) *scaleFactor ) );
+    }
+  else
+    if ( fabs ( ( y1 - y2 ) ) > 0.001 )
+      {
+        m_bodySceneNode->setScale ( scaleFactor / 2000.0, scaleFactor / 150.0, scaleFactor / 2000.0 );
+        m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x1 + 0.5 ) *scaleFactor, ( y1 + 1.0 ) *scaleFactor, ( z1 + 0.5 ) *scaleFactor ) );
+      }
+    else
+      if ( fabs ( ( z1 - z2 ) ) > 0.001 )
+        {
+          m_bodySceneNode->setScale ( scaleFactor / 2000.0, scaleFactor / 2000.0, scaleFactor / 150.0 );
+          m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x1 + 0.5 ) *scaleFactor, ( y1 + 0.5 ) *scaleFactor, ( z1 + 1.0 ) *scaleFactor ) );
+        }
+
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
+
+  aRepresentation->addMaterial ( aNode->getName());
   return aRepresentation;
-  
-  
+
+
 }
 
 
@@ -612,7 +668,7 @@ void ViewerOgre3D::sceneDisplay()
 
 /**
   * draws the axes
-  */  
+  */
 void ViewerOgre3D::drawAxes()
 {
 
@@ -623,7 +679,7 @@ void ViewerOgre3D::drawAxes()
   myAxis->begin ( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
 
 
-   myAxis->colour(1.0,0.0,0.0);
+  myAxis->colour ( 1.0, 0.0, 0.0 );
   // Ex drawing
   myAxis->position ( 0, 0, 0 );
   myAxis->position ( 200, 0, 0 );
@@ -631,7 +687,7 @@ void ViewerOgre3D::drawAxes()
   myAxis->position ( 200, 0, 0 );
   myAxis->position ( 180, 0, -10 );
   myAxis->position ( 200, 0, 0 );
-  myAxis->colour(0.0,1.0,0.0);
+  myAxis->colour ( 0.0, 1.0, 0.0 );
 
   //Ey Drawing
   myAxis->position ( 0, 0, 0 );
@@ -640,7 +696,7 @@ void ViewerOgre3D::drawAxes()
   myAxis->position ( 0, 200, 0 );
   myAxis->position ( -10, 180, 0 );
   myAxis->position ( 0, 200, 0 );
-  myAxis->colour(0.0,0.0,1.0);
+  myAxis->colour ( 0.0, 0.0, 1.0 );
 
   //Ez Drawing
   myAxis->position ( 0, 0, 0 );
@@ -672,7 +728,7 @@ void ViewerOgre3D::drawWrist()
                                    accuracy = 35;
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour(0.5,0.8,1.0);
+  myWrist->colour ( 0.5, 0.8, 1.0 );
   unsigned point_index = 0;
 
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
@@ -690,24 +746,27 @@ void ViewerOgre3D::drawWrist()
                           0,
                           ( radius - thickness ) * sin ( theta ) );
     }
-     myWrist->end();
-     myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-     
-     myWrist->position(radius+100,0,0);
-     myWrist->position(radius+100-30,0,-30);
-     
-     myWrist->position(radius+100-30,0,-30);
-     myWrist->position(radius+100-60,0,0);
-     
-     myWrist->position(radius+100-60,0,0);
-     myWrist->position(radius+100-30,0,0+30);
-     
-     myWrist->position(radius+100-30,0,0+30);
-     myWrist->position(radius+100,0,0);
+
+  myWrist->end();
+
+  myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
+
+  myWrist->position ( radius + 100, 0, 0 );
+  myWrist->position ( radius + 100 - 30, 0, -30 );
+
+  myWrist->position ( radius + 100 - 30, 0, -30 );
+  myWrist->position ( radius + 100 - 60, 0, 0 );
+
+  myWrist->position ( radius + 100 - 60, 0, 0 );
+  myWrist->position ( radius + 100 - 30, 0, 0 + 30 );
+
+  myWrist->position ( radius + 100 - 30, 0, 0 + 30 );
+  myWrist->position ( radius + 100, 0, 0 );
 
 
-    myWrist->end();
-    myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
+  myWrist->end();
+  myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
+
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
     {
       myWrist->position ( 0, radius * cos ( theta ),
@@ -721,24 +780,25 @@ void ViewerOgre3D::drawWrist()
     }
 
   myWrist->end();
+
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour(0.5,0.8,1.0);
-  myWrist->position(0,radius+100,0);
-  myWrist->position(0,radius+100-30,-30);
-  
-  myWrist->position(0,radius+100-30,-30);
-  myWrist->position(0,radius+100-60,0);
-  
-  myWrist->position(0,radius+100-60,0);
-  myWrist->position(0,radius+100-30,0+30);
-  
-  myWrist->position(0,radius+100-30,0+30);
-  myWrist->position(0,radius+100,0);
+  myWrist->colour ( 0.5, 0.8, 1.0 );
+  myWrist->position ( 0, radius + 100, 0 );
+  myWrist->position ( 0, radius + 100 - 30, -30 );
+
+  myWrist->position ( 0, radius + 100 - 30, -30 );
+  myWrist->position ( 0, radius + 100 - 60, 0 );
+
+  myWrist->position ( 0, radius + 100 - 60, 0 );
+  myWrist->position ( 0, radius + 100 - 30, 0 + 30 );
+
+  myWrist->position ( 0, radius + 100 - 30, 0 + 30 );
+  myWrist->position ( 0, radius + 100, 0 );
 
 
-    myWrist->end();
-  
-  
+  myWrist->end();
+
+
   myWristNode = mySceneMgr->getRootSceneNode()->createChildSceneNode();
   myWristNode->attachObject ( myWrist );
 }
@@ -926,7 +986,7 @@ void ViewerOgre3D::addClippingPlane ( double a, double b, double c, double d )
 /**
   *  Computes the scene center
   */
-void  ViewerOgre3D::computeSceneCenter (  )
+void  ViewerOgre3D::computeSceneCenter ( )
 {
   Ogre::Vector3 upper = getUpperPosition();
   Ogre::Vector3 lower = getLowerPosition();
@@ -939,10 +999,10 @@ void  ViewerOgre3D::computeSceneCenter (  )
 /**
   * Updates the wrist position
   */
-void  ViewerOgre3D::updateWrist (  )
+void  ViewerOgre3D::updateWrist ( )
 {
   myWristNode->setPosition ( mySceneCenter );
-  
+
 }
 
 /**
@@ -950,7 +1010,44 @@ void  ViewerOgre3D::updateWrist (  )
   */
 void ViewerOgre3D::updateInitialCameraPosition( )
 {
-  Ogre::Vector3 initialPos = getFowardestPosition()+getLeftestPosition()+getUpperPosition();
-  myInputManager->getCameraMan()->setInitialPosition(initialPos);
-  
+  Ogre::Vector3 initialPos = getFowardestPosition() + getLeftestPosition() + getUpperPosition();
+  myInputManager->getCameraMan()->setInitialPosition ( initialPos );
+
 }
+
+/**
+  *  Creates a texture starting from a DGtal color
+  */
+//void ViewerOgre3D::createMaterial ( std::string  aName,int red,int green, int blue, int transparency)
+void ViewerOgre3D::createMaterial(std::string  aName,DGtal::Color & aColor)
+{
+  Ogre::MaterialManager& lMaterialManager = Ogre::MaterialManager::getSingleton();
+  Ogre::MaterialPtr lMaterial = lMaterialManager.create ( aName, "General" );
+  Ogre::Technique* lFirstTechnique = lMaterial->getTechnique ( 0 );
+  Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
+
+  Ogre::ColourValue lSelfIllumnationColour ( ( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0 );
+  lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
+
+
+  Ogre::ColourValue lDiffuseColour ( ( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0);
+  lFirstPass->setDiffuse ( lDiffuseColour );
+
+  Ogre::ColourValue lAmbientColour (( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0 );
+  lFirstPass->setAmbient ( lAmbientColour );
+
+  // I want the specular to not be transparent.
+  Ogre::ColourValue lSpecularColour ( ( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0 );
+  lFirstPass->setSpecular ( lSpecularColour );
+
+  Ogre::Real lShininess = 64.0f;
+  lFirstPass->setShininess ( lShininess );
+
+
+
+  // This pass will use the "alpha" to make things transparent.
+  // I disallow depth write (don't write in the Z-Buffer, check an opengl book for details).
+  lFirstPass->setSceneBlending ( Ogre::SBT_TRANSPARENT_ALPHA );
+  lFirstPass->setDepthWriteEnabled ( false );
+}
+

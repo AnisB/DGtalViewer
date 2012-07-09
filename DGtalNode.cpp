@@ -167,7 +167,7 @@ void DGtalNode::select()
 {
   if ( !myRepresentation->isVirtual() )
     {
-      myRepresentation->Select();
+      myRepresentation->select();
     }
   else
     {
@@ -217,7 +217,7 @@ void DGtalNode::unselect()
 {
   if ( !myRepresentation->isVirtual() )
     {
-      myRepresentation->Unselect();
+      myRepresentation->unselect();
     }
   else
     {
@@ -245,7 +245,7 @@ void DGtalNode::groupSelect()
 {
   if ( !myRepresentation->isVirtual() )
     {
-      myRepresentation->GroupSelect();
+      myRepresentation->groupSelect();
     }
 
   std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
@@ -331,7 +331,6 @@ void DGtalNode::setFather ( DGtal::DGtalNode  * newNode )
 */
 DGtal::DGtalNode  * DGtalNode::getFather( )
 {
-  std::cout<<"Je retourne le pere"<<std::endl;
   return myFather;
 }
 
@@ -363,7 +362,7 @@ void DGtalNode::clear()
 
   if ( !myIsRoot )
     {
-      myRepresentation->Clear();
+      myRepresentation->clear();
     }
 
   mySons.clear();
@@ -383,12 +382,10 @@ DGtalNode  * DGtalNode::getUpperNonRootNode()
 	{
 	  while ( ! UNRN->getFather()->isRoot() )
 	    {
-	      cout<<"On monte "<<endl;
 	      UNRN = UNRN->getFather();
 	    }
 	}
     }
-  cout<<"Pas de père"<<endl;
   return UNRN;
 }
 

@@ -59,7 +59,7 @@ class InputListener;
 
 const double scaleFactor= 40.0;
 /////////////////////////////////////////////////////////////////////////////
-// class XXX
+// class ViewerOgre3D
 /**
 * Description of class 'ViewerOgre3D' <p>
 * \brief Aim: The new viewer for DGtal
@@ -68,8 +68,20 @@ const double scaleFactor= 40.0;
 
 class ViewerOgre3D 
 {
-	
-    // ----------------------- Standard services ------------------------------
+
+  // ----------------------- local types ------------------------------
+  public:
+    /**
+     * The associated map type for storing the default styles of
+     * digital objects.
+     */
+    typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
+
+    /**
+     * The associated map type for storing possible modes used for
+     * displaying for digital objects.
+     */
+    typedef std::map< std::string, std::string > ModeMapping;
 public:
 
       /**
@@ -112,6 +124,12 @@ public:
       void createFrameListener();
       
       
+      
+      /**
+       *  Creates a texture starting from a DGtal color
+       */
+//      void createMaterial(std::string  aName,int red,int green, int blue, int transparency);
+        void createMaterial(std::string  aName,DGtal::Color & aColor);
       
       /**
        *  Get a son node ( of the root one)
@@ -189,24 +207,30 @@ public:
       /**
        *  adds a voxel
        */
-      Representation  * addVoxel(double x,double y, double z,Ogre::SceneNode * aNode);
+      Representation  * addVoxel(double x,double y, double z,
+				 Ogre::SceneNode * aNode, 
+				 DGtal::Color aColor = DGtal::Color(150,50,50,255));
       
       
       /**
        *  adds a line
        */
-      Representation * addLine(double x1, double y1, double z1, double x2, double y2,double z2,Ogre::SceneNode * aNode);
+      Representation * addLine(double x1, double y1, double z1,
+			       double x2, double y2,double z2,Ogre::SceneNode * aNode);
       
       /**
        *  adds a point
        */
-      Representation * addPoint (double x, double y, double z,Ogre::SceneNode * aNode );
+      Representation * addPoint (double x, double y, double z,
+				 Ogre::SceneNode * aNode , double factor = 1);
       
       
       /**
        *  adds a kalimsky surfel
        */
-      Representation * addKSSurfel (double x, double y, double z,bool xSurfel, bool ySurfel, bool zSurfel, Ogre::SceneNode * aNode);
+      Representation * addKSSurfel (double x, double y, double z,
+				    bool xSurfel, bool ySurfel, bool zSurfel,
+				    Ogre::SceneNode * aNode);
       
       /**
        *  adds a kalimsky voxel
@@ -287,7 +311,43 @@ public:
       *  
       */
       void turn(double x, double y);
+      
+      
+      
+      /**
+      * For instance, may associate a new style object T1 to the class
+      * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
+      *
+      * One can also store a new style T2 for a specific mode used for
+      * drawing a class:  myStyles[ "HyperRectDomain/Paving" ] = T2.
+      *
+      * Modes may only be used in objects implementing the concept
+      * CDrawableWithBoard2D.
+      */
+      StyleMapping myStyles;
+
+      /**
+      * May associate a current mode for a given class.
+      * myModes[ "HyperRectDomain" ] = "Paving".
+      *
+      * Next display of a HyperRectDomain object will used the mode
+      * "Paving".  Modes may only be used in objects implementing the
+      * concept CDrawableWithBoard2D.
+      */
+      ModeMapping myModes;
 	
+      
+    /**
+     * @param objectName the name of the object (generally obtained
+     * with a 'object.className()').
+     *
+     * @return the current mode for the given object name or "" if no
+     * specific mode has been set.
+     */
+     std::string getMode( const std::string & objectName ) const;
+    
+    
+    
       /**
        *  Sets the color
        */
