@@ -137,6 +137,8 @@ void test2()
    
     DGtal::ViewerOgre3D View;
     DGtal::Z3i::KSpace K;
+    
+    
     DGtal::Z3i::Point plow(0,0,0);  
     DGtal::Z3i::Point pup(3,3,2);
     DGtal::Z3i::Domain domain( plow, pup );
@@ -148,7 +150,7 @@ void test2()
     DGtal::Z3i::SCell ptup1 = K.sPointel( pup );  // pointel (3*2,3*2, 2*2)
     DGtal::Z3i::SCell ptup2 = K.sTranslation( ptup1,  DGtal::Z3i::Point::diagonal() ); // pointel (4*2, 4*2, 3*2)
 
-    View << ptlow << ptup1 << ptup2; 
+//    View << ptlow << ptup1 << ptup2; 
     // drawing cells of dimension 0
     DGtal::Z3i::SCell p1= K.sCell(DGtal::Z3i::Point(0,0,2),false);  // pointel (0*2,0*2,2*2)  
     DGtal::Z3i::SCell p2= K.sCell(DGtal::Z3i::Point(0,2,2));  // ...
@@ -184,27 +186,48 @@ void test2()
     View << linel4<< linel5<< linel6 << linel7 ;
     View << linel8<< linel9<< linel10 << linel11 << linel12;
     
+
+    DGtal::Z3i::Cell surfelA = K.uCell( DGtal::Z3i::Point( 2, 1, 3 ) ); // surfel (2*2,2*1+1,2*3+1)
+    DGtal::Z3i::Cell surfelB = K.uCell( DGtal::Z3i::Point( 1, 0, 1 ) ); // surfel (2*1,2*0,2*1+1)
+    DGtal::Z3i::Cell surfelC = K.uCell( DGtal::Z3i::Point( 2, 1, 1 ) ); // surfel (2*2,2*1+1,2*1+1)
+    View<< surfelB << surfelC << surfelA;
+  
     
+  
+      
     // drawing cells of dimension 3  
     DGtal::Z3i::SCell vox1 = K.sCell( DGtal::Z3i::Point( 3, 3, 3 ) ); // voxel (2*3+1,2*3+1,2*3+1)
-    DGtal::Z3i::SCell vox2 = K.sCell( DGtal::Z3i::Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)  
+    DGtal::Z3i::SCell vox2 = K.sCell( DGtal::Z3i::Point( 1, 1,  3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)  
     View << vox1 << vox2;
-  
-  
-  
-  
-  
+
+
   
   
   View.start();
  }
 
+ void test5()
+ {
+    DGtal::Z3i::Point p4 ( 3, 3 , 3 );
+    DGtal::Z3i::Point p5 ( -3, -3 , -3 );
+    DGtal::Z3i::Domain domain ( p4, p5 );
+    DGtal::ViewerOgre3D View;
+    View << domain;
+    View.start();
+ }
+ 
+ 
+ void test6()
+ {
+       DGtal::ViewerOgre3D View;
+ }
 int main ( int argc, char** argv )
 {
 //  test1();
 //  test2();
 //  test3();
   test4(); 
+//    test5();
 
   return 0;
 }

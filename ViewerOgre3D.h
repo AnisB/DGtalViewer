@@ -206,7 +206,7 @@ public:
       /**
        *  adds a kalimsky surfel
        */
-      Representation * addKSSurfel (double x, double y, double z,Ogre::SceneNode * aNode);
+      Representation * addKSSurfel (double x, double y, double z,bool xSurfel, bool ySurfel, bool zSurfel, Ogre::SceneNode * aNode);
       
       /**
        *  adds a kalimsky voxel
@@ -222,7 +222,9 @@ public:
       /** 
        * adds a kalimsky pointel
        */
-      Representation * addKSLinel (double x1, double y1, double z1,Ogre::SceneNode * aNode);
+      Representation * addKSLinel (double x1, double y1, double z1,double x2,
+				   double y2, double z2,
+				   Ogre::SceneNode * aNode);
       
       
       /**
@@ -406,8 +408,22 @@ protected:
       Representation * findRepresentation(std::string aName);
       
       
+      /**
+       * Sets the new initial position of the cameraman
+       */
+      void updateInitialCameraPosition( );
       
+      
+      /**
+      *  Returns the leftest point
+      */
+      Ogre::Vector3 getLeftestPosition();
 
+
+      /**
+	*  Returns the Fowardest point
+	*/
+      Ogre::Vector3 getFowardestPosition();
 
 
 };

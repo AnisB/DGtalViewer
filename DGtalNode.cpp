@@ -331,6 +331,7 @@ void DGtalNode::setFather ( DGtal::DGtalNode  * newNode )
 */
 DGtal::DGtalNode  * DGtalNode::getFather( )
 {
+  std::cout<<"Je retourne le pere"<<std::endl;
   return myFather;
 }
 
@@ -374,15 +375,20 @@ void DGtalNode::clear()
 */
 DGtalNode  * DGtalNode::getUpperNonRootNode()
 {
-  std::cout << "On va recupere la racine" << std::endl;
   DGtalNode * UNRN = this;
-
-  while ( !UNRN->getFather()->isRoot() )
+    
+    if(UNRN!=NULL)
     {
-      std::cout << "On monte" << std::endl;
-      UNRN = UNRN->getFather();
+	if (UNRN->getFather()!= NULL)
+	{
+	  while ( ! UNRN->getFather()->isRoot() )
+	    {
+	      cout<<"On monte "<<endl;
+	      UNRN = UNRN->getFather();
+	    }
+	}
     }
-
+  cout<<"Pas de père"<<endl;
   return UNRN;
 }
 

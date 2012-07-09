@@ -165,8 +165,17 @@ class CameraMan
       *
       */
       Ogre::SceneNode * getSceneNode ( );
+      
+      /**
+       *  Public method that sets the initial position
+       */
+      void setInitialPosition(Ogre::Vector3 & newPos);
 
-
+      /**
+       *  Public method that resets the cameraman orientation and position
+       */
+      void reset();
+      
 
       //--------------------------- Protected attributes---------------------------
 
@@ -191,6 +200,8 @@ class CameraMan
       // Moving vectors
       Ogre::Vector3 myTempMouseMove;
       Ogre::Vector3 mySceneCenter;
+      Ogre::Vector3 myInitialPosition;
+      Ogre::Quaternion mySavedOrientation;
 
       // Moving attributes
       int mySpeed;
