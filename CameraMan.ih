@@ -265,7 +265,9 @@ void CameraMan::turnCamera ( double x, double y )
   myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
   Ogre::Vector3 distance=(myCameraNode->getPosition()-mySceneCenter);
   double norm= distance.normalise();
-  Ogre::Vector3 temp =(myCameraNode->getOrientation().yAxis()* y*4 - myCameraNode->getOrientation().xAxis()*x)*4 ;
+  Ogre::Vector3 theYAxis =myCameraNode->getOrientation().yAxis()/(myCameraNode->getOrientation().yAxis().normalise());
+  Ogre::Vector3 theXAxis =myCameraNode->getOrientation().xAxis()/(myCameraNode->getOrientation().xAxis().normalise());
+  Ogre::Vector3 temp =(theYAxis* y*4 - theXAxis*x)*4 ;
   myCameraNode->translate ( temp );  
   myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
   

@@ -68,7 +68,7 @@ void test1()
   DGtal::Z3i::Domain domain ( p4, p5 );
   
   
-
+  View << DGtal::CustomColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100));
   View << DGtal::SetMode3D(p1.className(),"Paving");
   View << p1;
   View << p2;
@@ -76,6 +76,7 @@ void test1()
   DGtal::Z3i::DigitalSet shape_set1 ( domain );
   DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
   View << DGtal::SetMode3D(shape_set1.className(),"Grid");
+  View << DGtal::CustomColors3D(DGtal::Color(0,0,255,255),DGtal::Color(0,0,255,255));
   View << shape_set1;
 
 
@@ -229,7 +230,7 @@ int main ( int argc, char** argv )
 //  test2();
 //  test3();
 //  test4(); 
-//    test5();
+//  test5();
 
   return 0;
 }

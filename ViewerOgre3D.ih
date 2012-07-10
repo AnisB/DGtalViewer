@@ -34,6 +34,7 @@
 #include "ViewerOgre3D.h"
 #include "Ogre3DDisplayFactory.h"
 #include "Functions.h"
+#include "DGtal/base/CountedPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -52,6 +53,52 @@ ViewerOgre3D &
 ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
 {
 //  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+
+   DGtal::CountedPtr<TDrawableWithDisplay3D> style( DGtal::Style3DFactory::defaultStyle(object) );
+   
+   
+ // Apply default style
+  if ( style.get() )
+    {
+	DGtal::Style3DFactory::draw(*this, style.get());
+    }
+    
+    
+  // Apply Customized style
+  StyleMapping::const_iterator it = myStyles.find( object.className() );
+  if ( it != myStyles.end() ) 
+    if ( it->second.get() != 0 )
+      {
+	  DGtal::Style3DFactory::draw(*this, it->second.get());
+      }
+      
+      
+      
+  // Check for specific mode.
+  ModeMapping::const_iterator itm = myModes.find( object.className() );
+  if ( itm != myModes.end() )
+    {
+      
+      // Apply default style for specific mode.
+      CountedPtr<DrawableWithBoard2D> style_mode ( defaultStyle(object, itm->second) );
+      
+      if ( style_mode.get() )
+      {
+	  DGtal::Style3DFactory::draw(*this, style_mode.get());
+      }
+      
+      
+      // Apply customized style for specific mode.
+      std::string specific_style = object.className() + "/" + itm->second;
+      it = myStyles.find( specific_style );
+      if ( it != myStyles.end() ) 
+	  if ( it->second.get() != 0 )
+	  {
+	      DGtal::Style3DFactory::draw(*this, it->second.get());
+	  }
+    }
+    
+
   DGtal::Ogre3DDisplayFactory::draw ( *this, object );
   computeSceneCenter ( );
   updateInitialCameraPosition( );
@@ -160,7 +207,9 @@ ViewerOgre3D::ViewerOgre3D() : myCurrentObject ( 0 ), mySelectionMode ( false )
   mySelectedDGtalNode = NULL;
 
   myUpperFatherNonRoot = NULL;
-
+  
+  myCurrentFillColor= DGtal::Color(100,100,100,255);
+  myCurrentLineColor= DGtal::Color(100,100,100,255);
 }
 
 /**
@@ -396,7 +445,7 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
 /**
   *  adds a line
   */
-Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double x2, double y2, double z2, Ogre::SceneNode * aNode )
+Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double x2, double y2, double z2, Ogre::SceneNode * aNode,std::string materialName )
 {
 
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
@@ -409,7 +458,7 @@ Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double
   m_bodySceneNode->attachObject ( m_ent );
 
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "ManualObject" );
-  aRepresentation->addMaterial ( aNode->getName()  );
+  aRepresentation->addMaterial (materialName  );
   return aRepresentation;
 }
 
@@ -417,19 +466,16 @@ Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double
   *  adds a point
   */
 Representation * ViewerOgre3D::addPoint ( double x, double y, double z,
-    Ogre::SceneNode * aNode, double factor )
+    Ogre::SceneNode * aNode,std::string materialName, double factor )
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
-  Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );
-  m_ent->setMaterialName ( "Texture/Selected" );
-  m_ent->setMaterialName ( "Texture/Unselected" );
-  m_ent->setMaterialName ( aNode->getName() );
+  Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );  m_ent->setMaterialName (  materialName );
 
   m_bodySceneNode->attachObject ( m_ent );
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
   m_bodySceneNode->setScale ( factor*scaleFactor / 1000.0, factor*scaleFactor / 1000.0, factor*scaleFactor / 1000.0 );
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
-  aRepresentation->addMaterial (  aNode->getName() );
+  aRepresentation->addMaterial (  materialName);
   return aRepresentation;
 }
 
@@ -437,18 +483,17 @@ Representation * ViewerOgre3D::addPoint ( double x, double y, double z,
 /**
   *  adds a voxel
   */
-Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::SceneNode * aNode,
-    DGtal::Color aColor )
+Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, 
+					   Ogre::SceneNode * aNode,
+					   std::string materialName )
 {
 
-
-  Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
-
-  m_ent->setMaterialName ( "Texture/Selected" );
-  m_ent->setMaterialName ( "Texture/Unselected" );
   m_ent->setMaterialName ( aNode->getName() );
+
+  Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
+
   m_bodySceneNode->attachObject ( m_ent );
   
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
@@ -459,7 +504,7 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::S
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr,
 								 m_ent, m_bodySceneNode,
 								 m_ent->getName(), "Entity" );
-  aRepresentation->addMaterial ( aNode->getName() );
+  aRepresentation->addMaterial ( materialName );
   return aRepresentation;
 
 }
@@ -468,13 +513,13 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, Ogre::S
 /**
   *  adds a kalimsky voxel
   */
-Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z, Ogre::SceneNode * aNode )
+Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z, 
+					    Ogre::SceneNode * aNode,
+					    std::string materialName )
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
 
-  m_ent->setMaterialName ( "Texture/Selected" );
-  m_ent->setMaterialName ( "Texture/Unselected" );
     m_ent->setMaterialName ( aNode->getName() );
 
   m_bodySceneNode->attachObject ( m_ent );
@@ -488,7 +533,7 @@ Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z, Ogre::SceneNode
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr,
 								 m_ent, m_bodySceneNode, 
 								 m_ent->getName(), "Entity" );
-  aRepresentation->addMaterial (  aNode->getName());
+  aRepresentation->addMaterial ( materialName);
   return aRepresentation;
 }
 
@@ -497,16 +542,14 @@ Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z, Ogre::SceneNode
   *  adds a kalimsky surfel
   */
 Representation * ViewerOgre3D::addKSSurfel ( double x, double y, double z,
-    bool xSurfel, bool ySurfel, bool zSurfel,
-    Ogre::SceneNode * aNode )
+					bool xSurfel, bool ySurfel, bool zSurfel,
+					Ogre::SceneNode * aNode ,std::string materialName)
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
 
 
-  m_ent->setMaterialName ( "Texture/Selected" );
-  m_ent->setMaterialName ( "Texture/Unselected" );
-  m_ent->setMaterialName ( aNode->getName() );
+  m_ent->setMaterialName ( materialName);
   if ( !xSurfel )
     {
       m_bodySceneNode->setScale ( scaleFactor / 2500.0, scaleFactor / 175.0, scaleFactor / 175.0 );
@@ -536,7 +579,7 @@ Representation * ViewerOgre3D::addKSSurfel ( double x, double y, double z,
 
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
 
-  aRepresentation->addMaterial ( aNode->getName());
+  aRepresentation->addMaterial ( materialName);
   return aRepresentation;
 }
 
@@ -545,14 +588,14 @@ Representation * ViewerOgre3D::addKSSurfel ( double x, double y, double z,
 /**
   * adds a kalimsky pointel
   */
-Representation * ViewerOgre3D::addKSPointel ( double x, double y, double z, Ogre::SceneNode * aNode )
+Representation * ViewerOgre3D::addKSPointel ( double x, double y, double z,
+					      Ogre::SceneNode * aNode ,
+					      std::string materialName)
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );
 
-  m_ent->setMaterialName ( "Texture/Selected" );
-  m_ent->setMaterialName ( "Texture/Unselected" );
-  m_ent->setMaterialName ( aNode->getName());
+  m_ent->setMaterialName ( materialName);
   m_bodySceneNode->attachObject ( m_ent );
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor, ( y + 0.5 ) *scaleFactor, ( z + 0.5 ) *scaleFactor ) );
   m_bodySceneNode->setScale ( scaleFactor / 900.0, scaleFactor / 900.0, scaleFactor / 900.0 );
@@ -564,15 +607,16 @@ Representation * ViewerOgre3D::addKSPointel ( double x, double y, double z, Ogre
 /**
   * adds a kalimsky pointel
   */
-Representation * ViewerOgre3D::addKSLinel ( double x1, double y1, double z1, double x2, double y2, double z2, Ogre::SceneNode * aNode )
+Representation * ViewerOgre3D::addKSLinel ( double x1, double y1, double z1, 
+					    double x2, double y2, double z2,
+					    Ogre::SceneNode * aNode,
+					    std::string materialName)
 {
 
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
 
-  m_ent->setMaterialName ( "Texture/Selected" );
-  m_ent->setMaterialName ( "Texture/Unselected" );
-    m_ent->setMaterialName ( aNode->getName() );
+    m_ent->setMaterialName ( materialName );
   m_bodySceneNode->attachObject ( m_ent );
 
   if ( fabs ( ( x1 - x2 ) ) > 0.001 )
@@ -595,7 +639,7 @@ Representation * ViewerOgre3D::addKSLinel ( double x1, double y1, double z1, dou
 
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "Entity" );
 
-  aRepresentation->addMaterial ( aNode->getName());
+  aRepresentation->addMaterial ( materialName);
   return aRepresentation;
 
 
@@ -1019,7 +1063,7 @@ void ViewerOgre3D::updateInitialCameraPosition( )
   *  Creates a texture starting from a DGtal color
   */
 //void ViewerOgre3D::createMaterial ( std::string  aName,int red,int green, int blue, int transparency)
-void ViewerOgre3D::createMaterial(std::string  aName,DGtal::Color & aColor)
+void ViewerOgre3D::createMaterial(std::string  aName,DGtal::Color aColor)
 {
   Ogre::MaterialManager& lMaterialManager = Ogre::MaterialManager::getSingleton();
   Ogre::MaterialPtr lMaterial = lMaterialManager.create ( aName, "General" );
@@ -1042,6 +1086,10 @@ void ViewerOgre3D::createMaterial(std::string  aName,DGtal::Color & aColor)
 
   Ogre::Real lShininess = 64.0f;
   lFirstPass->setShininess ( lShininess );
+  Ogre::TextureUnitState* lTextureUnit = lFirstPass->createTextureUnitState();
+  
+  lTextureUnit->setTextureName("unselected.jpg", Ogre::TEX_TYPE_2D);
+  lTextureUnit->setTextureCoordSet(0.1);
 
 
 
@@ -1051,3 +1099,40 @@ void ViewerOgre3D::createMaterial(std::string  aName,DGtal::Color & aColor)
   lFirstPass->setDepthWriteEnabled ( false );
 }
 
+/**
+  *  Sets the fill color
+  */
+inline
+void ViewerOgre3D::setFillColor(DGtal::Color aColor)
+{
+  myCurrentFillColor=aColor;
+}
+
+/**
+  *  Sets the current line color
+  */
+inline
+void ViewerOgre3D::setLineColor(DGtal::Color aColor)
+{
+  myCurrentLineColor=aColor;
+}
+
+
+
+/**
+  *  Returns the fill color
+  */
+inline
+DGtal::Color  ViewerOgre3D::getFillColor()
+{
+  return myCurrentFillColor;
+}
+
+/**
+  *  Returns the current line color
+  */
+inline
+DGtal::Color  ViewerOgre3D::getLineColor()
+{
+  return myCurrentLineColor;
+}

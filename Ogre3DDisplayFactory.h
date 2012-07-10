@@ -43,7 +43,7 @@
 #include "DGtal/base/Common.h"
 #include "DrawableWithOgreWrapper.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -79,6 +79,10 @@ namespace DGtal
       template<typename Domain>
       static void drawAsPaving( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
       
+      //Transparent Paving/Voxel drawing
+      template<typename Domain>
+      static void drawAsPavingTransparent( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s );
+      
       
       // Grid/Point drawing
       template<typename Domain>
@@ -92,6 +96,9 @@ namespace DGtal
       
       template<typename Domain>
       static void drawAsPaving( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & );
+      
+      template<typename Domain>
+      static void drawAsPavingTransparent( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & );
       
       template<typename Domain>
       static void drawAsGrid( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & );
@@ -132,7 +139,7 @@ namespace DGtal
   
      static void draw( ViewerOgre3D & display, const DGtal::SetMode3D & );
      static void draw( ViewerOgre3D & display, const DGtal::CustomStyle3D & );
-//     static void draw( ViewerOgre3D & display, const DGtal::CustomColors3D & );
+     static void draw( ViewerOgre3D & display, const DGtal::CustomColors3D & );
      
   
      static void draw( ViewerOgre3D & display, const DGtal::ClippingPlane & );

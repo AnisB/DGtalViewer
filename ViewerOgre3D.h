@@ -129,7 +129,7 @@ public:
        *  Creates a texture starting from a DGtal color
        */
 //      void createMaterial(std::string  aName,int red,int green, int blue, int transparency);
-        void createMaterial(std::string  aName,DGtal::Color & aColor);
+        void createMaterial(std::string  aName,DGtal::Color  aColor);
       
       /**
        *  Get a son node ( of the root one)
@@ -208,21 +208,21 @@ public:
        *  adds a voxel
        */
       Representation  * addVoxel(double x,double y, double z,
-				 Ogre::SceneNode * aNode, 
-				 DGtal::Color aColor = DGtal::Color(150,50,50,255));
+				 Ogre::SceneNode * aNode 
+				 ,std::string materialName);
       
       
       /**
        *  adds a line
        */
       Representation * addLine(double x1, double y1, double z1,
-			       double x2, double y2,double z2,Ogre::SceneNode * aNode);
+			       double x2, double y2,double z2,Ogre::SceneNode * aNode,std::string materialName);
       
       /**
        *  adds a point
        */
       Representation * addPoint (double x, double y, double z,
-				 Ogre::SceneNode * aNode , double factor = 1);
+				 Ogre::SceneNode * aNode ,std::string materialName, double factor = 1);
       
       
       /**
@@ -230,25 +230,25 @@ public:
        */
       Representation * addKSSurfel (double x, double y, double z,
 				    bool xSurfel, bool ySurfel, bool zSurfel,
-				    Ogre::SceneNode * aNode);
+				    Ogre::SceneNode * aNode,std::string materialName);
       
       /**
        *  adds a kalimsky voxel
        */
-      Representation * addKSVoxel (int x, int y, int z,Ogre::SceneNode * aNode);
+      Representation * addKSVoxel (int x, int y, int z,Ogre::SceneNode * aNode,std::string materialName);
       
       
       /**
        * adds a kalimsky pointel
        */
-      Representation * addKSPointel (double x, double y, double z,Ogre::SceneNode * aNode);
+      Representation * addKSPointel (double x, double y, double z,Ogre::SceneNode * aNode,std::string materialName);
       
       /** 
        * adds a kalimsky pointel
        */
       Representation * addKSLinel (double x1, double y1, double z1,double x2,
 				   double y2, double z2,
-				   Ogre::SceneNode * aNode);
+				   Ogre::SceneNode * aNode,std::string materialName);
       
       
       /**
@@ -347,8 +347,29 @@ public:
      std::string getMode( const std::string & objectName ) const;
     
     
-    
+     
       /**
+       *  Sets the fill color
+       */
+     void setFillColor(DGtal::Color aColor);
+     
+     /**
+       *  Sets the current line color
+       */
+     void setLineColor(DGtal::Color aColor);
+     
+     /**
+      *  Returns the fill color
+      */
+      DGtal::Color  getFillColor();
+
+      /**
+	*  Returns the current line color
+	*/
+      DGtal::Color  getLineColor();
+      
+      
+	/**
        *  Sets the color
        */
       ViewerOgre3D & operator<< ( const DGtal::Color & aColor );
@@ -437,6 +458,12 @@ protected:
 	int myMinManupulating;
 	int myCurrentManupulating;
 	int myStep;
+	
+       /**
+	* Current colors
+	*/
+       DGtal::Color myCurrentFillColor;
+       DGtal::Color myCurrentLineColor;
 	
 protected:
   
