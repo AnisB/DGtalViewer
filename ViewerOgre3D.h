@@ -48,7 +48,7 @@
 #include "OgreEntity.h"
 #include "DGtalNode.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DrawWithViewerOgre3DModifier.h"
+#include "CommonOgre.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -166,6 +166,18 @@ public:
        *  Set the near and far clip distance of the camera
        */
       void setNearFar(double near,double far);
+      
+      
+      /**
+       *  
+       */
+      void more( );
+      
+      
+      /**
+       *  
+       */
+      void less( );
       
       
       /**

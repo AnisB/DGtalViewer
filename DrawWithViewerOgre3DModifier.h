@@ -171,10 +171,10 @@ namespace DGtal
 
       virtual void setStyle( ViewerOgre3D & aViewer ) const 
       {
-//	    aViewer.setSelfIlluminationColor(myCurrentSelfIlluminationColor);
-//	    aViewer.setAmbientIlluminationColor(myCurrentAmbientIlluminationColor);
-//	    aViewer.setDiphuseIlluminationColor(myCurrentDiphuseIlluminationColor);
-//	    aViewer.setSpecularIlluminationColor(myCurrentSpecularIlluminationColor);
+	    aViewer.setSelfIlluminationColor(myCurrentSelfIlluminationColor);
+	    aViewer.setAmbientIlluminationColor(myCurrentAmbientIlluminationColor);
+	    aViewer.setDiphuseIlluminationColor(myCurrentDiphuseIlluminationColor);
+	    aViewer.setSpecularIlluminationColor(myCurrentSpecularIlluminationColor);
 	    aViewer.setTexture(myTexture);
       }
   };

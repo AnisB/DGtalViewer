@@ -136,7 +136,7 @@ void DGtalNode::setRoot()
   *  Returns back the representation if entity is matching with the name
   *  If not, returns NULL
   */
-Representation * DGtalNode::getRepresentation ( std::string aName )
+Representation * DGtalNode::ifRepresentation ( std::string aName )
 {
   if ( !myRepresentation->isVirtual() )
     {
@@ -150,7 +150,15 @@ Representation * DGtalNode::getRepresentation ( std::string aName )
   return NULL;
 }
 
-
+/**
+  *  Returns back the representation
+  */
+Representation * DGtalNode::getRepresentation ( )
+{
+  return myRepresentation;
+}
+	  
+	  
 /**
 *  Returns back the representation
 */
@@ -397,3 +405,41 @@ std::string   DGtalNode::getType()
   return myType;
 }
 
+/**
+  *  
+  */
+void DGtalNode::more( )
+{
+  if ( !myRepresentation->isVirtual() )
+    {
+      myRepresentation->more();
+    }
+
+  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+
+  while ( it != mySons.end() )
+    {
+      ( *it ).second->more();
+      it++;
+    }
+}
+
+
+/**
+  *  
+  */
+void DGtalNode::less( )
+{
+  if ( !myRepresentation->isVirtual() )
+    {
+      myRepresentation->less();
+    }
+
+  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+
+  while ( it != mySons.end() )
+    {
+      ( *it ).second->less();
+      it++;
+    }
+}

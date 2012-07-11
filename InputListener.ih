@@ -206,7 +206,13 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
       case OIS::KC_R :
 	  myCameraMan->reset();
        break;
-      
+       
+       case OIS::KC_M :
+	  myViewer->more();
+       break;
+       case OIS::KC_L :
+	  myViewer->less();
+       break;
       default:
         break;
 

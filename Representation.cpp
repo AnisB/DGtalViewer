@@ -259,6 +259,23 @@ std::list<std::string> & Representation::getMaterials()
   return myMaterials;
 }
 
+/**
+  *  
+  */
+void Representation::more( )
+{
+  mySceneNode->scale(1.5,1.5,1.5);
+}
+
+
+/**
+  *  
+  */
+void Representation::less( )
+{
+    mySceneNode->scale(0.5,0.5,0.5);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
 

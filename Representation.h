@@ -179,6 +179,17 @@ void unselect();
  */
 void addMaterial(std::string aMaterial);
 
+
+/**
+  *  
+  */
+void more( );
+
+
+/**
+  *  
+  */
+void less( );
 /**
  *  Returns the material List
  */

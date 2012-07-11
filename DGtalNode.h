@@ -128,10 +128,14 @@ namespace DGtal
            *  Returns back an entity matching with the name
            *  If no entity is matching returns NULL
            */
-          Representation * getRepresentation ( std::string aName );
+          Representation * ifRepresentation ( std::string aName );
 
 
-
+          /**
+           *  Returns back the representation
+           */
+          Representation * getRepresentation ( );
+	  
           /**
           *  Sets this node as the root one
           */
@@ -238,6 +242,17 @@ namespace DGtal
           *  Returns the DGtalObject type
           */
           std::string  getType();
+	  
+	 /**
+	  *  
+	  */
+	  void more( );
+	  
+	  
+	  /**
+	  *  
+	  */
+	  void less( );
 
 
           // ------------------------- Protected Datas ------------------------------

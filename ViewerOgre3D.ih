@@ -71,6 +71,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
   if ( it != myStyles.end() ) 
     if ( it->second.get() != 0 )
       {
+	  cout<<"application du style"<<endl;
 	  DGtal::Style3DFactory::draw(*this, it->second.get());
       }
       
@@ -84,7 +85,9 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
       // Apply default style for specific mode.
       CountedPtr<DrawableWithViewerOgre3D> style_mode ( DGtal::Style3DFactory::defaultStyle(object, itm->second) );
       
-      if ( style_mode.get() )
+      if ( style_mode.get() )StyleMapping::const_iterator it = myStyles.find( object.className() );
+  if ( it != myStyles.end() ) 
+ 
       {
 	  DGtal::Style3DFactory::draw(*this, style_mode.get());
       }
@@ -678,7 +681,7 @@ Representation * ViewerOgre3D::findRepresentation ( std::string aName )
     {
 
 
-      theRepresentationToGet = ( *aNode ).second->getRepresentation ( aName );
+      theRepresentationToGet = ( *aNode ).second->ifRepresentation ( aName );
 
       if ( theRepresentationToGet != NULL )
         {
@@ -1210,3 +1213,25 @@ std::string ViewerOgre3D::getTexture()
 }
      
 
+/**
+  *  
+  */
+void ViewerOgre3D::more( )
+{
+  if (myUpperFatherNonRoot!=NULL)
+  {
+    myUpperFatherNonRoot->more();
+  }
+}
+
+
+/**
+  *  
+  */
+void ViewerOgre3D::less( )
+{
+  if (myUpperFatherNonRoot!=NULL)
+  {
+    myUpperFatherNonRoot->less();
+  }
+}

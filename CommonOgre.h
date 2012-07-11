@@ -38,7 +38,6 @@
 /** Prevents repeated inclusion of headers. */
 #define CommonOgre_h
 
-#include "ViewerOgre3D.h"
 #include <iostream>
 
 namespace DGtal
