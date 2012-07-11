@@ -42,7 +42,6 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DrawableWithOgreWrapper.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -50,6 +49,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
+#include  "DrawWithViewerOgre3DModifier.h"
 
 namespace DGtal
   {
@@ -109,12 +109,13 @@ namespace DGtal
       template<typename TSpace>
       static void draw( ViewerOgre3D & viewer, const DGtal::HyperRectDomain<TSpace> & s );
  
-      //KhalimskyCell
+      //---------------------------------------------------------------------------KhalimskyCell
       template<Dimension dim, typename TInteger>
       static void draw ( ViewerOgre3D & viewer, const DGtal::KhalimskyCell<dim,TInteger> & kc );
       
       
-      //Object
+        
+      //------------------------------------------------------------------------------------  Object
       template <typename TDigitalTopology, typename TDigitalSet>
       static void draw (ViewerOgre3D &viewer, const DGtal::Object< TDigitalTopology, TDigitalSet > &);
       
@@ -137,17 +138,17 @@ namespace DGtal
      
 
   
-     static void draw( ViewerOgre3D & display, const DGtal::SetMode3D & );
-     static void draw( ViewerOgre3D & display, const DGtal::CustomStyle3D & );
-     static void draw( ViewerOgre3D & display, const DGtal::CustomColors3D & );
+     static void draw( ViewerOgre3D & display, const DGtal::SetViewerMode3D & );
+     static void draw( ViewerOgre3D & display, const DGtal::CustomViewerStyle3D & );
+     static void draw( ViewerOgre3D & display, const DGtal::CustomViewerColors3D & );
      
   
-     static void draw( ViewerOgre3D & display, const DGtal::ClippingPlane & );
+     static void draw( ViewerOgre3D & display, const DGtal::ViewerClippingPlane & );
      //Camera 
-     static void draw( ViewerOgre3D & display, const DGtal::CameraPosition & );
-     static void draw( ViewerOgre3D & display, const DGtal::CameraDirection & );
-     static void draw( ViewerOgre3D & display, const DGtal::CameraUpVector & );
-     static void draw( ViewerOgre3D & display, const DGtal::CameraZNearFar & );
+     static void draw( ViewerOgre3D & display, const DGtal::ViewerCameraPosition & );
+     static void draw( ViewerOgre3D & display, const DGtal::ViewerCameraDirection & );
+     static void draw( ViewerOgre3D & display, const DGtal::ViewerCameraUpVector & );
+     static void draw( ViewerOgre3D & display, const DGtal::ViewerCameraZNearFar & );
 
       
 

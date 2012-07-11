@@ -68,15 +68,15 @@ void test1()
   DGtal::Z3i::Domain domain ( p4, p5 );
   
   
-  View << DGtal::CustomColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100));
-  View << DGtal::SetMode3D(p1.className(),"Paving");
+  View << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100));
+  View << DGtal::SetViewerMode3D(p1.className(),"Paving");
   View << p1;
   View << p2;
   View << p3;
   DGtal::Z3i::DigitalSet shape_set1 ( domain );
   DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
-  View << DGtal::SetMode3D(shape_set1.className(),"Grid");
-  View << DGtal::CustomColors3D(DGtal::Color(0,0,255,255),DGtal::Color(0,0,255,255));
+  View << DGtal::SetViewerMode3D(shape_set1.className(),"Grid");
+  View << DGtal::CustomViewerColors3D(DGtal::Color(0,0,255,255),DGtal::Color(0,0,255,255));
   View << shape_set1;
 
 
@@ -101,12 +101,12 @@ void test2()
   DGtal::Z3i::Point p10 ( 30, 30 , 30 );
   View << p10;
 
-  View << DGtal::ClippingPlane ( 1, 0, 0, -4.9 );
-  View << DGtal::ClippingPlane ( 0, 1, 0.3, -10 );
-  View << CameraPosition ( 2.500000, 2.500000, 16.078199 )
-  << CameraDirection ( 0.000000, 0.000000, -1.000000 )
-  << CameraUpVector ( 0.000000, 1.000000, 0.000000 );
-  View << CameraZNearFar ( 0.1, 200 );
+  View << DGtal::ViewerClippingPlane ( 1, 0, 0, -4.9 );
+  View << DGtal::ViewerClippingPlane ( 0, 1, 0.3, -10 );
+  View << DGtal::ViewerCameraPosition ( 2.500000, 2.500000, 16.078199 )
+  << DGtal::ViewerCameraDirection ( 0.000000, 0.000000, -1.000000 )
+  << DGtal::ViewerCameraUpVector ( 0.000000, 1.000000, 0.000000 );
+  View << DGtal::ViewerCameraZNearFar ( 0.1, 200 );
 
   DGtal::Z3i::Point p1 ( 0, 0, 0 );
   DGtal::Z3i::Point p2 ( 0, 0 , 0 );
@@ -222,15 +222,24 @@ void test2()
  
  void test6()
  {
-       DGtal::ViewerOgre3D View;
+   
+      DGtal::Z3i::Point p4 ( 30, 30 , 30 );
+      DGtal::Z3i::Point p5 ( -30, -30 , -30 );
+      DGtal::Z3i::Domain domain ( p4, p5 );
+      DGtal::ViewerOgre3D View;
+      DGtal::Z3i::DigitalSet shape_set1 ( domain );
+      DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
+      View << shape_set1;
+      View.start();
+       
  }
 int main ( int argc, char** argv )
 {
- test1();
+//  test1();
 //  test2();
 //  test3();
 //  test4(); 
 //  test5();
-
+    test6();
   return 0;
 }

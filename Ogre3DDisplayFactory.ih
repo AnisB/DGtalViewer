@@ -759,20 +759,20 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
-        const DGtal::SetMode3D & sm3d )
+        const DGtal::SetViewerMode3D & sm3d )
 {
   viewer.myModes[ sm3d.myClassname ] = sm3d.myMode;
 }
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
-        const DGtal::CustomStyle3D & cs3d )
+        const DGtal::CustomViewerStyle3D & cs3d )
 {
   viewer.myStyles[ cs3d.myClassname ] = cs3d.myStyle;
 }
 
 inline
-void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display, const DGtal::CustomColors3D & cc3d )
+void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display, const DGtal::CustomViewerColors3D & cc3d )
 {
   display.setFillColor(cc3d.myFillColor);
   display.setLineColor(cc3d.myPenColor);
@@ -780,27 +780,27 @@ void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display, const DGtal::Cus
 
 
 inline
-void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::ClippingPlane & cp )
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::ViewerClippingPlane & cp )
 {
   display.addClippingPlane ( cp.myA, cp.myB, cp.myC, cp.myD );
 }
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
-    const DGtal::CameraPosition & cp )
+    const DGtal::ViewerCameraPosition & cp )
 {
   display.setCameraPosition ( Ogre::Vector3 ( cp.eyex, cp.eyey, cp.eyez ) );
 }
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
-    const DGtal::CameraDirection & cd )
+    const DGtal::ViewerCameraDirection & cd )
 {
   display.setCameraDirection ( Ogre::Vector3 ( cd.dirx, cd.diry, cd.dirz ) );
 }
 
 inline
-void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::CameraUpVector & cuv )
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::ViewerCameraUpVector & cuv )
 {
 
   display.setCameraUpVector ( Ogre::Vector3 ( cuv.upx, cuv.upy, cuv.upz ) );
@@ -808,7 +808,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::Ca
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
-    const DGtal::CameraZNearFar & cz )
+    const DGtal::ViewerCameraZNearFar & cz )
 {
   display.setNearFar ( cz.ZNear, cz.ZFar );
 }

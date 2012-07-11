@@ -35,6 +35,8 @@
 #include "Ogre3DDisplayFactory.h"
 #include "Functions.h"
 #include "DGtal/base/CountedPtr.h"
+#include "Style3DFactory.h"
+#include "CommonOgre.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -54,7 +56,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
 {
 //  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
 
-   DGtal::CountedPtr<TDrawableWithDisplay3D> style( DGtal::Style3DFactory::defaultStyle(object) );
+   DGtal::CountedPtr<DrawableWithViewerOgre3D> style( DGtal::Style3DFactory::defaultStyle(object) );
    
    
  // Apply default style
@@ -80,7 +82,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
     {
       
       // Apply default style for specific mode.
-      CountedPtr<DrawableWithBoard2D> style_mode ( defaultStyle(object, itm->second) );
+      CountedPtr<DrawableWithViewerOgre3D> style_mode ( DGtal::Style3DFactory::defaultStyle(object, itm->second) );
       
       if ( style_mode.get() )
       {
@@ -469,7 +471,8 @@ Representation * ViewerOgre3D::addPoint ( double x, double y, double z,
     Ogre::SceneNode * aNode,std::string materialName, double factor )
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
-  Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );  m_ent->setMaterialName (  materialName );
+  Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE ); 
+  m_ent->setMaterialName (  materialName );
 
   m_bodySceneNode->attachObject ( m_ent );
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( x*scaleFactor, y*scaleFactor, z*scaleFactor ) );
@@ -490,7 +493,7 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z,
 
   
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
-  m_ent->setMaterialName ( aNode->getName() );
+  m_ent->setMaterialName ( materialName );
 
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
 

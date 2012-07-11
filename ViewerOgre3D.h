@@ -48,6 +48,7 @@
 #include "OgreEntity.h"
 #include "DGtalNode.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DrawWithViewerOgre3DModifier.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -75,7 +76,7 @@ class ViewerOgre3D
      * The associated map type for storing the default styles of
      * digital objects.
      */
-    typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
+    typedef std::map< std::string,CountedPtr<DrawableWithViewerOgre3D> > StyleMapping;
 
     /**
      * The associated map type for storing possible modes used for
