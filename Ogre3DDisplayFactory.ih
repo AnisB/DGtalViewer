@@ -99,7 +99,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer,
 
   DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
 
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
@@ -153,7 +153,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal
   DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
   
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
 
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
@@ -205,7 +205,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer
 
   DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
 
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
@@ -286,7 +286,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGt
 
   DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
 
 
@@ -340,7 +340,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal
 
   DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
 
 
@@ -396,7 +396,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer
 
   DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
 
 
@@ -449,7 +449,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
 
  Ogre::SceneNode * theNode = viewer.getANode();
 
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   ASSERT(TSpace::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
   if (TSpace::dimension == 3)
@@ -515,7 +515,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
   
   DGtalNode * theKalimskyCellNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theRepresentation;
   
   ASSERT ( dim == 3 );
@@ -620,7 +620,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal
   DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
 
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * newPoint = viewer.addPoint ( NumberTraits<TComponent>::castToDouble ( p.myArray[0] ),
                               NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
                               NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode,theNode->getName(), 2 );
@@ -653,7 +653,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGt
   DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
 
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   
   
   Representation * newPoint = viewer.addVoxel ( NumberTraits<TComponent>::castToDouble ( p.myArray[0] ),
@@ -691,7 +691,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 
   DGtalNode * theKalimskyCellNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
-  viewer.createMaterial(theNode->getName(), viewer.getFillColor());
+  viewer.createMaterial(theNode->getName());
   Representation * theRepresentation;
   
   ASSERT ( dim == 3 );
@@ -774,8 +774,11 @@ void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
 inline
 void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display, const DGtal::CustomViewerColors3D & cc3d )
 {
-  display.setFillColor(cc3d.myFillColor);
-  display.setLineColor(cc3d.myPenColor);
+  display.setSelfIlluminationColor(cc3d.myCurrentSelfIlluminationColor);
+  display.setAmbientIlluminationColor(cc3d.myCurrentAmbientIlluminationColor);
+  display.setDiphuseIlluminationColor(cc3d.myCurrentDiphuseIlluminationColor);
+  display.setSpecularIlluminationColor(cc3d.myCurrentSpecularIlluminationColor);
+  display.setTexture(cc3d.myTexture);
 }
 
 

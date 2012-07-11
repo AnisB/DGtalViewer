@@ -68,7 +68,11 @@ class DigitalSetBySTLSet;
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
-            Viewer.setFillColor(DGtal::Color(0,255,0,100));
+            Viewer.setAmbientIlluminationColor(DGtal::Color(0,255,0,100));
+	    Viewer.setSpecularIlluminationColor(DGtal::Color(0,255,0,100));
+	    Viewer.setDiphuseIlluminationColor(DGtal::Color(0,255,0,100));
+	    Viewer.setSelfIlluminationColor(DGtal::Color(0,255,0,100));
+	    Viewer.setTexture("unselected.jpg");
     }
   };
 
@@ -80,7 +84,11 @@ class DigitalSetBySTLSet;
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
-           Viewer.setFillColor(DGtal::Color(125,0,125,100));
+            Viewer.setAmbientIlluminationColor(DGtal::Color(0,0,255,100));
+	    Viewer.setSpecularIlluminationColor(DGtal::Color(0,0,255,100));
+	    Viewer.setDiphuseIlluminationColor(DGtal::Color(0,0,255,100));
+	    Viewer.setSelfIlluminationColor(DGtal::Color(0,0,255,100));
+	    Viewer.setTexture("unselected.jpg");
     }
   };
   
@@ -92,7 +100,11 @@ class DigitalSetBySTLSet;
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
-        Viewer.setFillColor(DGtal::Color(255,0,0,100));
+            Viewer.setAmbientIlluminationColor(DGtal::Color(255,0,0,100));
+	    Viewer.setSpecularIlluminationColor(DGtal::Color(255,0,0,100));
+	    Viewer.setDiphuseIlluminationColor(DGtal::Color(255,0,0,100));
+	    Viewer.setSelfIlluminationColor(DGtal::Color(255,0,0,100));
+	    Viewer.setTexture("unselected.jpg");
     }
   };
   

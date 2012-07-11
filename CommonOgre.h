@@ -38,26 +38,24 @@
 /** Prevents repeated inclusion of headers. */
 #define CommonOgre_h
 
-
-#include <iostream>
 #include "ViewerOgre3D.h"
+#include <iostream>
 
 namespace DGtal
  {
-  class ViewerOgre3D;
- 
+   class ViewerOgre3D;
+
  struct DrawableWithViewerOgre3D {
-  virtual void setStyle( ViewerOgre3D & ) const 
-  {
-    std::cout<<"Probleme d'heritage"<<std::endl;
-  }
+    virtual void setStyle( ViewerOgre3D & ) const 
+    {
+    }
+
   };
 
  
  } // namespace DGtal
 
- 
- 
+
  #endif /* CommonOgre_H_ */
 
 #undef CommonOgre_RECURSES

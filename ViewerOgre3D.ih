@@ -210,8 +210,12 @@ ViewerOgre3D::ViewerOgre3D() : myCurrentObject ( 0 ), mySelectionMode ( false )
 
   myUpperFatherNonRoot = NULL;
   
-  myCurrentFillColor= DGtal::Color(100,100,100,255);
-  myCurrentLineColor= DGtal::Color(100,100,100,255);
+  
+    myCurrentSelfIlluminationColor= DGtal::Color(100,100,100,255);
+    myCurrentAmbientIlluminationColor= DGtal::Color(100,100,100,255);
+    myCurrentDiphuseIlluminationColor= DGtal::Color(100,100,100,255);
+    myCurrentSpecularIlluminationColor= DGtal::Color(100,100,100,255);
+    myTexture= "unselected.jpg";
 }
 
 /**
@@ -1066,25 +1070,37 @@ void ViewerOgre3D::updateInitialCameraPosition( )
   *  Creates a texture starting from a DGtal color
   */
 //void ViewerOgre3D::createMaterial ( std::string  aName,int red,int green, int blue, int transparency)
-void ViewerOgre3D::createMaterial(std::string  aName,DGtal::Color aColor)
+void ViewerOgre3D::createMaterial(std::string  aName )
 {
   Ogre::MaterialManager& lMaterialManager = Ogre::MaterialManager::getSingleton();
   Ogre::MaterialPtr lMaterial = lMaterialManager.create ( aName, "General" );
   Ogre::Technique* lFirstTechnique = lMaterial->getTechnique ( 0 );
   Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
 
-  Ogre::ColourValue lSelfIllumnationColour ( ( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0 );
+  Ogre::ColourValue lSelfIllumnationColour ( ( double ) myCurrentSelfIlluminationColor.red() / 255.0,
+					     ( double ) myCurrentSelfIlluminationColor.green() / 255.0, 
+					     ( double ) myCurrentSelfIlluminationColor.blue() / 255.0,
+					     ( double ) myCurrentSelfIlluminationColor.alpha()/ 255.0 );
   lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
 
 
-  Ogre::ColourValue lDiffuseColour ( ( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0);
+  Ogre::ColourValue lDiffuseColour ( ( double ) myCurrentDiphuseIlluminationColor.red() / 255.0,
+				     ( double ) myCurrentDiphuseIlluminationColor.green() / 255.0, 
+				     ( double ) myCurrentDiphuseIlluminationColor.blue() / 255.0, 
+				     ( double ) myCurrentDiphuseIlluminationColor.alpha()/ 255.0);
   lFirstPass->setDiffuse ( lDiffuseColour );
 
-  Ogre::ColourValue lAmbientColour (( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0 );
+  Ogre::ColourValue lAmbientColour (( double ) myCurrentAmbientIlluminationColor.red() / 255.0, 
+				    ( double ) myCurrentAmbientIlluminationColor.green() / 255.0,
+				    ( double ) myCurrentAmbientIlluminationColor.blue() / 255.0, 
+				    ( double ) myCurrentAmbientIlluminationColor.alpha()/ 255.0 );
   lFirstPass->setAmbient ( lAmbientColour );
 
   // I want the specular to not be transparent.
-  Ogre::ColourValue lSpecularColour ( ( double ) aColor.red() / 255.0, ( double ) aColor.green() / 255.0, ( double ) aColor.blue() / 255.0, ( double ) aColor.alpha()/ 255.0 );
+  Ogre::ColourValue lSpecularColour ( ( double ) myCurrentSpecularIlluminationColor.red() / 255.0,
+				      ( double ) myCurrentSpecularIlluminationColor.green() / 255.0, 
+				      ( double ) myCurrentSpecularIlluminationColor.blue() / 255.0,
+				      ( double ) myCurrentSpecularIlluminationColor.alpha()/ 255.0 );
   lFirstPass->setSpecular ( lSpecularColour );
 
   Ogre::Real lShininess = 64.0f;
@@ -1102,40 +1118,95 @@ void ViewerOgre3D::createMaterial(std::string  aName,DGtal::Color aColor)
   lFirstPass->setDepthWriteEnabled ( false );
 }
 
-/**
-  *  Sets the fill color
-  */
-inline
-void ViewerOgre3D::setFillColor(DGtal::Color aColor)
-{
-  myCurrentFillColor=aColor;
-}
 
+
+
+//-------------------------------------------------------------------------------------Color management
 /**
-  *  Sets the current line color
+  *  Sets the self illumination color of the following object
   */
 inline
-void ViewerOgre3D::setLineColor(DGtal::Color aColor)
+void ViewerOgre3D::setSelfIlluminationColor(DGtal::Color aColor)
 {
-  myCurrentLineColor=aColor;
+  myCurrentSelfIlluminationColor=aColor;
 }
 
 
-
 /**
-  *  Returns the fill color
+  *  Sets the Ambient illumination color of the following object
   */
 inline
-DGtal::Color  ViewerOgre3D::getFillColor()
+void ViewerOgre3D::setAmbientIlluminationColor(DGtal::Color aColor)
 {
-  return myCurrentFillColor;
+  myCurrentAmbientIlluminationColor=aColor;
 }
 
 /**
-  *  Returns the current line color
+  *  Sets the Specular illumination color of the following object
   */
 inline
-DGtal::Color  ViewerOgre3D::getLineColor()
+void ViewerOgre3D::setSpecularIlluminationColor(DGtal::Color aColor)
 {
-  return myCurrentLineColor;
+    myCurrentSpecularIlluminationColor=aColor;
 }
+
+/**
+  *  Sets the diphuse illumination color of the following object
+  */
+inline
+void ViewerOgre3D::setDiphuseIlluminationColor(DGtal::Color aColor)
+{
+    myCurrentDiphuseIlluminationColor=aColor;
+}
+
+
+/**
+  *  Sets the texture of the following object
+  */
+inline
+void ViewerOgre3D::setTexture(std::string aTexture)
+{
+  
+}
+
+
+
+
+/**
+  *  Returns the self illumination color of the following object
+  */
+DGtal::Color ViewerOgre3D::getSelfIlluminationColor( )
+{
+}
+
+
+/**
+  *  Returns the Ambient illumination color of the following object
+  */
+DGtal::Color  ViewerOgre3D::getAmbientIlluminationColor( )
+{
+  
+}
+
+/**
+  *  Returns the Specular illumination color of the following object
+  */
+DGtal::Color ViewerOgre3D::getSpecularIlluminationColor( )
+{
+}
+
+/**
+  *  Returns the diphuse illumination color of the following object
+  */
+DGtal::Color ViewerOgre3D::getDiphuseIlluminationColor( )
+{
+}
+
+/**
+*   Returns  the texture of the following object
+*/
+std::string ViewerOgre3D::getTexture()
+{
+}
+     
+

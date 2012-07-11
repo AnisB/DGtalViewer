@@ -43,11 +43,13 @@
 #include <iostream>
 #include "CommonOgre.h"
 #include "DGtal/base/CountedPtr.h"
+#include "ViewerOgre3D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+   
 
  /**
    *@brief Base class specifying the methods for classes which intend to
@@ -55,14 +57,12 @@ namespace DGtal
    * 
    */
   struct DrawWithViewerOgre3DModifier {
-    std::string className() const
+    virtual std::string className() const
     {
       return "DrawWithViewerOgre3DModifier";
     }
 
   };
-
-
 
 
 
@@ -96,7 +96,7 @@ namespace DGtal
    * style for a given class. Realizes the concept
    * CDrawableWithDisplay3D.
    */
-  struct CustomViewerStyle3D : public DrawWithViewerOgre3DModifier {
+  struct CustomViewerStyle3D {
     /**
      * @param classname the name of the class to which the style is associated.
      *
@@ -112,10 +112,10 @@ namespace DGtal
       return "CustomViewerStyle3D";
     }
 
-    /*void setStyleDisplay3D( Display3D & display ) const
+    virtual void setStyle()
     {
-      display.myStyles[ myClassname ] = myStyle;
-    }*/
+      
+    }
 
     std::string myClassname;
     CountedPtr<DrawableWithViewerOgre3D> myStyle;
@@ -137,13 +137,14 @@ namespace DGtal
    \endcode
    * @see Display3D
    */
-  struct CustomViewerColors3D : public DrawWithViewerOgre3DModifier
+  struct CustomViewerColors3D : public DrawableWithViewerOgre3D
   {
-    Color myPenColor;
-    Color myFillColor;
-//    Color SelfIllumination;
-//    Color DiphuseIllumination;
-//     Color SelfIllumination;
+       DGtal::Color myCurrentSelfIlluminationColor;
+       DGtal::Color myCurrentAmbientIlluminationColor;
+       DGtal::Color myCurrentDiphuseIlluminationColor;
+       DGtal::Color myCurrentSpecularIlluminationColor;
+       std::string myTexture;
+
 
     /**
      * Constructor.
@@ -151,16 +152,31 @@ namespace DGtal
      * @param penColor specifies the pen color.
      * @param fillColor specifies the fill color.
      */
-    CustomViewerColors3D( const Color & penColor,
-        const Color & fillColor )
-      : myPenColor( penColor ), myFillColor( fillColor )
+    CustomViewerColors3D( const Color &  aSelfIlluminationColor,
+       const Color &  aAmbientIlluminationColor,
+       const Color &  aDiphuseIlluminationColor,
+      const Color & aSpecularIlluminationColor,
+      std::string  aTexture)
+      :  myCurrentSelfIlluminationColor(aSelfIlluminationColor),
+        myCurrentAmbientIlluminationColor(aAmbientIlluminationColor),
+        myCurrentDiphuseIlluminationColor(aDiphuseIlluminationColor),
+        myCurrentSpecularIlluminationColor(aSpecularIlluminationColor),
+        myTexture(aTexture)
     {}
-    
-    /*virtual void setStyleDisplay3D( Display3D & display) const
-    {
-      display.setFillColor(myFillColor);
-      display.setLineColor(myPenColor);
-    }*/
+
+      std::string className() const
+      {
+	return "CustomViewerColors3D";
+      }
+
+      virtual void setStyle( ViewerOgre3D & aViewer ) const 
+      {
+//	    aViewer.setSelfIlluminationColor(myCurrentSelfIlluminationColor);
+//	    aViewer.setAmbientIlluminationColor(myCurrentAmbientIlluminationColor);
+//	    aViewer.setDiphuseIlluminationColor(myCurrentDiphuseIlluminationColor);
+//	    aViewer.setSpecularIlluminationColor(myCurrentSpecularIlluminationColor);
+	    aViewer.setTexture(myTexture);
+      }
   };
 
 
@@ -315,7 +331,6 @@ namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
 #endif // !defined DrawWithDisplay3DModifier_h
 
 #undef DrawWithDisplay3DModifier_RECURSES

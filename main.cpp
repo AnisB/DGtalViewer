@@ -68,7 +68,7 @@ void test1()
   DGtal::Z3i::Domain domain ( p4, p5 );
   
   
-  View << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100));
+  View << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),"unselected.jpg");
   View << DGtal::SetViewerMode3D(p1.className(),"Paving");
   View << p1;
   View << p2;
@@ -76,7 +76,7 @@ void test1()
   DGtal::Z3i::DigitalSet shape_set1 ( domain );
   DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
   View << DGtal::SetViewerMode3D(shape_set1.className(),"Grid");
-  View << DGtal::CustomViewerColors3D(DGtal::Color(0,0,255,255),DGtal::Color(0,0,255,255));
+  View << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),"unselected.jpg");
   View << shape_set1;
 
 
@@ -228,7 +228,11 @@ void test2()
       DGtal::Z3i::Domain domain ( p4, p5 );
       DGtal::ViewerOgre3D View;
       DGtal::Z3i::DigitalSet shape_set1 ( domain );
+      
       DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
+      View << DGtal::SetViewerMode3D(shape_set1.className(),"Grid");
+      View << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),"unselected.jpg");
+      View << DGtal::CustomViewerStyle3D( shape_set1.className(), new DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),"unselected.jpg") );
       View << shape_set1;
       View.start();
        

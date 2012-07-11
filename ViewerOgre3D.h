@@ -129,8 +129,7 @@ public:
       /**
        *  Creates a texture starting from a DGtal color
        */
-//      void createMaterial(std::string  aName,int red,int green, int blue, int transparency);
-        void createMaterial(std::string  aName,DGtal::Color  aColor);
+        void createMaterial(std::string  aName);
       
       /**
        *  Get a son node ( of the root one)
@@ -348,27 +347,63 @@ public:
      std::string getMode( const std::string & objectName ) const;
     
     
-     
+     //-------------------------------------------------------------------------------------Color management
       /**
-       *  Sets the fill color
+       *  Sets the self illumination color of the following object
        */
-     void setFillColor(DGtal::Color aColor);
+     void setSelfIlluminationColor(DGtal::Color aColor);
+     
      
      /**
-       *  Sets the current line color
+       *  Sets the Ambient illumination color of the following object
        */
-     void setLineColor(DGtal::Color aColor);
+     void setAmbientIlluminationColor(DGtal::Color aColor);
      
      /**
-      *  Returns the fill color
-      */
-      DGtal::Color  getFillColor();
-
+       *  Sets the Specular illumination color of the following object
+       */
+     void setSpecularIlluminationColor(DGtal::Color aColor);
+     
       /**
-	*  Returns the current line color
-	*/
-      DGtal::Color  getLineColor();
+       *  Sets the diphuse illumination color of the following object
+       */
+     void setDiphuseIlluminationColor(DGtal::Color aColor);
+     
+      /**
+       *  Sets the texture of the following object
+       */
+     void setTexture(std::string aTexture);
+     
+     
       
+     
+     /**
+       *  Returns the self illumination color of the following object
+       */
+     DGtal::Color  getSelfIlluminationColor( );
+     
+     
+     /**
+       *  Returns the Ambient illumination color of the following object
+       */
+     DGtal::Color  getAmbientIlluminationColor( );
+     
+     /**
+       *  Returns the Specular illumination color of the following object
+       */
+     DGtal::Color  getSpecularIlluminationColor( );
+     
+      /**
+       *  Returns the diphuse illumination color of the following object
+       */
+     DGtal::Color getDiphuseIlluminationColor( );
+     
+      /**
+      *   Returns  the texture of the following object
+      */
+     std::string getTexture();
+     
+
       
 	/**
        *  Sets the color
@@ -463,8 +498,12 @@ protected:
        /**
 	* Current colors
 	*/
-       DGtal::Color myCurrentFillColor;
-       DGtal::Color myCurrentLineColor;
+       DGtal::Color myCurrentSelfIlluminationColor;
+       DGtal::Color myCurrentAmbientIlluminationColor;
+       DGtal::Color myCurrentDiphuseIlluminationColor;
+       DGtal::Color myCurrentSpecularIlluminationColor;
+       std::string myTexture;
+
 	
 protected:
   
