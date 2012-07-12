@@ -101,13 +101,14 @@ void test2()
   DGtal::Z3i::Point p10 ( 30, 30 , 30 );
   View << p10;
 
+  /*
   View << DGtal::ViewerClippingPlane ( 1, 0, 0, -4.9 );
   View << DGtal::ViewerClippingPlane ( 0, 1, 0.3, -10 );
   View << DGtal::ViewerCameraPosition ( 2.500000, 2.500000, 16.078199 )
   << DGtal::ViewerCameraDirection ( 0.000000, 0.000000, -1.000000 )
   << DGtal::ViewerCameraUpVector ( 0.000000, 1.000000, 0.000000 );
   View << DGtal::ViewerCameraZNearFar ( 0.1, 200 );
-
+  */
   DGtal::Z3i::Point p1 ( 0, 0, 0 );
   DGtal::Z3i::Point p2 ( 0, 0 , 0 );
 
@@ -230,7 +231,7 @@ void test2()
       DGtal::Z3i::DigitalSet shape_set1 ( domain );
       
       DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
-//      View << DGtal::SetViewerMode3D(shape_set1.className(),"Grid");
+      View << DGtal::SetViewerMode3D(shape_set1.className(),"PavingTransp");
 //      View << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),"unselected.jpg");
 //      View << DGtal::CustomViewerStyle3D( shape_set1.className(), new DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),"unselected.jpg") );
       View << shape_set1;
@@ -241,9 +242,9 @@ int main ( int argc, char** argv )
 {
 //  test1();
 //  test2();
-//  test3();
+    test3();
 //  test4(); 
 //  test5();
-    test6();
+//    test6();
   return 0;
 }

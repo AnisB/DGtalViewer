@@ -337,10 +337,10 @@ void CameraMan::setInitialPosition(Ogre::Vector3 & newPos)
   */
 void CameraMan::reset()
 {
-  myCameraNode->setOrientation(mySavedOrientation);
+//  myCameraNode->setOrientation(mySavedOrientation);
 //  myCameraNode->setPosition(myInitialPosition);
 //  myCameraNode->setPosition(myCameraNode->getPosition());
-  myCameraNode->lookAt(mySceneCenter, Ogre::Node::TS_WORLD);
+//	  myCameraNode->lookAt(mySceneCenter, Ogre::Node::TS_WORLD);
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

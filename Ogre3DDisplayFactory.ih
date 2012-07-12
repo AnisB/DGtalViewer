@@ -197,7 +197,7 @@ template<typename Domain>
 inline
 void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
-    typedef typename Domain::Point Point;
+  typedef typename Domain::Point Point;
   typedef typename Domain::Point::Component Component;
   typedef typename std::set<Point>::const_iterator ConstIterator;
 
@@ -210,10 +210,10 @@ void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer
 
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
     {
-      Representation * newPoint = viewer.addPoint ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+      Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
                                   NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
                                   NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
-                                  theNode->createChildSceneNode(),theNode->getName() , 2);
+                                  theNode->createChildSceneNode(),theNode->getName() );
 
 
       DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );

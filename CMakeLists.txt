@@ -145,6 +145,7 @@ set(SRCS Representation.cpp
          DGtalNode.cpp 
          mousecursor.cpp
 	 DrawableWithOgre.cpp
+         TextZone.cpp
 	 main.cpp
 )
  

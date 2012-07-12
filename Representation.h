@@ -241,6 +241,7 @@ protected :
   bool mVirtual;
   Ogre::SceneManager * mySceneMgr;
   std::list<std::string> myMaterials;
+  int myScale;
 
 }; // end of class Representation
 

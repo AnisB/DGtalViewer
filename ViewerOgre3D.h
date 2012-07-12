@@ -49,7 +49,8 @@
 #include "DGtalNode.h"
 #include "DGtal/base/CountedPtr.h"
 #include "CommonOgre.h"
-
+#include "TextZone.h"
+#include <OgreFontManager.h> 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,7 +59,7 @@ class Ogre3DDisplayFactory;
 
 class InputListener;
 
-const double scaleFactor= 40.0;
+const double scaleFactor= 20.0;
 /////////////////////////////////////////////////////////////////////////////
 // class ViewerOgre3D
 /**
@@ -72,6 +73,8 @@ class ViewerOgre3D
 
   // ----------------------- local types ------------------------------
   public:
+    
+    
     /**
      * The associated map type for storing the default styles of
      * digital objects.
@@ -83,10 +86,12 @@ class ViewerOgre3D
      * displaying for digital objects.
      */
     typedef std::map< std::string, std::string > ModeMapping;
+    
+    
 public:
 
       /**
-       *  Constructor.
+       *  Constructor for the viewer
        */
       ViewerOgre3D();
       
@@ -127,24 +132,30 @@ public:
       
       
       /**
-       *  Creates a texture starting from a DGtal color
+       *  Creates a texture, using the current color and texture attributes
+       *  @param aName the name of the texture that will be created
        */
         void createMaterial(std::string  aName);
       
+	
+	
       /**
        *  Get a son node ( of the root one)
+       *  @return a new SceneNode
        */
       Ogre::SceneNode * getANode();
       
       
       /**
-       *  get the root scene node (Ogre)
+       *  Returns the root scene node (Ogre)
+       *  @return The Ogre root scenenode
        */
       Ogre::SceneNode * getRootSceneNode() { return mySceneMgr->getRootSceneNode();}
       
       
       /**
        *  get the root scene node (DGtal one) 
+       *  @return the DGtal rootnode
        */
       DGtalNode * getRootDGtalNode() { return myRootNode;}
       
@@ -152,8 +163,10 @@ public:
       
       /**
        *  Add a DgtalNode to the list
+       *  @param anObject a DGtalNode to add to the nodes list
        */
       void addToList(DGtalNode * anObject);
+      
       
       
       /**
@@ -164,41 +177,49 @@ public:
       
       /**
        *  Set the near and far clip distance of the camera
+       *  @param near the new near clip distance of the camera
+       *  @param far the new far clip distance of the camera
        */
       void setNearFar(double near,double far);
       
       
       /**
-       *  
+       *  Increases the size of the current UNFR
        */
       void more( );
       
       
       /**
-       *  
+       *  Decreases the size of the current UNFR
        */
       void less( );
       
       
       /**
        *  set's the camera upvector
+       *  @param anUp the new upVector of the camera
        */
       void setCameraUpVector(Ogre::Vector3   anUp);
       
       
       /**
        *  Set's the camera Direction
+       *  @param aPoint the new camera direction. 
        */
       void setCameraDirection(Ogre::Vector3   aPoint);
       
       
       /**
        *  Set's the camera position
+       *  @param aPosition the new camera position
        */
       void setCameraPosition(Ogre::Vector3   aPosition);
       
+      
+      
       /**
        *  Returns back a pointer to the scene manager
+       *  @return pointer to sceneManager
        */
       Ogre::SceneManager * getSceneMgr() { return mySceneMgr;}		
       
@@ -206,18 +227,35 @@ public:
       /**
        *  looks for a point and changes the current selection if found (x, y) 
        *  the mouse coordinates and (h,w) the window dimension
+       *  
+       *  @param x the x position on the 2D screen
+       *  @param y the y position en the 2D screen
+       *  @param h the window height
+       *  @param w the window widht
        */
       void lookForIt(unsigned int x,unsigned int y,unsigned int h,unsigned int w);
       
       
       /**
-       *  adds a clipping plane
+       *  Adds a clipping plane which has the followiing equation " ax + by + cz +d = 0 "
+       *  @param a the first coefficient of the plane equation
+       *  @param b the second coefficient of the plane equation
+       *  @param c the third coefficient of the plane equation
+       *  @param d the fourth  coefficient of the plane equation
+       * 
        */
       void addClippingPlane(double a,double b,double c, double d); 
       
       
       /**
-       *  adds a voxel
+       *  Creates a voxel and returns it's representation
+       *  @param x xCoordinate
+       *  @param y yCoordinate
+       *  @param z zCoordinate
+       *  @param aNode the future representation node
+       *  @param materialNode the material name (should be precreated)
+       * 
+       *  @return the new representation
        */
       Representation  * addVoxel(double x,double y, double z,
 				 Ogre::SceneNode * aNode 
@@ -225,38 +263,85 @@ public:
       
       
       /**
-       *  adds a line
+       *  Creates a line and returns it's representation
+       *  @param x1 xCoordinate for the first point
+       *  @param y1 yCoordinate for the first point
+       *  @param z1 zCoordinate for the first point
+       *  @param x2 xCoordinate for the second point
+       *  @param y2 yCoordinate for the second point
+       *  @param z2 zCoordinate for the second point
+       *  @param aNode the future representation node
+       *  @param materialNode the material name (should be precreated)
+       * 
+       *  @return the new representation
        */
       Representation * addLine(double x1, double y1, double z1,
 			       double x2, double y2,double z2,Ogre::SceneNode * aNode,std::string materialName);
       
       /**
-       *  adds a point
+       *  Creates a point and returns it's representation
+       *  @param x xCoordinate
+       *  @param y yCoordinate
+       *  @param z zCoordinate
+       *  @param aNode the future representation node
+       *  @param materialNode the material name (should be precreated)
+       * 
+       *  @return the new representation
        */
       Representation * addPoint (double x, double y, double z,
 				 Ogre::SceneNode * aNode ,std::string materialName, double factor = 1);
       
       
       /**
-       *  adds a kalimsky surfel
+       *  Creates a Kalimsky surfel and returns it's representation
+       *  @param x xCoordinate
+       *  @param y yCoordinate
+       *  @param z zCoordinate
+       *  @param aNode the future representation node
+       *  @param materialNode the material name (should be precreated)
+       * 
+       *  @return the new representation
        */
       Representation * addKSSurfel (double x, double y, double z,
 				    bool xSurfel, bool ySurfel, bool zSurfel,
 				    Ogre::SceneNode * aNode,std::string materialName);
       
       /**
-       *  adds a kalimsky voxel
+       *  Creates a Kalimsky voxel and returns it's representation
+       *  @param x xCoordinate
+       *  @param y yCoordinate
+       *  @param z zCoordinate
+       *  @param aNode the future representation node
+       *  @param materialNode the material name (should be precreated)
+       * 
+       *  @return the new representation
        */
       Representation * addKSVoxel (int x, int y, int z,Ogre::SceneNode * aNode,std::string materialName);
       
       
       /**
-       * adds a kalimsky pointel
+       *  Creates a Kalimsky pointel and returns it's representation
+       *  @param x xCoordinate
+       *  @param y yCoordinate
+       *  @param z zCoordinate
+       *  @param aNode the future representation node
+       *  @param materialNode the material name (should be precreated)
+       * 
+       *  @return the new representation
        */
       Representation * addKSPointel (double x, double y, double z,Ogre::SceneNode * aNode,std::string materialName);
       
-      /** 
-       * adds a kalimsky pointel
+      
+      
+      /**
+       *  Creates a Kalimsky lignel and returns it's representation
+       *  @param x xCoordinate
+       *  @param y yCoordinate
+       *  @param z zCoordinate
+       *  @param aNode the future representation node
+       *  @param materialNode the material name (should be precreated)
+       * 
+       *  @return the new representation
        */
       Representation * addKSLinel (double x1, double y1, double z1,double x2,
 				   double y2, double z2,
@@ -264,24 +349,30 @@ public:
       
       
       /**
-       *  clears the scene
+       *  Clears the scene, destroys all the DGtalNodes and their representation
+       *  
        */
       void clearScene();
       
       
       /**
-	*   Displays the scene on the standard output
+	*   Displays the scene content on the standard output
        */
       void sceneDisplay();
       
+      
+      
       /**
        *  Tells if we are in the manipulating mode
+       *  @return a boolean that is true if the viewer is in manupulating
        */
       bool isInManupulatingMode() {return myManupilatingFlag;}
       
       
       /**
-       *  updates the manipulating value
+       *  Updates the manipulating value
+       *  @param change is >  0 we increase the actual value by the step 
+       *  if it's negative we decrease by the step ( if we dont go out the range)
        */
       void newManipulatingValue(int change);
       
@@ -515,10 +606,25 @@ protected:
        DGtal::Color myCurrentDiphuseIlluminationColor;
        DGtal::Color myCurrentSpecularIlluminationColor;
        std::string myTexture;
+       
+       
+       /**
+	*  2D display
+	* 
+	*/
+        TextZone * myTitle;
+	TextZone * myMode;
+       
+
 
 	
 protected:
   
+      /**
+      *  Updates the manipulate label value
+      */
+      void updateManipulateDisplay();
+      
       /**
 	* draws the axes
 	*/  

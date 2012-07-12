@@ -240,6 +240,8 @@ namespace DGtal
               */	
               Ogre::SceneManager * mySceneMgr;
 	      
+	      int myMouseX;
+	      int myMouseY;
 
           };
       }

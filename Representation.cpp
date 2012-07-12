@@ -55,6 +55,7 @@ using namespace std;
     mVirtual=false;
     mySceneMgr = aSceneMgr;
     myMovableObjectType=aMovableObjectType;
+    myScale=3;
   }
 
 /**
@@ -66,6 +67,8 @@ using namespace std;
     myName=aName;
     mVirtual=true;
     mySceneMgr = aSceneMgr;
+    myScale=3;
+
   }
   
  
@@ -82,7 +85,7 @@ DGtal::Representation::~Representation()
 // Interface - public :
 
 /**
-* Writes/Displays the object on an output stream.
+* Writes/Displays the object o5n an output stream.
 * @param out the output stream where the object is written.
 */
 void
@@ -264,7 +267,11 @@ std::list<std::string> & Representation::getMaterials()
   */
 void Representation::more( )
 {
-  mySceneNode->scale(1.5,1.5,1.5);
+  if(myScale<5)
+  {
+    mySceneNode->scale(2.0,2.0,2.0);
+    myScale++;
+  }
 }
 
 
@@ -273,7 +280,11 @@ void Representation::more( )
   */
 void Representation::less( )
 {
+  if(myScale>1)
+  {
     mySceneNode->scale(0.5,0.5,0.5);
+    myScale --;
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

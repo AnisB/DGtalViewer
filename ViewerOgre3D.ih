@@ -37,6 +37,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "Style3DFactory.h"
 #include "CommonOgre.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -71,7 +72,6 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
   if ( it != myStyles.end() ) 
     if ( it->second.get() != 0 )
       {
-	  cout<<"application du style"<<endl;
 	  DGtal::Style3DFactory::draw(*this, it->second.get());
       }
       
@@ -123,11 +123,15 @@ void ViewerOgre3D::operator>> ( TDrawableWithDisplay3D & object )
   if ( object.className() == "PointVector" )
     {
       mySelectionMode = true;
+      myMode->setCaption("Mode: Selection / Select a PointVector");
       start();
       const TDrawableWithDisplay3D * myPoint  = ( ( DrawableWithOgreWrapper<TDrawableWithDisplay3D> * ) ( mySelectedDGtalNode->getDGtalObject() ) )->getDgtalObject();
       object = ( *myPoint );
       mySelectionMode = false;
+      myMode->setCaption("Mode: View");
+
     }
+    
 }
 
 
@@ -147,7 +151,7 @@ void ViewerOgre3D::manipulate ( TDrawableWithDisplay3D & anObject, TDrawableWith
   myMinManupulating = minValue;
   myCurrentManupulating = minValue;
   myStep = step;
-
+  updateManipulateDisplay();
   while ( myManupilatingFlag )
     {
       clearScene();
@@ -156,6 +160,8 @@ void ViewerOgre3D::manipulate ( TDrawableWithDisplay3D & anObject, TDrawableWith
       start();
       delete &Object;
     }
+  myMode->setCaption("Mode: View");
+
 }
 
 /**
@@ -197,7 +203,24 @@ ViewerOgre3D::ViewerOgre3D() : myCurrentObject ( 0 ), mySelectionMode ( false )
   //DEVICES
   myWindow = myRoot->initialise ( true, "viewer3D" );
 
-
+   //----------------- Fonts loading
+  // get the resource manager
+  Ogre::ResourceGroupManager &resGroupMgr = Ogre::ResourceGroupManager::getSingleton();
+  // get the font manager
+  Ogre::FontManager &fontMgr = Ogre::FontManager::getSingleton();
+  // create a font resource
+  Ogre::ResourcePtr font = fontMgr.create("MyFont","General");
+  // set as truetype
+  font->setParameter("type","truetype");
+  // set the .ttf file name
+  font->setParameter("source","bluecond.ttf");
+  // set the size
+  font->setParameter("size","26");
+  // set the dpi
+  font->setParameter("resolution","96");
+  // load the ttf
+  font->load();
+ 
 
   //CREATION DE LA SCENE
   createScene();
@@ -214,11 +237,23 @@ ViewerOgre3D::ViewerOgre3D() : myCurrentObject ( 0 ), mySelectionMode ( false )
   myUpperFatherNonRoot = NULL;
   
   
-    myCurrentSelfIlluminationColor= DGtal::Color(100,100,100,255);
-    myCurrentAmbientIlluminationColor= DGtal::Color(100,100,100,255);
-    myCurrentDiphuseIlluminationColor= DGtal::Color(100,100,100,255);
-    myCurrentSpecularIlluminationColor= DGtal::Color(100,100,100,255);
-    myTexture= "unselected.jpg";
+  myCurrentSelfIlluminationColor= DGtal::Color(100,100,100,255);
+  myCurrentAmbientIlluminationColor= DGtal::Color(100,100,100,255);
+  myCurrentDiphuseIlluminationColor= DGtal::Color(100,100,100,255);
+  myCurrentSpecularIlluminationColor= DGtal::Color(100,100,100,255);
+  myTexture= "unselected.jpg";
+  
+  myTitle = new TextZone(" Dgtal Ogre viewer"); 
+  myTitle->setPosition(300,10);
+
+  myMode = new TextZone("Mode: View"); 
+  
+  
+  myMode->setPosition(70,550);
+  myMode->setSize(36);
+
+
+
 }
 
 /**
@@ -237,7 +272,6 @@ ViewerOgre3D::~ViewerOgre3D()
   */
 void ViewerOgre3D::start()
 {
-
   myRoot->startRendering();
   myInputManager->startRendering();
 }
@@ -274,6 +308,8 @@ void ViewerOgre3D::initMaterials()
 
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
+  
+
   //fin chargement materials
 }
 
@@ -307,16 +343,17 @@ void ViewerOgre3D::createScene()
 
 
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
-  light->setType ( Ogre::Light::LT_POINT );
+  light->setType ( Ogre::Light::LT_SPOTLIGHT );
   light->setDirection ( Ogre::Vector3 ( 1, -1, 0 ) );
   light->setDiffuseColour ( 0.8, 0.8, 0.8 );
   light->setSpecularColour ( 0.8, 0.5, 0.8 );
   light->setPosition ( 100, 250, 100 );
+  light->setCastShadows(false);
 
   //Camera
   myCamera = mySceneMgr->createCamera ( "mYCamera" );
-  myCamera->setFarClipDistance ( 10000 );
-  myCamera->setNearClipDistance ( 0.01 );
+  myCamera->setFarClipDistance ( 3000 );
+  myCamera->setNearClipDistance ( 2 );
   myCamera->setPosition ( Ogre::Vector3 ( 0, 10, 500 ) );
   myCamera->lookAt ( Ogre::Vector3 ( 0, 0, 0 ) );
 
@@ -366,7 +403,6 @@ Ogre::SceneNode * ViewerOgre3D::getANode()
 void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, unsigned int w )
 {
 
-  cout << "COucou" << endl;
   Representation * temp = NULL;
   double DistanceToCamera = -1;
 
@@ -514,6 +550,7 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z,
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr,
 								 m_ent, m_bodySceneNode,
 								 m_ent->getName(), "Entity" );
+   m_ent->setCastShadows(false);
   aRepresentation->addMaterial ( materialName );
   return aRepresentation;
 
@@ -980,8 +1017,43 @@ void ViewerOgre3D::newManipulatingValue ( int change )
           myInputManager->stopRendering();
         }
     }
+    
+
+    updateManipulateDisplay();
+}
+
+
+/**
+  *  Updates the manipulate label value
+  */
+void ViewerOgre3D::updateManipulateDisplay()
+{
+
+    string current;  
+    ostringstream currentconvert; 
+    currentconvert << myCurrentManupulating;   
+    current = currentconvert.str();
+    
+    string max;  
+    ostringstream maxconvert; 
+    maxconvert << myMaxManupulating;   
+    max = maxconvert.str();
+    
+    string min;  
+    ostringstream minconvert; 
+    minconvert << myMinManupulating;   
+    min = minconvert.str();
+    
+    string step;  
+    ostringstream stepconvert; 
+    stepconvert << myStep;   
+    step = stepconvert.str();
+    
+    
+    myMode->setCaption("Mode: Manipulate / Current Value:"+  current +" / Max: "+  max +" / Mix: "+  min +" / Step: "+  step );
 
 }
+
 
 /**
   *  Stops the manipulating mode

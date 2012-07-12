@@ -47,6 +47,7 @@
 #include <OgreTextureManager.h>
 #include <OgreOverlayContainer.h>
 #include <OgreTechnique.h>
+#include "OgreTextAreaOverlayElement.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -122,7 +123,7 @@ namespace DGtal
 
 
         private:
-
+           Ogre::TextAreaOverlayElement* myText ;
           /**
            *  The overlay
            */
