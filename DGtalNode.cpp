@@ -443,3 +443,125 @@ void DGtalNode::less( )
       it++;
     }
 }
+
+/**
+*  
+*/
+void DGtalNode::moreTransparency( )
+{
+  if ( myRepresentation->isVirtual() )
+    {
+      IncreaseTransparency(mySons.begin()->second->getRepresentation()->getMaterial());
+
+    }
+
+}
+
+/**
+*  
+*/
+void DGtalNode::lessTransparency( )
+{
+  if ( myRepresentation->isVirtual() )
+    {
+      DecreaseTransparency(mySons.begin()->second->getRepresentation()->getMaterial());
+
+    }
+
+}
+
+/**
+ * 
+ */
+void DGtalNode::IncreaseTransparency(Ogre::MaterialPtr  aMaterial)
+{
+  
+  Ogre::Technique* lFirstTechnique = aMaterial->getTechnique ( 0 );
+  Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
+  
+  if((lFirstPass->getSelfIllumination().a*0.5)>0.05)
+  {
+    Ogre::ColourValue lSelfIllumnationColour ( ( double ) lFirstPass->getSelfIllumination().r,
+					      ( double ) lFirstPass->getSelfIllumination().g, 
+					      ( double ) lFirstPass->getSelfIllumination().b ,
+					      ( double ) lFirstPass->getSelfIllumination().a*0.5);
+    lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
+  }
+
+  if((lFirstPass->getDiffuse().a*0.5)>0.05)
+  {
+    Ogre::ColourValue lDiffuseColour ( ( double ) lFirstPass->getDiffuse().r,
+				      ( double )  lFirstPass->getDiffuse().g , 
+				      ( double )  lFirstPass->getDiffuse().b , 
+				      ( double )  lFirstPass->getDiffuse().a*0.5);
+    lFirstPass->setDiffuse ( lDiffuseColour );
+  }
+   
+  if((lFirstPass->getAmbient().a*0.5)>0.05)
+  {
+    Ogre::ColourValue lAmbientColour (( double )  lFirstPass->getAmbient().r, 
+				      ( double ) lFirstPass->getAmbient().g ,
+				      ( double ) lFirstPass->getAmbient().b , 
+				      ( double ) lFirstPass->getAmbient().a*0.5 );
+    lFirstPass->setAmbient ( lAmbientColour );
+  }
+  
+  if((lFirstPass->getSpecular().a*0.5)>0.05)
+  {
+  Ogre::ColourValue lSpecularColour ( ( double ) lFirstPass->getSpecular().r ,
+				      ( double ) lFirstPass->getSpecular().g , 
+				      ( double ) lFirstPass->getSpecular().b,
+				      ( double )lFirstPass->getSpecular().a *0.5);
+  lFirstPass->setSpecular ( lSpecularColour );
+  }
+}
+      
+      
+      
+      /**
+ * 
+ */
+void DGtalNode::DecreaseTransparency(Ogre::MaterialPtr  aMaterial)
+{
+  
+  Ogre::Technique* lFirstTechnique = aMaterial->getTechnique ( 0 );
+  Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
+    
+ if((lFirstPass->getSpecular().a*2.0)<1.1)
+ {
+  Ogre::ColourValue lSelfIllumnationColour ( ( double ) lFirstPass->getSelfIllumination().r,
+					      ( double ) lFirstPass->getSelfIllumination().g, 
+					      ( double ) lFirstPass->getSelfIllumination().b ,
+					      ( double ) lFirstPass->getSelfIllumination().a*2.0);
+    lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
+ }
+
+  if((lFirstPass->getDiffuse().a*2.0)<1.1)
+ {
+  Ogre::ColourValue lDiffuseColour ( ( double ) lFirstPass->getDiffuse().r,
+				     ( double )  lFirstPass->getDiffuse().g , 
+				     ( double )  lFirstPass->getDiffuse().b , 
+				     ( double )  lFirstPass->getDiffuse().a*2.0);
+  lFirstPass->setDiffuse ( lDiffuseColour );
+ }
+ 
+ 
+ if((lFirstPass->getAmbient().a*2.0)<1.1)
+ {
+  Ogre::ColourValue lAmbientColour (( double )  lFirstPass->getAmbient().r, 
+				    ( double ) lFirstPass->getAmbient().g ,
+				    ( double ) lFirstPass->getAmbient().b , 
+				    ( double ) lFirstPass->getAmbient().a*2.0 );
+  lFirstPass->setAmbient ( lAmbientColour );
+ }
+
+  if((lFirstPass->getSpecular().a*2.0)<1.1)
+ {
+  Ogre::ColourValue lSpecularColour ( ( double ) lFirstPass->getSpecular().r ,
+				      ( double ) lFirstPass->getSpecular().g , 
+				      ( double ) lFirstPass->getSpecular().b,
+				      ( double )lFirstPass->getSpecular().a *2.7);
+  lFirstPass->setSpecular ( lSpecularColour );
+ }
+}
+      

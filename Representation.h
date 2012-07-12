@@ -175,10 +175,25 @@ bool clear();
 void unselect();
 
 /**
- *  Adds a new material to apply
+ *  Sets the  material name to apply
  */
-void addMaterial(std::string aMaterial);
+void setMaterialName(std::string aMaterial);
 
+/**
+ *  Sets the  material to apply
+ */
+void setMaterial(Ogre::MaterialPtr  aMaterial);
+
+/**
+ *  Returns the material 
+ */
+Ogre::MaterialPtr getMaterial();
+
+
+/**
+ *  Returns the material name
+ */
+std::string getMaterialName();
 
 /**
   *  
@@ -190,10 +205,23 @@ void more( );
   *  
   */
 void less( );
+
+
+/**
+*  
+*/
+void moreTransparency( );
+
+
+/**
+* 
+*/
+void lessTransparency( );
+      
 /**
  *  Returns the material List
  */
-std::list<std::string> & getMaterials();
+std::string getMaterials();
 
 
     // ------------------------- Protected Datas ------------------------------
@@ -240,7 +268,8 @@ protected :
   DGtalNode * myParent;
   bool mVirtual;
   Ogre::SceneManager * mySceneMgr;
-  std::list<std::string> myMaterials;
+  std::string myMaterialName;
+  Ogre::MaterialPtr  myMaterial;
   int myScale;
 
 }; // end of class Representation

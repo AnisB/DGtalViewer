@@ -213,6 +213,13 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
        case OIS::KC_L :
 	  myViewer->less();
        break;
+       
+       case OIS::KC_N :
+	  myViewer->moreTransparency();
+       break;
+       case OIS::KC_B :
+	  myViewer->lessTransparency();
+       break;
       default:
         break;
 

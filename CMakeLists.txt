@@ -31,7 +31,7 @@ if(EXISTS "/usr/local/lib/OGRE/cmake")
 
  elseif(EXISTS "/usr/share/OGRE/cmake")
 
-     set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+     set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
 
      set(OGRE_SAMPLES_INCLUDEPATH "/usr/share/OGRE/samples/Common/include/")
    else ()

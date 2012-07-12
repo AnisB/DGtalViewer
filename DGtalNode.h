@@ -254,6 +254,27 @@ namespace DGtal
 	  */
 	  void less( );
 
+	 /**
+	  *  Increases the transparency of the current UNFR
+	  */
+	  void moreTransparency( );
+	  
+	  
+	  /**
+	  *  Decreases the transparency of the current UNFR
+	  */
+	  void lessTransparency( );
+	  
+	  
+	  /**
+	  * 
+	  */
+	  void IncreaseTransparency(Ogre::MaterialPtr  aMaterial);
+	  	  
+	  /**
+	  * 
+	  */
+	  void DecreaseTransparency(Ogre::MaterialPtr  aMaterial);
 
           // ------------------------- Protected Datas ------------------------------
 

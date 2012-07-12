@@ -211,7 +211,7 @@ void Representation::unselect()
 {
   if(myMovableObjectType=="Entity")
   { 
-    ((Ogre::Entity*) myMovableObject)->setMaterialName(myMaterials.front());
+    ((Ogre::Entity*) myMovableObject)->setMaterialName(myMaterialName);
   }
 }
 
@@ -249,18 +249,38 @@ bool  Representation::clear()
 /**
  *  Adds a new material to apply
  */
-void Representation::addMaterial(std::string aMaterial)
+void Representation::setMaterialName(std::string aMaterial)
 {
-  myMaterials.push_front(aMaterial);
+    myMaterialName=aMaterial;
 }
 
 /**
- *  Returns the material List
+ *  Sets the  material to apply
  */
-std::list<std::string> & Representation::getMaterials()
+void Representation::setMaterial(Ogre::MaterialPtr  aMaterial)
 {
-  return myMaterials;
+  myMaterial = aMaterial;
 }
+
+
+/**
+ *  Returns the material name
+ */
+std::string Representation::getMaterialName()
+{
+  return myMaterialName;
+}
+
+
+/**
+ *  Returns the material 
+ */
+Ogre::MaterialPtr Representation::getMaterial()
+{
+  return myMaterial;
+}
+
+
 
 /**
   *  
@@ -285,6 +305,24 @@ void Representation::less( )
     mySceneNode->scale(0.5,0.5,0.5);
     myScale --;
   }
+}
+
+/**
+*  
+*/
+void Representation::moreTransparency( )
+{
+  
+
+}
+
+
+/**
+* 
+*/
+void Representation::lessTransparency( )
+{
+  std::cout<<"Hello"<<std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

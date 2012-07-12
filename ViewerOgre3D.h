@@ -195,6 +195,21 @@ public:
       void less( );
       
       
+      
+      
+      /**
+       *  Increases the transparency of the current UNFR
+       */
+      void moreTransparency( );
+      
+      
+      /**
+       *  Decreases the transparency of the current UNFR
+       */
+      void lessTransparency( );
+      
+      
+      
       /**
        *  set's the camera upvector
        *  @param anUp the new upVector of the camera
@@ -614,6 +629,8 @@ protected:
 	*/
         TextZone * myTitle;
 	TextZone * myMode;
+	
+	Ogre::MaterialPtr  myTempMaterial;
        
 
 
