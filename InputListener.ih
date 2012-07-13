@@ -53,47 +53,54 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   Ogre::SceneNode * aNode=myViewer->getANode();
   myCameraMan = new CameraMan (aNode, myCamera );
 
-  //Window initiate
-  OIS::ParamList pl;
-  unsigned long windowHnd = 0;
-  std::stringstream windowHndStr;
-  aWindow->getCustomAttribute ( "WINDOW", &windowHnd );
-  windowHndStr << windowHnd;
-  pl.insert ( OIS::ParamList::value_type ( "WINDOW", Ogre::StringConverter::toString ( aWindow ) ) );
 
 
-  // Input initate
-  myInputManager = OIS::InputManager::createInputSystem ( windowHnd );
-  myKeyboard = static_cast<OIS::Keyboard*> ( myInputManager->createInputObject ( OIS::OISKeyboard, true ) );
-  myMouse = static_cast<OIS::Mouse*> ( myInputManager->createInputObject ( OIS::OISMouse, true ) );
-  myKeyboard->setEventCallback ( this );
-  myMouse->setEventCallback ( this );
+    size_t windowHnd = 0;
+    std::ostringstream windowHndStr;
+    
+    myWindow->getCustomAttribute("WINDOW", &windowHnd);
+    windowHndStr << windowHnd;
 
+   OIS::ParamList pl;
+    pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+    pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
+    pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
 
+    
+    myInputManager = OIS::InputManager::createInputSystem( pl );
 
+    //Create all devices (We only catch joystick exceptions here, as, most people have Key/Mouse)
+    myKeyboard = static_cast<OIS::Keyboard*>(myInputManager->createInputObject( OIS::OISKeyboard, true ));
+    myMouse = static_cast<OIS::Mouse*>(myInputManager->createInputObject( OIS::OISMouse, true ));
 
-  // End flag initate
-  myShutdown = false;
+    myMouse->setEventCallback(this);
+    myKeyboard->setEventCallback(this);
+    // End flag initate
+    myShutdown = false;
 
-  // Other Flags initate
-  myMouseRightClicked = false;
-  myMouseLeftClicked = false ;
+    // Other Flags initate
+    myMouseRightClicked = false;
+    myMouseLeftClicked = false ;
 
 
   // Cursor initating
+/*
   myMouseCursor = new MouseCursor();
   myMouseCursor->setImage ( "cursor.png" );
   myMouseCursor->setVisible ( true );
   myMouseCursor->setWindowDimensions ( myWindow->getWidth(), myWindow->getHeight() );
+  
+  */
   const OIS::MouseState &ms = myMouse->getMouseState();
   ms.width = myWindow->getWidth();
   ms.height = myWindow->getHeight();
-
+ 
 
 
   // Other initating
   myIsInShiftMode = false;
   mySceneMgr = aSceneManager;
+  std::cout<<"Fin initialisation"<<std::endl;
 }
 
 
@@ -103,6 +110,7 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
 */
 InputListener::~InputListener()
 {
+//  delete myMouseCursor;
   myInputManager->destroyInputObject ( myKeyboard );
   myInputManager->destroyInputObject ( myMouse );
   delete myCameraMan;
@@ -293,7 +301,7 @@ bool InputListener::keyReleased ( const OIS::KeyEvent &e )
 
       case OIS::KC_CAPITAL:
         myIsInShiftMode = !myIsInShiftMode;
-        myMouseCursor->setVisible ( !myIsInShiftMode );
+ //       myMouseCursor->setVisible ( !myIsInShiftMode );
         break;
 
       default:
@@ -317,7 +325,7 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
 {
   if ( !myIsInShiftMode )
     {
-      myMouseCursor->updatePosition ( e.state.X.abs, e.state.Y.abs );
+//      myMouseCursor->updatePosition ( e.state.X.abs, e.state.Y.abs );
 
       if ( myMouseLeftClicked && ( ( e.state.X.abs != 0 ) && ( e.state.Y.abs != 0 ) && ( e.state.Y.abs != myWindow->getHeight() ) && ( e.state.X.abs != myWindow->getWidth() ) ) )
         {

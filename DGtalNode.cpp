@@ -74,7 +74,14 @@ DGtalNode::DGtalNode ( const DGtalNode& other )
 */
 DGtalNode::~DGtalNode()
 {
+   std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
 
+      while ( it != mySons.end() )
+        {
+	    delete (( *it ).second) ;
+          it++;
+        }
+  delete myRepresentation;
 }
 
 

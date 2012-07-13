@@ -401,7 +401,7 @@ public:
       /**
        *  sets the scene center
        */
-      Ogre::Vector3 setSceneCenter(Ogre::Vector3 & aVector)
+      void setSceneCenter(Ogre::Vector3 & aVector)
       {  
 	      mySceneCenter= aVector;
 	      myWristNode->setPosition(mySceneCenter);
@@ -522,8 +522,12 @@ public:
      std::string getTexture();
      
 
+      /**
+       * Destroys the scene
+       */
+       void destroyScene();
       
-	/**
+      /**
        *  Sets the color
        */
       ViewerOgre3D & operator<< ( const DGtal::Color & aColor );

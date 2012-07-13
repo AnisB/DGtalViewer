@@ -261,6 +261,7 @@ ViewerOgre3D::ViewerOgre3D(std::string aDirectory) : myCurrentObject ( 0 ), mySe
   */
 ViewerOgre3D::~ViewerOgre3D()
 {
+  delete myInputManager;
   myRoot->destroySceneManager ( mySceneMgr );
   delete myRoot;
 }
@@ -1332,4 +1333,12 @@ void ViewerOgre3D::lessTransparency( )
   {
     myUpperFatherNonRoot->lessTransparency();
   }
+}
+
+/**
+* Destroys the scene
+*/
+void ViewerOgre3D::destroyScene()
+{
+  delete myRootNode;
 }
