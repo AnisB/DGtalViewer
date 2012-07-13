@@ -1,5 +1,0 @@
-/home/stagiaire/Documents/DGtalViewer/DGtalViewer/tests/build/CMakeFiles/testDGtalSet.dir
-/home/stagiaire/Documents/DGtalViewer/DGtalViewer/tests/build/CMakeFiles/testDomain.dir
-/home/stagiaire/Documents/DGtalViewer/DGtalViewer/tests/build/CMakeFiles/testKalimskySpace.dir
-/home/stagiaire/Documents/DGtalViewer/DGtalViewer/tests/build/CMakeFiles/testManipulate.dir
-/home/stagiaire/Documents/DGtalViewer/DGtalViewer/tests/build/CMakeFiles/testSelection.dir
