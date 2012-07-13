@@ -2,7 +2,7 @@
 *.slo
 *.lo
 *.o
-
+/test/build
 # Compiled Dynamic libraries
 *.so
 

@@ -31,7 +31,6 @@
 #include "ViewerOgre3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include <iostream>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -217,7 +216,7 @@ void test2()
     DGtal::Z3i::Domain domain ( p4, p5 );
     DGtal::ViewerOgre3D View;
     View << domain;
-    View.start();
+    View.start();	
  }
  
  

@@ -183,11 +183,11 @@ DGtal::ViewerOgre3D::getMode ( const std::string & objectName ) const
 /**
   *  Constructor.
   */
-ViewerOgre3D::ViewerOgre3D() : myCurrentObject ( 0 ), mySelectionMode ( false )
+ViewerOgre3D::ViewerOgre3D(std::string aDirectory) : myCurrentObject ( 0 ), mySelectionMode ( false )
 {
 
-
-  myRoot = new Ogre::Root ( "plugins.cfg", "ogre.cfg", "Ogre.log" );
+  myDirectory = aDirectory;
+  myRoot = new Ogre::Root ( myDirectory+"plugins.cfg", myDirectory+"ogre.cfg", myDirectory+"Ogre.log" );
 
   //Chargement des ressources et configuration
   initMaterials();
@@ -285,7 +285,7 @@ void ViewerOgre3D::initMaterials()
 {
   //Chargement des matériaux , des meshs et de tout ce qu'on a comme ressource
   Ogre::ConfigFile cf;
-  cf.load ( "resources.cfg" );
+  cf.load ( myDirectory+"resources.cfg" );
   Ogre::ConfigFile::SectionIterator sectionIter = cf.getSectionIterator();
 
   Ogre::String sectionName, typeName, dataName;
@@ -302,7 +302,7 @@ void ViewerOgre3D::initMaterials()
           typeName = i->first;
           dataName = i->second;
 
-          Ogre::ResourceGroupManager::getSingleton().addResourceLocation ( dataName, typeName, sectionName );
+          Ogre::ResourceGroupManager::getSingleton().addResourceLocation ( myDirectory+dataName, typeName, sectionName );
         }
     }
 
@@ -1051,7 +1051,7 @@ void ViewerOgre3D::updateManipulateDisplay()
     step = stepconvert.str();
     
     
-    myMode->setCaption("Mode: Manipulate / Current Value:"+  current +" / Max: "+  max +" / Mix: "+  min +" / Step: "+  step );
+    myMode->setCaption("Mode: Manipulate / Current Value: "+  current +" / Max: "+  max +" / Mix: "+  min +" / Step: "+  step );
 
 }
 

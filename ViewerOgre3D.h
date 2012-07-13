@@ -93,7 +93,7 @@ public:
       /**
        *  Constructor for the viewer
        */
-      ViewerOgre3D();
+      ViewerOgre3D(std::string aDirectory);
       
       /**
        *  Destructor.
@@ -630,7 +630,12 @@ protected:
         TextZone * myTitle;
 	TextZone * myMode;
 	
+        /**
+	 *
+         */
 	Ogre::MaterialPtr  myTempMaterial;
+
+	std::string myDirectory;
        
 
 

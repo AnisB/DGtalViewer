@@ -49,12 +49,6 @@
 
 
 
-DGtal::Z3i::Point & translatePoint(DGtal::Z3i::Point  aPoint, int  aValue)
-{
-      return aPoint;
-}
-
-
 DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
 {
       DGtal::Z3i::Point p4( 30, 30 ,30 );
