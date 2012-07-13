@@ -3,6 +3,7 @@
 *.lo
 *.o
 /test/build
+*.cpp~
 # Compiled Dynamic libraries
 *.so
 
