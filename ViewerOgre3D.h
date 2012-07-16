@@ -527,6 +527,11 @@ public:
        */
        void destroyScene();
       
+       /**
+	*  Shows the commands on the standard output
+	*/
+       void showHelp();
+       
       /**
        *  Sets the color
        */
@@ -640,6 +645,8 @@ protected:
 	Ogre::MaterialPtr  myTempMaterial;
 
 	std::string myDirectory;
+	
+	Ogre::LogManager * myLogManager;
        
 
 

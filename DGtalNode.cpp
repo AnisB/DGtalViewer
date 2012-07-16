@@ -48,6 +48,7 @@ using namespace std;
 */
 DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myName ( aName ), mySceneMgr ( aSceneMgr )
 {
+  myDGtalObject=NULL;
   myIsRoot = false;
 }
 
@@ -57,6 +58,7 @@ DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myN
 */
 DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr )
 {
+  myDGtalObject=NULL;
   myIsRoot = false;
 }
 
@@ -65,6 +67,7 @@ DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr
 */
 DGtalNode::DGtalNode ( const DGtalNode& other )
 {
+  myDGtalObject=NULL;
   myIsRoot = false;
 }
 
@@ -73,15 +76,25 @@ DGtalNode::DGtalNode ( const DGtalNode& other )
 * Destructor
 */
 DGtalNode::~DGtalNode()
-{
+{ 
+
    std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
 
       while ( it != mySons.end() )
         {
+
 	    delete (( *it ).second) ;
           it++;
         }
-  delete myRepresentation;
+
+  if(myRepresentation!=NULL)
+  {
+    delete myRepresentation;
+  }
+ if(myDGtalObject!=NULL)
+  {
+  	delete myDGtalObject;
+  }
 }
 
 

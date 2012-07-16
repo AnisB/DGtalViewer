@@ -53,8 +53,6 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   Ogre::SceneNode * aNode=myViewer->getANode();
   myCameraMan = new CameraMan (aNode, myCamera );
 
-
-
     size_t windowHnd = 0;
     std::ostringstream windowHndStr;
     
@@ -83,14 +81,6 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
     myMouseLeftClicked = false ;
 
 
-  // Cursor initating
-/*
-  myMouseCursor = new MouseCursor();
-  myMouseCursor->setImage ( "cursor.png" );
-  myMouseCursor->setVisible ( true );
-  myMouseCursor->setWindowDimensions ( myWindow->getWidth(), myWindow->getHeight() );
-  
-  */
   const OIS::MouseState &ms = myMouse->getMouseState();
   ms.width = myWindow->getWidth();
   ms.height = myWindow->getHeight();
@@ -100,7 +90,6 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   // Other initating
   myIsInShiftMode = false;
   mySceneMgr = aSceneManager;
-  std::cout<<"Fin initialisation"<<std::endl;
 }
 
 
@@ -110,7 +99,6 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
 */
 InputListener::~InputListener()
 {
-//  delete myMouseCursor;
   myInputManager->destroyInputObject ( myKeyboard );
   myInputManager->destroyInputObject ( myMouse );
   delete myCameraMan;
@@ -227,6 +215,9 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
        break;
        case OIS::KC_B :
 	  myViewer->lessTransparency();
+       break;
+       case OIS::KC_H :
+	  myViewer->showHelp();
        break;
       default:
         break;

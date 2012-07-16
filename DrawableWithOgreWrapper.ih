@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <iostream>
 //////////////////////////////////////////////////////////////////////////////
 #include "DrawableWithOgreWrapper.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,6 +47,7 @@ DGtal::DrawableWithOgreWrapper<T>::DrawableWithOgreWrapper( const T & anObject)
 {
   myObject=&anObject;
   typeObject =anObject.className();
+
 }
   
     
@@ -56,6 +58,8 @@ template <typename T>
 inline
 DGtal::DrawableWithOgreWrapper<T>::~DrawableWithOgreWrapper()
 {
+  std::cout<<" Supression de l'objet DGtal"<<std::endl;
+  delete  myObject;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

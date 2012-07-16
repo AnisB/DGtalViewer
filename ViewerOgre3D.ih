@@ -186,8 +186,10 @@ DGtal::ViewerOgre3D::getMode ( const std::string & objectName ) const
 ViewerOgre3D::ViewerOgre3D(std::string aDirectory) : myCurrentObject ( 0 ), mySelectionMode ( false )
 {
 
+  myLogManager = new  Ogre::LogManager();
+  myLogManager->createLog(myDirectory+"Ogre.log" , true, false, true); 
   myDirectory = aDirectory;
-  myRoot = new Ogre::Root ( myDirectory+"plugins.cfg", myDirectory+"ogre.cfg", myDirectory+"Ogre.log" );
+  myRoot = new Ogre::Root ( myDirectory+"plugins.cfg", myDirectory+"ogre.cfg", "" );
 
   //Chargement des ressources et configuration
   initMaterials();
@@ -201,7 +203,7 @@ ViewerOgre3D::ViewerOgre3D(std::string aDirectory) : myCurrentObject ( 0 ), mySe
   mySceneMgr = myRoot->createSceneManager ( "DefaultSceneManager", "Fenetre Principale" );
 
   //DEVICES
-  myWindow = myRoot->initialise ( true, "viewer3D" );
+  myWindow = myRoot->initialise ( true, "ViewerOgre3D" );
 
    //----------------- Fonts loading
   // get the resource manager
@@ -247,8 +249,6 @@ ViewerOgre3D::ViewerOgre3D(std::string aDirectory) : myCurrentObject ( 0 ), mySe
   myTitle->setPosition(300,10);
 
   myMode = new TextZone("Mode: View"); 
-  
-  
   myMode->setPosition(70,550);
   myMode->setSize(36);
 
@@ -261,9 +261,23 @@ ViewerOgre3D::ViewerOgre3D(std::string aDirectory) : myCurrentObject ( 0 ), mySe
   */
 ViewerOgre3D::~ViewerOgre3D()
 {
+  delete myMode;
+  delete myTitle;
   delete myInputManager;
-  myRoot->destroySceneManager ( mySceneMgr );
+  destroyScene();
+  
+  myWindow->removeAllViewports();
+  mySceneMgr->destroyAllCameras();
+  mySceneMgr->destroyAllManualObjects();
+  mySceneMgr->destroyAllEntities();
+  mySceneMgr->destroyAllLights();
+  getRootSceneNode()->removeAndDestroyAllChildren();
+  Ogre::ResourceGroupManager& lRgMgr = Ogre::ResourceGroupManager::getSingleton();
+  lRgMgr.destroyResourceGroup("General");
+  
+  myRoot->shutdown();
   delete myRoot;
+  delete myLogManager;
 }
 
 
@@ -365,14 +379,16 @@ void ViewerOgre3D::createScene()
   // Parametrage du point de vue
   myCamera->setAspectRatio ( Ogre::Real ( vp->getActualWidth() ) / Ogre::Real ( vp->getActualHeight() ) );
 
+  
   myRootNode = new DGtalNode ( mySceneMgr );
   Representation * hisRepresentation = new Representation ( mySceneMgr, mySceneMgr->getRootSceneNode()->createChildSceneNode ( "RootNode" ), "RootNode" );
   myRootNode->setRepresentation ( hisRepresentation );
   myRootNode->setFather ( NULL );
   myRootNode->setRoot();
-
+ 
   drawAxes();
   drawWrist();
+  
 
 }
 
@@ -1341,4 +1357,42 @@ void ViewerOgre3D::lessTransparency( )
 void ViewerOgre3D::destroyScene()
 {
   delete myRootNode;
+}
+
+/**
+*  Shows the commands on the standard output
+*/
+void ViewerOgre3D::showHelp()
+{
+  cout <<"-------------------------------------------------------------------------------------------"<<endl;
+  cout <<"Ogre DGtal viewer commands: \n"<<endl;
+  
+  cout<<"\tCommon commands to view, manipulate and selection modes:\n"<<endl;
+  
+  cout<<"\t\t Mouse interactions:\n"<<endl;
+  cout<<"\t\t\t Right clic and drag: Translates the scene."<<endl;
+  cout<<"\t\t\t Left clic and drag: Turns the scene around the scene center."<<endl;
+  cout<<"\t\t\t Mouse roll: Zoom.\n"<<endl;
+  
+  
+  cout<<"\t\t Commands without selection\n"<<endl;
+  cout<<"\t\t\t P: Show/Hide the orthonormal basis."<<endl;
+  cout<<"\t\t\t C: Resets the position."<<endl;
+  cout<<"\t\t\t R: Resets the position and the orientation.\n"<<endl;
+  
+  cout<<"\t\t Commands with selection\n"<<endl;
+  cout<<"\t\t\t M: Sizes up the selection."<<endl;
+  cout<<"\t\t\t L: Sizes down the selection."<<endl;
+  cout<<"\t\t\t N: Increases the selection's transparency."<<endl;
+  cout<<"\t\t\t B: Decreases the selection's transparency.\n"<<endl;
+
+  cout<<"\tSpecific commands\n"<<endl;
+  cout<<"\t\t\tOn view mode:\n"<<endl;
+  cout <<"\t\t\tOn manipulate mode:\n"<<endl;
+  cout <<"\t\t\tOn selection mode:\n"<<endl;
+  
+  
+  cout <<"\tOn free 3D explore: (To switch to this mode press MAJ button)\n"<<endl;
+  cout <<"-------------------------------------------------------------------------------------------"<<endl;
+
 }
