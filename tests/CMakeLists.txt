@@ -16,9 +16,18 @@ endif(WIN32)
 
 if(UNIX AND NOT APPLE)
 
+	if(EXISTS "/usr/local/lib/OGRE/")
+                set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
+        elseif(EXISTS "/usr/lib/OGRE/")
+                set(OGRE_PLUGINS "/usr/lib/OGRE/")
+        elseif (EXISTS "/usr/lib/i386-linux-gnu/OGRE/")
+                set(OGRE_PLUGINS "/usr/lib/i386-linux-gnu/OGRE/")
+        endif(EXISTS "/usr/local/lib/OGRE/")
+
+
 	if(EXISTS "/usr/local/lib/OGRE/cmake")
 	  	set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
-                set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
+
 	 elseif(EXISTS "/usr/share/OGRE/cmake")
 	     set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
 	   else ()
