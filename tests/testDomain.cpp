@@ -47,7 +47,7 @@ bool testDomain()
     DGtal::Z3i::Point p4 ( 3, 3 , 3 );
     DGtal::Z3i::Point p5 ( -3, -3 , -3 );
     DGtal::Z3i::Domain domain ( p4, p5 );
-    DGtal::ViewerOgre3D View("../../Requirements/");
+    DGtal::ViewerOgre3D View;
     View << domain;
     View.start();	
   return true;

@@ -18,6 +18,7 @@ if(UNIX AND NOT APPLE)
 
 	if(EXISTS "/usr/local/lib/OGRE/cmake")
 	  	set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+                set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
 	 elseif(EXISTS "/usr/share/OGRE/cmake")
 	     set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
 	   else ()
@@ -160,4 +161,9 @@ endif(MINGW OR UNIX)
 
  
 
+configure_file(${PROJECT_SOURCE_DIR}/../Requirements.h.in 
+  ${PROJECT_SOURCE_DIR}/../Requirements.h)
+
+configure_file(${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg.in 
+  ${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg)
 

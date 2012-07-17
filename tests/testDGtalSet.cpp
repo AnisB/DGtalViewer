@@ -44,7 +44,7 @@
 */
 bool testDGtalSet()
 {
-  DGtal::ViewerOgre3D View("../../Requirements/");
+  DGtal::ViewerOgre3D View;
 
   DGtal::Z3i::Point p1 ( 0, 0, 0 );
   DGtal::Z3i::Point p2 ( 5, 5 , 5 );

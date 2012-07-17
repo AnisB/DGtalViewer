@@ -37,7 +37,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "Style3DFactory.h"
 #include "CommonOgre.h"
-
+#include "Requirements.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -183,12 +183,11 @@ DGtal::ViewerOgre3D::getMode ( const std::string & objectName ) const
 /**
   *  Constructor.
   */
-ViewerOgre3D::ViewerOgre3D(std::string aDirectory) : myCurrentObject ( 0 ), mySelectionMode ( false )
+ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 {
-
+  myDirectory = requirementPath;
   myLogManager = new  Ogre::LogManager();
   myLogManager->createLog(myDirectory+"Ogre.log" , true, false, true); 
-  myDirectory = aDirectory;
   myRoot = new Ogre::Root ( myDirectory+"plugins.cfg", myDirectory+"ogre.cfg", "" );
 
   //Chargement des ressources et configuration

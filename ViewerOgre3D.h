@@ -93,7 +93,7 @@ public:
       /**
        *  Constructor for the viewer
        */
-      ViewerOgre3D(std::string aDirectory);
+      ViewerOgre3D();
       
       /**
        *  Destructor.

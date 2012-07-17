@@ -44,7 +44,7 @@
 */
 bool testKalimskySpace()
 {
-    DGtal::ViewerOgre3D View("../../Requirements/");
+    DGtal::ViewerOgre3D View;
     DGtal::Z3i::KSpace K;
     
     
