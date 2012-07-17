@@ -38,6 +38,7 @@
 #include "Style3DFactory.h"
 #include "CommonOgre.h"
 #include "Requirements.h"
+#include <unistd.h>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -226,6 +227,12 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
   //CREATION DE LA SCENE
   createScene();
 
+  myTitle = new TextZone(" Dgtal Ogre viewer"); 
+  myTitle->setPosition(300,10);
+
+  myMode = new TextZone("Mode: View"); 
+  myMode->setPosition(70,550);
+  myMode->setSize(36);
 
   //Creation de l'input listener
   createFrameListener();
@@ -244,14 +251,8 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
   myCurrentSpecularIlluminationColor= DGtal::Color(100,100,100,255);
   myTexture= "unselected.jpg";
   
-  myTitle = new TextZone(" Dgtal Ogre viewer"); 
-  myTitle->setPosition(300,10);
 
-  myMode = new TextZone("Mode: View"); 
-  myMode->setPosition(70,550);
-  myMode->setSize(36);
-
-
+  myBackgroundBlackColor=true;
 
 }
 
@@ -371,12 +372,12 @@ void ViewerOgre3D::createScene()
   myCamera->setPosition ( Ogre::Vector3 ( 0, 10, 500 ) );
   myCamera->lookAt ( Ogre::Vector3 ( 0, 0, 0 ) );
 
-  //Screens
-  Ogre::Viewport* vp = myWindow->addViewport ( myCamera );
-  vp->setBackgroundColour ( Ogre::ColourValue ( 0.2, 0.2, 0.2 ) );
+  // Viewport
+  myViewPort = myWindow->addViewport ( myCamera );
+  myViewPort->setBackgroundColour ( Ogre::ColourValue ( 0.2, 0.2, 0.2 ) );
 
   // Parametrage du point de vue
-  myCamera->setAspectRatio ( Ogre::Real ( vp->getActualWidth() ) / Ogre::Real ( vp->getActualHeight() ) );
+  myCamera->setAspectRatio ( Ogre::Real ( myViewPort->getActualWidth() ) / Ogre::Real ( myViewPort->getActualHeight() ) );
 
   
   myRootNode = new DGtalNode ( mySceneMgr );
@@ -1394,4 +1395,49 @@ void ViewerOgre3D::showHelp()
   cout <<"\tOn free 3D explore: (To switch to this mode press MAJ button)\n"<<endl;
   cout <<"-------------------------------------------------------------------------------------------"<<endl;
 
+}
+/**
+  *  Changes the text position on   a window resize
+  */
+void ViewerOgre3D::resetPosition(int h, int w)
+{
+  myTitle->setPosition(w/2.75,h/60.0);
+  myMode->setPosition(w/10,h-h/10);
+  myMode->setSize(36);
+
+}
+/**
+*  Changes the text position on   a window resize
+*/
+void ViewerOgre3D::printScene(std::string name)
+{
+    myWindow->writeContentsToFile(name);
+    char path[500];
+    cout<<"Screenshot saved at :"<< getcwd(path, 500)<<"/"<<name<<endl;
+}
+
+/**
+  *  Flips the wrist visibility .
+  */
+void ViewerOgre3D::changeWristVisibility()
+{
+    myWrist->setVisible(!myWrist->isVisible());
+}
+
+/**
+*  Flips the background color.
+*/ 
+void ViewerOgre3D::flipBackgroundColor()
+{
+  if(myBackgroundBlackColor)
+  {
+    myViewPort->setBackgroundColour(Ogre::ColourValue (0.9,0.9,0.9));
+    myBackgroundBlackColor=false;
+  }
+  else
+  {
+    myViewPort->setBackgroundColour(Ogre::ColourValue (0.2,0.2,0.2));
+    myBackgroundBlackColor=true;
+  }
+  
 }

@@ -86,7 +86,6 @@ bool testSelection()
 
 // On met le nouvel objet
   View << shape_set1;
-  View << p10;
   View.start();
 
   return true;

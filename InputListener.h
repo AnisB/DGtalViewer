@@ -60,7 +60,9 @@ namespace DGtal
 
         class ViewerOgre3D;
 
-        class InputListener : public Ogre::FrameListener, public OIS::KeyListener, OIS::MouseListener
+        class InputListener : public Ogre::FrameListener,
+			      public OIS::KeyListener, OIS::MouseListener ,
+			      public Ogre::WindowEventListener
           {
 
               // ----------------------- Standard services ------------------------------
@@ -137,8 +139,11 @@ namespace DGtal
               /**
                * Handles a window resize
                */
-              virtual void windowResized ( Ogre::RenderWindow* rw );
-
+	      virtual void windowResized(Ogre::RenderWindow* rw);
+              /**
+               * Handles a window close
+               */
+              virtual void windowClosed(Ogre::RenderWindow* rw);
 	     /**
                * makes the render loop stop
                */

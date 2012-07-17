@@ -174,6 +174,15 @@ public:
        */
       void changeAxisVisibility();
       
+      /**
+       *  Flips the wrist visibility .
+       */
+      void changeWristVisibility();
+     
+      /**
+       *  Flips the background color.
+       */ 
+      void flipBackgroundColor();
       
       /**
        *  Set the near and far clip distance of the camera
@@ -492,7 +501,6 @@ public:
        */
      void setTexture(std::string aTexture);
      
-     
       
      
      /**
@@ -527,6 +535,18 @@ public:
        */
        void destroyScene();
       
+             
+      /**
+       *  Changes the text position on   a window resize
+       */
+       void resetPosition(int h, int w);
+       
+      /**
+       *  Changes the text position on   a window resize
+       */
+       void printScene(std::string name="ScreenShot.bmp");
+       
+       
        /**
 	*  Shows the commands on the standard output
 	*/
@@ -647,7 +667,10 @@ protected:
 	std::string myDirectory;
 	
 	Ogre::LogManager * myLogManager;
+	
+	bool myBackgroundBlackColor;
        
+	Ogre::Viewport* myViewPort;
 
 
 	
@@ -702,6 +725,7 @@ protected:
 	*  Returns the Fowardest point
 	*/
       Ogre::Vector3 getFowardestPosition();
+
 
 
 };

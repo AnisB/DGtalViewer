@@ -90,6 +90,9 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   // Other initating
   myIsInShiftMode = false;
   mySceneMgr = aSceneManager;
+  //Register as a Window listener
+  Ogre::WindowEventUtilities::addWindowEventListener(myWindow, this);
+  myViewer->resetPosition(myWindow->getHeight(),myWindow->getWidth());
 }
 
 
@@ -161,7 +164,7 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
         break;
 
 
-      case::OIS::KC_O:
+      case::OIS::KC_E:
 
         if ( myViewer->isInManupulatingMode() )
           {
@@ -197,8 +200,6 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
       case OIS::KC_C :
 	  resetSCPosition();
        break;
-       
-       
       case OIS::KC_R :
 	  myCameraMan->reset();
        break;
@@ -218,6 +219,15 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
        break;
        case OIS::KC_H :
 	  myViewer->showHelp();
+       break;
+       case OIS::KC_F12 :
+	  myViewer->printScene();
+       break;
+       case OIS::KC_O :
+	  myViewer->changeWristVisibility();
+       break;
+       case OIS::KC_F :
+	  myViewer->flipBackgroundColor();
        break;
       default:
         break;
@@ -292,7 +302,6 @@ bool InputListener::keyReleased ( const OIS::KeyEvent &e )
 
       case OIS::KC_CAPITAL:
         myIsInShiftMode = !myIsInShiftMode;
- //       myMouseCursor->setVisible ( !myIsInShiftMode );
         break;
 
       default:
@@ -347,7 +356,7 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
   */
 void InputListener::windowResized ( Ogre::RenderWindow* rw )
 {
-
+  myViewer->resetPosition(rw->getHeight(),rw->getWidth());
 }
 
 
@@ -387,6 +396,14 @@ void InputListener::resetSCPosition()
 	 
 }
 
+
+/**
+  * Handles a window close
+  */
+void InputListener::windowClosed(Ogre::RenderWindow* rw)
+{
+    std::cout <<"Salut"<<std::endl;
+}
 /**
 * Resets the upAxis of the camera
 */
