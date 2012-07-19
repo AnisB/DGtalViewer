@@ -234,7 +234,7 @@ bool Representation::isVirtual()
 * Tells if the representation is virtual, is means that is has or not an associated entity 
 *
 */
-bool  Representation::clear()
+void  Representation::clear()
 {
 
   if(!mVirtual)

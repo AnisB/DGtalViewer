@@ -112,7 +112,8 @@ DGtalNode::selfDisplay ( std::ostream & out ) const
 /**
 * Adds a representation to the attributes of this object.
 */
-bool DGtalNode::setRepresentation ( Representation * newRepresentation )
+void
+DGtalNode::setRepresentation ( Representation * newRepresentation )
 {
   myRepresentation = newRepresentation;
 }

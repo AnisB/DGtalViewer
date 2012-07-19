@@ -293,6 +293,38 @@ void ViewerOgre3D::start()
 {
   myRoot->startRendering();
   myInputManager->startRendering();
+  
+  /*
+	double timeSinceLastFrame = 0;
+	double startTime = 0;
+    
+    
+#if (!defined(OGRE_IS_IOS)) && !((OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__)
+	while(!mShutdown && !InputListenner::getSingletonPtr()->isOgreToBeShutDown()) 
+	{
+		if(InputListenner::getSingletonPtr()->myWindow->isActive())
+		{
+			startTime = InputListenner::getSingletonPtr()->mTimer->getMillisecondsCPU();
+            
+			InputListenner::getSingletonPtr()->mKeyboard->capture();
+			InputListenner::getSingletonPtr()->mMouse->capture();
+			InputListenner::getSingletonPtr()->updateOgre(timeSinceLastFrame);
+			InputListenner::getSingletonPtr()->mRoot->renderOneFrame();
+			timeSinceLastFrame = InputListenner::getSingletonPtr()->mTimer->getMillisecondsCPU() - startTime;
+		}
+		else
+		{
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+            Sleep(1000);
+#else
+            sleep(1);
+#endif
+		}
+	}
+#endif
+
+*/
+	
 }
 
 

@@ -280,6 +280,8 @@ DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal
     {
       return new DefaultDrawStyleGrid_DigitalSetBySTLSet;
     }
+    
+    return 0;
 }
 //------------------------------------------------------------------------------------  DigitalSetBySTLSet
 

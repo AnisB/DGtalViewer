@@ -164,7 +164,7 @@ bool isVirtual();
 * Tells if the representation is virtual, is means that is has or not an associated entity 
 *
 */
-bool clear();
+void clear();
 
 
 

@@ -119,7 +119,7 @@ namespace DGtal
           * Adds a representation to the attributes of this object.
           */
 
-          bool setRepresentation ( Representation * newRepresentation );
+          void setRepresentation ( Representation * newRepresentation );
 
 
 
