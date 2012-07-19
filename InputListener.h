@@ -171,6 +171,48 @@ namespace DGtal
 		  return myCameraMan;
 		}
 
+
+	      /**
+	       *  Returns a pointer on the keyboard
+	       * 
+	       */
+	        OIS::Keyboard * getKeyBoard() 
+		{
+		  return myKeyboard;
+		}
+
+
+	      /**
+	       *  Returns a pointer on the mouse
+	       * 
+	       */
+	        OIS::Mouse * getMouse() 
+		{
+		  return myMouse;
+		}
+
+	       /**
+	       *  Returns a pointer on the mouse
+	       * 
+	       */
+	        Ogre::Timer * getTimer() 
+		{
+		  return myTimer;
+		}
+
+	       /**
+	       *  Updates some attributes of the viewer
+	       * 
+	       */
+	        void updateViewer(double timeSinceLastFrame);
+		/**
+		 *  Tells if the application is currently runing
+		 */
+                bool viewerIsRunning()
+		{
+		     return !myShutdown;
+		}
+
 	      
 	                    // ----------------------- Private members --------------------------------------
             private:
@@ -248,6 +290,11 @@ namespace DGtal
 	      
 	      int myMouseX;
 	      int myMouseY;
+
+	      /**
+	       * The rendering timer
+               */
+               Ogre::Timer * myTimer;
 
           };
       }

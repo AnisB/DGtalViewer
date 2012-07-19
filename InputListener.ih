@@ -94,9 +94,17 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   // Other initating
   myIsInShiftMode = false;
   mySceneMgr = aSceneManager;
+
   //Register as a Window listener
   Ogre::WindowEventUtilities::addWindowEventListener(myWindow, this);
   myViewer->resetPosition(myWindow->getHeight(),myWindow->getWidth());
+
+
+  // Initiating timer
+  myTimer = OGRE_NEW Ogre::Timer();
+  myTimer->reset();
+
+  myWindow->setActive(true);
 }
 
 
@@ -128,13 +136,20 @@ bool InputListener::frameRenderingQueued ( const Ogre::FrameEvent & evt )
   if ( myWindow->isClosed() || myShutdown )
     return false;
 
-  myCameraMan->render ( evt );
+ updateViewer(evt.timeSinceLastFrame);
 
   return true;
 }
 
 
-
+/**
+*  Updates some attributes of the viewer
+* 
+*/
+void InputListener::updateViewer(double timeSinceLastFrame)
+{
+  myCameraMan->render ( timeSinceLastFrame );
+}
 /**
   * Method that initiate the inputManager (First frame)
   */

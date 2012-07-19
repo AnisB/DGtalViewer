@@ -119,7 +119,7 @@ class CameraMan
       /**
        *  Public method that acts on the camera geometric attributes
       */
-      void render ( const Ogre::FrameEvent & evt );
+      void render ( double timeSinceLastFrame  );
 
 
       /**

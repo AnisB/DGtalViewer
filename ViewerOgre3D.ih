@@ -291,39 +291,29 @@ ViewerOgre3D::~ViewerOgre3D()
   */
 void ViewerOgre3D::start()
 {
-  myRoot->startRendering();
+ // myRoot->startRendering();
   myInputManager->startRendering();
   
-  /*
-	double timeSinceLastFrame = 0;
-	double startTime = 0;
+  
+  double timeSinceLastFrame = 0;
+  double startTime = 0;
     
     
-#if (!defined(OGRE_IS_IOS)) && !((OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__)
-	while(!mShutdown && !InputListenner::getSingletonPtr()->isOgreToBeShutDown()) 
+#if  !((OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__)
+	while(InputListener::getSingletonPtr()->viewerIsRunning()) 
 	{
-		if(InputListenner::getSingletonPtr()->myWindow->isActive())
-		{
-			startTime = InputListenner::getSingletonPtr()->mTimer->getMillisecondsCPU();
-            
-			InputListenner::getSingletonPtr()->mKeyboard->capture();
-			InputListenner::getSingletonPtr()->mMouse->capture();
-			InputListenner::getSingletonPtr()->updateOgre(timeSinceLastFrame);
-			InputListenner::getSingletonPtr()->mRoot->renderOneFrame();
-			timeSinceLastFrame = InputListenner::getSingletonPtr()->mTimer->getMillisecondsCPU() - startTime;
-		}
-		else
-		{
-#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-            Sleep(1000);
-#else
-            sleep(1);
-#endif
-		}
+
+			Ogre::WindowEventUtilities::messagePump();
+			startTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
+			InputListener::getSingletonPtr()->getKeyBoard()->capture();
+			InputListener::getSingletonPtr()->getMouse()->capture();
+			InputListener::getSingletonPtr()->updateViewer(timeSinceLastFrame);
+			myRoot->renderOneFrame();
+			timeSinceLastFrame = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - startTime;
 	}
 #endif
 
-*/
+
 	
 }
 

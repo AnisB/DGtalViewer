@@ -182,9 +182,9 @@ bool CameraMan::handleMouseRelease ( const OIS::MouseEvent &e, OIS::MouseButtonI
 /**
   *  Public method that acts on the camera geometric attributes
 */
-void CameraMan::render ( const Ogre::FrameEvent & evt )
+void CameraMan::render ( double timeSinceLastFrame )
 {
-  double step = ( double ) evt.timeSinceLastFrame * mySpeed;
+  double step = ( double )timeSinceLastFrame * mySpeed;
 
   if ( myIsOnShiftMode )
     {
