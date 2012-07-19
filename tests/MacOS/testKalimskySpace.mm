@@ -28,7 +28,7 @@
 */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "../ViewerOgre3D.h"
+#include "../../ViewerOgre3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Shapes.h"
 #include <iostream>

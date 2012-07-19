@@ -134,7 +134,7 @@ set(HDRS ../Functions.h
 set(SRCS ../Representation.cpp 
          ../DGtalNode.cpp 
          ../mousecursor.cpp
-	 ../DrawableWithOgre.cpp
+	     ../DrawableWithOgre.cpp
          ../TextZone.cpp
 )
  
@@ -144,19 +144,36 @@ include_directories( ${OIS_INCLUDE_DIRS}
 )
 
 
-SET(DGTAL_TESTS_SRC
-  testDGtalSet
-  testDomain
-  testKalimskySpace
-  testManipulate
-  testSelection
-  )
+IF(NOT APPLE)
+		SET(DGTAL_TESTS_SRC
+		  testDGtalSet
+		  testDomain
+		  testKalimskySpace
+		  testManipulate
+		  testSelection
+		  )
+		
+		FOREACH(FILE ${DGTAL_TESTS_SRC})
+		  add_executable(${FILE} ${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
+		  target_link_libraries (${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
+		ENDFOREACH(FILE)
+else()
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/MacOS)
 
-FOREACH(FILE ${DGTAL_TESTS_SRC})
-  add_executable(${FILE} ${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
-  target_link_libraries (${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
-ENDFOREACH(FILE)
+		SET(DGTAL_TESTS_SRC
+		  MacOS/testDGtalSet
+		  MacOS/testDomain
+		  MacOS/testKalimskySpace
+		  MacOS/testManipulate
+		  MacOS/testSelection
+		  )
+		
+		FOREACH(FILE ${DGTAL_TESTS_SRC})
+		  add_executable(${FILE} ${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
+		  target_link_libraries (${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
+		ENDFOREACH(FILE)
 
+ENDIF(NOT APPLE)
  
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -174,3 +191,4 @@ configure_file(${PROJECT_SOURCE_DIR}/../Requirements.h.in
 configure_file(${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg.in 
   ${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg)
 
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/MacOS)

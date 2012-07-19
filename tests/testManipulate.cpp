@@ -44,7 +44,8 @@
 */
 bool testManipulate()
 {
-  DGtal::ViewerOgre3D View;
+  new ViewerOgre3D();
+  DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
 
   DGtal::Z3i::Point p4 ( 30, 30 , 30 );
   DGtal::Z3i::Point p5 ( -30, -30 , -30 );

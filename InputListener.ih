@@ -262,6 +262,7 @@ bool InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonI
     {
       myMouseRightClicked = true;
     }
+    return true;
 }
 
 

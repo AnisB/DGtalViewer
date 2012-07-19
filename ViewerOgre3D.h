@@ -68,7 +68,7 @@ const double scaleFactor= 20.0;
 */
 
 
-class ViewerOgre3D 
+class ViewerOgre3D : public Ogre::Singleton<ViewerOgre3D>
 {
 
   // ----------------------- local types ------------------------------

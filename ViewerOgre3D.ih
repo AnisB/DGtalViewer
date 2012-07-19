@@ -42,6 +42,10 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
+namespace Ogre
+{
+    template<> ViewerOgre3D* Ogre::Singleton<ViewerOgre3D>::msSingleton = 0;
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods //
@@ -1271,6 +1275,7 @@ void ViewerOgre3D::setTexture(std::string aTexture)
   */
 DGtal::Color ViewerOgre3D::getSelfIlluminationColor( )
 {
+		return DGtal::Color(255,255,255,255);
 }
 
 
@@ -1279,7 +1284,7 @@ DGtal::Color ViewerOgre3D::getSelfIlluminationColor( )
   */
 DGtal::Color  ViewerOgre3D::getAmbientIlluminationColor( )
 {
-  
+  	return DGtal::Color(255,255,255,255);
 }
 
 /**
@@ -1287,13 +1292,15 @@ DGtal::Color  ViewerOgre3D::getAmbientIlluminationColor( )
   */
 DGtal::Color ViewerOgre3D::getSpecularIlluminationColor( )
 {
+		return DGtal::Color(255,255,255,255);
 }
 
 /**
   *  Returns the diphuse illumination color of the following object
   */
 DGtal::Color ViewerOgre3D::getDiphuseIlluminationColor( )
-{
+{ 
+	return DGtal::Color(255,255,255,255);
 }
 
 /**
@@ -1301,6 +1308,7 @@ DGtal::Color ViewerOgre3D::getDiphuseIlluminationColor( )
 */
 std::string ViewerOgre3D::getTexture()
 {
+	 return "";
 }
      
 

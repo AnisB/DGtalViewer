@@ -1,0 +1,5 @@
+/Users/anisbenyoub/Documents/Developpement/DGtal/Viewer/DGtalViewer/tests/build/CMakeFiles/MacOS/testDGtalSet.dir
+/Users/anisbenyoub/Documents/Developpement/DGtal/Viewer/DGtalViewer/tests/build/CMakeFiles/MacOS/testDomain.dir
+/Users/anisbenyoub/Documents/Developpement/DGtal/Viewer/DGtalViewer/tests/build/CMakeFiles/MacOS/testKalimskySpace.dir
+/Users/anisbenyoub/Documents/Developpement/DGtal/Viewer/DGtalViewer/tests/build/CMakeFiles/MacOS/testManipulate.dir
+/Users/anisbenyoub/Documents/Developpement/DGtal/Viewer/DGtalViewer/tests/build/CMakeFiles/MacOS/testSelection.dir
