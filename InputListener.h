@@ -60,7 +60,8 @@ namespace DGtal
 
         class ViewerOgre3D;
 
-        class InputListener : public Ogre::FrameListener,
+        class InputListener : public Ogre::Singleton<InputListener> ,
+			      public Ogre::FrameListener,
 			      public OIS::KeyListener, OIS::MouseListener ,
 			      public Ogre::WindowEventListener
           {

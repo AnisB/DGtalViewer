@@ -9,5 +9,5 @@
 #include <string>
 
 ///Path to the DGtal test suite.
-const std::string requirementPath= "/Users/anisbenyoub/Documents/Developpement/DGtal/Viewer/DGtalViewer/tests/../Requirements/";
+const std::string requirementPath= "/home/stagiaire/Documents/DGtalViewer/tests/../Requirements/";
 

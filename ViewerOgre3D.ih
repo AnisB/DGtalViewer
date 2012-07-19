@@ -402,7 +402,9 @@ void ViewerOgre3D::createScene()
   */
 void ViewerOgre3D::createFrameListener()
 {
-  myInputManager = new InputListener ( myWindow, this, myCamera, mySceneMgr );
+
+  new DGtal::InputListener ( myWindow, this, myCamera, mySceneMgr );
+  myInputManager = &(DGtal::InputListener::getSingleton()) ; 
   myRoot->addFrameListener ( myInputManager );
 }
 
