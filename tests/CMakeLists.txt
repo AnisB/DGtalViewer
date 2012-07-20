@@ -37,6 +37,10 @@ if(UNIX AND NOT APPLE)
 
 
 if(APPLE)
+	if(EXISTS "/Applications/OgreSDK/lib/")
+                set(OGRE_PLUGINS "/Applications/OgreSDK/lib/")
+    endif(EXISTS "/Applications/OgreSDK/lib/")
+        
 	if(EXISTS "/Applications/OgreSDK/CMake")
 	  	set(CMAKE_MODULE_PATH "/Applications/OgreSDK/CMake/;${CMAKE_MODULE_PATH}")
 	elseif(EXISTS "/usr/lib/OGRE/cmake/")
@@ -123,12 +127,12 @@ set(HDRS ../Functions.h
 	 ../Representation.h
          ../DGtalNode.h
          ../Ogre3DDisplayFactory.h
-	 ../mousecursor.h
-	 ../ViewerOgre3D.h
-	 ../InputListener.h
-	 ../CameraMan.h
-	 ../DrawableWithOgreWrapper.h
-	 ../DrawableWithOgre.h
+		 ../mousecursor.h
+		 ../ViewerOgre3D.h
+		 ../InputListener.h
+		 ../CameraMan.h
+		 ../DrawableWithOgreWrapper.h
+		 ../DrawableWithOgre.h
 )
  
 set(SRCS ../Representation.cpp 
@@ -158,19 +162,25 @@ IF(NOT APPLE)
 		  target_link_libraries (${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
 		ENDFOREACH(FILE)
 else()
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/MacOS)
+
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/Contents/MacOS)
 
 		SET(DGTAL_TESTS_SRC
-		  MacOS/testDGtalSet
-		  MacOS/testDomain
-		  MacOS/testKalimskySpace
-		  MacOS/testManipulate
-		  MacOS/testSelection
+		  testDGtalSet
+		  testDomain
+		  testKalimskySpace
+		  testManipulate
+		  testSelection
 		  )
 		
 		FOREACH(FILE ${DGTAL_TESTS_SRC})
-		  add_executable(${FILE} ${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
-		  target_link_libraries (${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
+		 	file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${FILE})
+		 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${FILE}/Contents)
+		 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${FILE}/Contents/MacOS)
+		 
+		  add_executable(MacOS/${FILE} MacOS/${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
+		  
+		  target_link_libraries (MacOS/${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
 		ENDFOREACH(FILE)
 
 ENDIF(NOT APPLE)
@@ -183,7 +193,9 @@ if(MINGW OR UNIX)
 endif(MINGW OR UNIX)
  
 
- 
+ if(APPLE)
+	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/Contents)
+endif(APPLE)
 
 configure_file(${PROJECT_SOURCE_DIR}/../Requirements.h.in 
   ${PROJECT_SOURCE_DIR}/../Requirements.h)
@@ -191,4 +203,4 @@ configure_file(${PROJECT_SOURCE_DIR}/../Requirements.h.in
 configure_file(${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg.in 
   ${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg)
 
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/MacOS)
+

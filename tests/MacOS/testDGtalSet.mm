@@ -38,10 +38,30 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class ViewerOgre3D.
 ///////////////////////////////////////////////////////////////////////////////
-/**
-* Example of a test. To be completed.
-*
-*/
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+#include "../../AppDelegate.h"
+#endif
+
+
+void start(DGtal::ViewerOgre3D & aViewer)
+{
+	
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    
+    mAppDelegate = [[AppDelegate alloc] init];
+    	
+    [[NSApplication sharedApplication] setDelegate:mAppDelegate];
+	int retVal = NSApplicationMain(0, NULL);
+	[pool release];
+#else
+ 
+		aViewer.start();
+#endif
+}
+
+
+
 bool testDGtalSet()
 {  
   new ViewerOgre3D();
@@ -80,7 +100,7 @@ bool testDGtalSet()
   DGtal::Z3i::DigitalSet shape_set2 ( domain );
   DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set2, DGtal::Z3i::Point ( -10, -10, -10 ), 2 );
   View << shape_set2;
-  View.start();
+  start(View);
   return true;
 }
 

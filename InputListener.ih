@@ -65,8 +65,8 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
 
    OIS::ParamList pl;
     pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
-    pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
-    pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
+    pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("true")));
+    pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("true")));
 
     
     myInputManager = OIS::InputManager::createInputSystem( pl );

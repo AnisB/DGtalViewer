@@ -138,7 +138,16 @@ public:
         void createMaterial(std::string  aName);
       
 	
-	
+	      
+      /**
+       *  øreturn a pointer to ogre's root
+       */
+        Ogre::Root * getOgreRoot()
+        {
+        	return myRoot;
+        }
+      
+      
       /**
        *  Get a son node ( of the root one)
        *  @return a new SceneNode

@@ -33,7 +33,7 @@
     double mStartTime;
 }
 
-- (void)go;
+- (void)startRendering;
 - (void)renderOneFrame:(id)sender;
 
 @property (retain) NSTimer *mTimer;
@@ -96,21 +96,18 @@ static id mAppDelegate;
 
 - (void)renderOneFrame:(id)sender
 {
-    if(!InputListenner::getSingletonPtr()->isOgreToBeShutDown() &&
+    if(InputListener::getSingletonPtr()->viewerIsRunning() &&
        Ogre::Root::getSingletonPtr() && Ogre::Root::getSingleton().isInitialised())
     {
-		if(InputListenner::getSingletonPtr()->mRenderWnd->isActive())
-		{
-			mStartTime = InputListener::getSingletonPtr()->mTimer->getMillisecondsCPU();
+			mStartTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
             
-			InputListener::getSingletonPtr()->mKeyboard->capture();
-			InputListener::getSingletonPtr()->mMouse->capture();
+			InputListener::getSingletonPtr()->getKeyBoard()->capture();
+			InputListener::getSingletonPtr()->getMouse()->capture();
             
-			InputListener::getSingletonPtr()->updateOgre(mLastFrameTime);
-			InputListener::getSingletonPtr()->mRoot->renderOneFrame();
+			InputListener::getSingletonPtr()->updateViewer(mLastFrameTime);
+			ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
             
-			mLastFrameTime = InputListener::getSingletonPtr()->mTimer->getMillisecondsCPU() - mStartTime;
-		}
+			mLastFrameTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;
     }
     else
     {
