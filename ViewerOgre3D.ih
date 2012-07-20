@@ -207,8 +207,16 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
   mySceneMgr = myRoot->createSceneManager ( "DefaultSceneManager", "Fenetre Principale" );
 
   //DEVICES
-  myWindow = myRoot->initialise ( true, "ViewerOgre3D" );
 
+
+  #if((OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__)
+  myWindow = myRoot->initialise ( false	, "ViewerOgre3D" );
+  Ogre::NameValuePairList * misc = new Ogre::NameValuePairList();
+  misc["macAPI "] = "cocoa";
+  myWindow = myRoot->createRenderWindow("Main RenderWindow", 800, 600, false, misc);
+  #else
+  myWindow = myRoot->initialise ( true	, "ViewerOgre3D" );
+  #endif
    //----------------- Fonts loading
   // get the resource manager
   Ogre::ResourceGroupManager &resGroupMgr = Ogre::ResourceGroupManager::getSingleton();
@@ -860,10 +868,10 @@ void ViewerOgre3D::drawWrist()
 
 
   float const radius = 200,
-                       thickness = 7, // Of course this must be less than the radius value.
+                       thickness =0, // Of course this must be less than the radius value.
                                    accuracy = 35;
 
-  myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
+  myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST  );
   myWrist->colour ( 0.5, 0.8, 1.0 );
   unsigned point_index = 0;
 
@@ -902,7 +910,7 @@ void ViewerOgre3D::drawWrist()
 
   myWrist->end();
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-
+  myWrist->colour ( 0.5, 0.8, 1.0 );
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
     {
       myWrist->position ( 0, radius * cos ( theta ),
@@ -934,6 +942,41 @@ void ViewerOgre3D::drawWrist()
 
   myWrist->end();
 
+
+  myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
+  myWrist->colour ( 0.5, 0.8, 1.0 );
+
+  for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
+    {
+      myWrist->position ( radius * cos ( theta ),
+                          radius * sin ( theta ),0 );
+      myWrist->position (  radius * cos ( theta - Ogre::Math::PI / accuracy ),
+                          radius * sin ( theta - Ogre::Math::PI / accuracy ),0 );
+      myWrist->position (  ( radius - thickness ) * cos ( theta - Ogre::Math::PI / accuracy ),
+                          ( radius - thickness ) * sin ( theta - Ogre::Math::PI / accuracy ),0 );
+      myWrist->position (  ( radius - thickness ) * cos ( theta ),
+                          ( radius - thickness ) * sin ( theta ),0 );
+    }
+
+  myWrist->end();
+
+  myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
+  myWrist->colour ( 0.5, 0.8, 1.0 );
+  myWrist->position (   0,0,radius + 100 );
+  myWrist->position (   -30,0,radius + 100 - 30 );
+
+  myWrist->position (   -30,0, radius + 100 - 30 );
+  myWrist->position (   0, 0,radius + 100 - 60 );
+
+  myWrist->position ( 0 ,0 ,  radius + 100 - 60);
+  myWrist->position (  0 + 30, 0,radius + 100 - 30 );
+
+  myWrist->position (   0 + 30,0,radius + 100 - 30 );
+  myWrist->position (  0,0,radius + 100 );
+
+
+  myWrist->end();
+ 
 
   myWristNode = mySceneMgr->getRootSceneNode()->createChildSceneNode();
   myWristNode->attachObject ( myWrist );
@@ -1462,7 +1505,7 @@ void ViewerOgre3D::flipBackgroundColor()
 {
   if(myBackgroundBlackColor)
   {
-    myViewPort->setBackgroundColour(Ogre::ColourValue (0.9,0.9,0.9));
+    myViewPort->setBackgroundColour(Ogre::ColourValue (1.0,1.0,1.0));
     myBackgroundBlackColor=false;
   }
   else

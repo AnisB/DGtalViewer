@@ -296,6 +296,11 @@ namespace DGtal
                */
                Ogre::Timer * myTimer;
 
+	      /**
+	       * 
+   	       */
+		virtual void windowMoved(Ogre::RenderWindow * rw);
+
           };
       }
 
