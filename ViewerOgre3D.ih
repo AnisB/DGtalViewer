@@ -207,16 +207,8 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
   mySceneMgr = myRoot->createSceneManager ( "DefaultSceneManager", "Fenetre Principale" );
 
   //DEVICES
-
-
-  #if((OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__)
-  myWindow = myRoot->initialise ( false	, "ViewerOgre3D" );
-  Ogre::NameValuePairList * misc = new Ogre::NameValuePairList();
-  misc["macAPI "] = "cocoa";
-  myWindow = myRoot->createRenderWindow("Main RenderWindow", 800, 600, false, misc);
-  #else
   myWindow = myRoot->initialise ( true	, "ViewerOgre3D" );
-  #endif
+
    //----------------- Fonts loading
   // get the resource manager
   Ogre::ResourceGroupManager &resGroupMgr = Ogre::ResourceGroupManager::getSingleton();
@@ -422,7 +414,19 @@ void ViewerOgre3D::createScene()
   drawAxes();
   drawWrist();
   
-
+  Ogre::Plane plan1(Ogre::Vector3::UNIT_Y, 0);
+  Ogre::Plane plan2(-Ogre::Vector3::UNIT_Y, 0);
+  Ogre::MeshManager::getSingleton().createPlane("sol1",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+ 				plan1, 500, 500, 1, 1, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
+  Ogre::MeshManager::getSingleton().createPlane("sol2",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+ 				plan2, 500, 500, 1, 1, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
+  Ogre::Entity *ent1= mySceneMgr->createEntity("EntiteSol", "sol1");
+  Ogre::Entity *ent2= mySceneMgr->createEntity("EntiteSol2", "sol2");
+  myPlan = mySceneMgr->getRootSceneNode()->createChildSceneNode();
+  myPlan->attachObject(ent1);
+  myPlan->attachObject(ent2);
+  ent2->setCastShadows(true);
+  ent1->setCastShadows(true);
 }
 
 
@@ -872,7 +876,7 @@ void ViewerOgre3D::drawWrist()
                                    accuracy = 35;
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST  );
-  myWrist->colour ( 0.5, 0.8, 1.0 );
+  myWrist->colour ( 0.4, 0.4, 0.4);
   unsigned point_index = 0;
 
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
@@ -894,7 +898,7 @@ void ViewerOgre3D::drawWrist()
   myWrist->end();
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-
+  myWrist->colour ( 0.4, 0.4, 0.4);
   myWrist->position ( radius + 100, 0, 0 );
   myWrist->position ( radius + 100 - 30, 0, -30 );
 
@@ -910,7 +914,7 @@ void ViewerOgre3D::drawWrist()
 
   myWrist->end();
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.5, 0.8, 1.0 );
+  myWrist->colour ( 0.4, 0.4, 0.4);
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
     {
       myWrist->position ( 0, radius * cos ( theta ),
@@ -926,7 +930,7 @@ void ViewerOgre3D::drawWrist()
   myWrist->end();
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.5, 0.8, 1.0 );
+  myWrist->colour ( 0.4, 0.4, 0.4);
   myWrist->position ( 0, radius + 100, 0 );
   myWrist->position ( 0, radius + 100 - 30, -30 );
 
@@ -944,7 +948,7 @@ void ViewerOgre3D::drawWrist()
 
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.5, 0.8, 1.0 );
+  myWrist->colour ( 0.4, 0.4, 0.4);
 
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
     {
@@ -961,7 +965,7 @@ void ViewerOgre3D::drawWrist()
   myWrist->end();
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.5, 0.8, 1.0 );
+  myWrist->colour ( 0.4, 0.4, 0.4);
   myWrist->position (   0,0,radius + 100 );
   myWrist->position (   -30,0,radius + 100 - 30 );
 

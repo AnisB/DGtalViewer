@@ -682,6 +682,10 @@ protected:
 	Ogre::Viewport* myViewPort;
 
 
+
+	Ogre::SceneNode * myPlan;
+
+
 	
 protected:
   
