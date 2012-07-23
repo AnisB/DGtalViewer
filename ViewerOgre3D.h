@@ -545,6 +545,12 @@ public:
        void destroyScene();
       
              
+
+      /**
+	* Changes the visibility of the shadow cast plane 
+	*/
+       void flipPlaneVisibility();
+
       /**
        *  Changes the text position on   a window resize
        */
@@ -682,8 +688,10 @@ protected:
 	Ogre::Viewport* myViewPort;
 
 
-
-	Ogre::SceneNode * myPlan;
+	/**
+	 * This plan is used to cast shadows
+	 */
+	Ogre::SceneNode * myPlane;
 
 
 	

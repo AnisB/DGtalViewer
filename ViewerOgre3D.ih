@@ -383,12 +383,12 @@ void ViewerOgre3D::createScene()
 
 
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
-  light->setType ( Ogre::Light::LT_SPOTLIGHT );
-  light->setDirection ( Ogre::Vector3 ( 1, -1, 0 ) );
+  light->setType ( Ogre::Light::LT_POINT );
+//  light->setDirection ( Ogre::Vector3 ( 1, 0, 1 ) );
   light->setDiffuseColour ( 0.8, 0.8, 0.8 );
   light->setSpecularColour ( 0.8, 0.5, 0.8 );
-  light->setPosition ( 100, 250, 100 );
-  light->setCastShadows(false);
+  light->setPosition ( 30, 25, 30 );
+  light->setCastShadows(true);
 
   //Camera
   myCamera = mySceneMgr->createCamera ( "mYCamera" );
@@ -422,9 +422,9 @@ void ViewerOgre3D::createScene()
  				plan2, 500, 500, 1, 1, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
   Ogre::Entity *ent1= mySceneMgr->createEntity("EntiteSol", "sol1");
   Ogre::Entity *ent2= mySceneMgr->createEntity("EntiteSol2", "sol2");
-  myPlan = mySceneMgr->getRootSceneNode()->createChildSceneNode();
-  myPlan->attachObject(ent1);
-  myPlan->attachObject(ent2);
+  myPlane = mySceneMgr->getRootSceneNode()->createChildSceneNode();
+  myPlane->attachObject(ent1);
+  myPlane->attachObject(ent2);
   ent2->setCastShadows(true);
   ent1->setCastShadows(true);
 }
@@ -537,9 +537,6 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
 
 
 }
-
-
-
 
 
 
@@ -1518,4 +1515,13 @@ void ViewerOgre3D::flipBackgroundColor()
     myBackgroundBlackColor=true;
   }
   
+}
+
+
+/**
+* Changes the visibility of the shadow cast plane 
+*/
+void ViewerOgre3D::flipPlaneVisibility()
+{
+	myPlane->flipVisibility();
 }

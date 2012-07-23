@@ -256,6 +256,9 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
        case OIS::KC_F :
 	  myViewer->flipBackgroundColor();
        break;
+
+       case OIS::KC_G :
+	 myViewer->flipPlaneVisibility();
       default:
         break;
 
