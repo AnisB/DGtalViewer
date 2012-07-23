@@ -387,7 +387,7 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
 void InputListener::windowResized ( Ogre::RenderWindow* rw )
 {
   myViewer->resetPosition(rw->getHeight(),rw->getWidth());
-  cout<<"Coucou"<<endl;
+
 }
 
 
@@ -396,7 +396,6 @@ void InputListener::windowResized ( Ogre::RenderWindow* rw )
 */
 void InputListener::windowMoved(Ogre::RenderWindow * rw)
 {
-  cout<<"bOUGE"<<endl;
 }
 /**
   * makes the render loop stop

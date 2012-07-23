@@ -261,6 +261,8 @@ void CameraMan::render ( double timeSinceLastFrame )
   */
 void CameraMan::turnCamera ( double x, double y )
 {  
+  if((x!=0.0) || (y !=0.0) )
+  {
   double dis = myCameraNode->_getDerivedPosition().distance(mySceneCenter);
   myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
   Ogre::Vector3 distance=(myCameraNode->getPosition()-mySceneCenter);
@@ -268,14 +270,14 @@ void CameraMan::turnCamera ( double x, double y )
   Ogre::Vector3 theYAxis =myCameraNode->getOrientation().yAxis()/(myCameraNode->getOrientation().yAxis().normalise());
   Ogre::Vector3 theXAxis =myCameraNode->getOrientation().xAxis()/(myCameraNode->getOrientation().xAxis().normalise());
   Ogre::Vector3 temp =(theYAxis* y*4 - theXAxis*x)*4 ;
-  myCameraNode->translate ( temp );  
+  myCameraNode->translate ( temp*norm*0.001);  
   myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
   
   // Error correction
   double disprime= myCameraNode->_getDerivedPosition().distance(mySceneCenter);
   Ogre::Vector3 aVect=myCameraNode->_getDerivedOrientation().zAxis()/(myCameraNode->_getDerivedOrientation().zAxis().normalise());
   myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+aVect*(dis-disprime));
-
+  }
 }
 
 

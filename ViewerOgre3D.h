@@ -45,6 +45,7 @@
 #include <list>
 #include <DGtal/io/Color.h>
 #include "DGtal/base/Common.h"
+#include "DGtal/shapes/Shapes.h"
 #include "OgreEntity.h"
 #include "DGtalNode.h"
 #include "DGtal/base/CountedPtr.h"
@@ -441,6 +442,37 @@ public:
 	*  Updates the wrist position
 	*/
       void  updateWrist (  );
+
+      /**
+	*  Updates the shadow plane position
+	*/
+      void  updatePlane (  );
+
+      /**
+	*  Adds a point light to scene
+	*  @param aColor the light's position
+	*  @param aPosition the light's Color
+	*  @param aCast defines if the light cast's shadows or not
+	*/
+      void  addPointLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,bool aCast  );
+      /**
+	*  Adds a spot light to scene
+	*  @param aColor the light's position
+	*  @param direction the light's direction
+	*  @param aPosition the light's Color
+	*  @param aCast defines if the light cast's shadows or not
+	*/
+      void  addSpotLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,
+				DGtal::Z3i::Point aDirection,bool aCast    );
+      /**
+	*  Adds a directionnal light to scene
+	*  @param aColor the light's position
+	*  @param direction the light's direction
+	*  @param aPosition the light's Color
+	*  @param aCast defines if the light cast's shadows or not
+	*/
+      void  addDirectionalLight ( DGtal::Color aColor, DGtal::Z3i::Point aPosition,
+				DGtal::Z3i::Point aDirection,bool aCast   );
 
 
       /**

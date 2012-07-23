@@ -184,6 +184,7 @@ void Representation::select()
   if(myMovableObjectType=="Entity")
   { 
     ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Selected");
+    ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
   }
 }
 
@@ -198,6 +199,7 @@ void Representation::groupSelect()
   if(myMovableObjectType=="Entity")
   { 
     ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Group");
+    ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
   }
 }
 
@@ -212,6 +214,7 @@ void Representation::unselect()
   if(myMovableObjectType=="Entity")
   { 
     ((Ogre::Entity*) myMovableObject)->setMaterialName(myMaterialName);
+    ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
   }
 }
 

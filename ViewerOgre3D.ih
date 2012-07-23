@@ -113,6 +113,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
   computeSceneCenter ( );
   updateInitialCameraPosition( );
   updateWrist();
+  updatePlane();
 
   return *this;
 }
@@ -379,16 +380,19 @@ void ViewerOgre3D::createScene()
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
 
-  mySceneMgr->setAmbientLight ( Ogre::ColourValue ( 0.4, 0.4, 0.4 ) );
-
+  mySceneMgr->setAmbientLight ( Ogre::ColourValue ( 0.5, 0.5, 0.5 ) );
+  mySceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
-  light->setType ( Ogre::Light::LT_POINT );
-//  light->setDirection ( Ogre::Vector3 ( 1, 0, 1 ) );
-  light->setDiffuseColour ( 0.8, 0.8, 0.8 );
-  light->setSpecularColour ( 0.8, 0.5, 0.8 );
-  light->setPosition ( 30, 25, 30 );
+  light->setType ( Ogre::Light::LT_POINT);
+//  light->setDirection ( Ogre::Vector3 ( 0, -1, 0 ) );
+  light->setDiffuseColour ( 1.0, 1.0, 1.0 );
+  light->setSpecularColour (1.0, 1.0, 1.0 );
+  light->setPosition ( 0, 600, 0 );
   light->setCastShadows(true);
+
+
+
 
   //Camera
   myCamera = mySceneMgr->createCamera ( "mYCamera" );
@@ -417,16 +421,22 @@ void ViewerOgre3D::createScene()
   Ogre::Plane plan1(Ogre::Vector3::UNIT_Y, 0);
   Ogre::Plane plan2(-Ogre::Vector3::UNIT_Y, 0);
   Ogre::MeshManager::getSingleton().createPlane("sol1",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
- 				plan1, 500, 500, 1, 1, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
+ 				plan1, 1000, 1000, 20, 20, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
   Ogre::MeshManager::getSingleton().createPlane("sol2",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
- 				plan2, 500, 500, 1, 1, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
+ 				plan2, 1000, 1000, 20, 20, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
   Ogre::Entity *ent1= mySceneMgr->createEntity("EntiteSol", "sol1");
   Ogre::Entity *ent2= mySceneMgr->createEntity("EntiteSol2", "sol2");
+
+
+//  ent1->setMaterialName("Texture/Unselected");
+//  ent2->setMaterialName("Texture/Unselected");
+  ent1->setCastShadows(false);
+  ent2->setCastShadows(false);
   myPlane = mySceneMgr->getRootSceneNode()->createChildSceneNode();
   myPlane->attachObject(ent1);
   myPlane->attachObject(ent2);
-  ent2->setCastShadows(true);
-  ent1->setCastShadows(true);
+ 
+
 }
 
 
@@ -568,6 +578,7 @@ Representation * ViewerOgre3D::addPoint ( double x, double y, double z,
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE ); 
+  m_ent->setCastShadows(true);
   m_ent->setMaterialName (  materialName );
 
   m_bodySceneNode->attachObject ( m_ent );
@@ -589,6 +600,7 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z,
 
   
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
+  m_ent->setCastShadows(true);
   m_ent->setMaterialName ( materialName );
 
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
@@ -603,7 +615,7 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z,
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr,
 								 m_ent, m_bodySceneNode,
 								 m_ent->getName(), "Entity" );
-   m_ent->setCastShadows(false);
+
   aRepresentation->setMaterialName ( materialName );
   aRepresentation->setMaterial(myTempMaterial);
   return aRepresentation;
@@ -620,9 +632,8 @@ Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z,
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
-
-    m_ent->setMaterialName ( aNode->getName() );
-
+  m_ent->setMaterialName ( aNode->getName() );
+  m_ent->setCastShadows(true);
   m_bodySceneNode->attachObject ( m_ent );
   
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor,
@@ -651,6 +662,7 @@ Representation * ViewerOgre3D::addKSSurfel ( double x, double y, double z,
 
 
   m_ent->setMaterialName ( materialName);
+  m_ent->setCastShadows(true);
   if ( !xSurfel )
     {
       m_bodySceneNode->setScale ( scaleFactor / 2500.0, scaleFactor / 175.0, scaleFactor / 175.0 );
@@ -697,6 +709,7 @@ Representation * ViewerOgre3D::addKSPointel ( double x, double y, double z,
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );
 
   m_ent->setMaterialName ( materialName);
+  m_ent->setCastShadows(true);
   m_bodySceneNode->attachObject ( m_ent );
   m_bodySceneNode->setPosition ( Ogre::Vector3 ( ( x + 0.5 ) *scaleFactor, ( y + 0.5 ) *scaleFactor, ( z + 0.5 ) *scaleFactor ) );
   m_bodySceneNode->setScale ( scaleFactor / 900.0, scaleFactor / 900.0, scaleFactor / 900.0 );
@@ -717,7 +730,8 @@ Representation * ViewerOgre3D::addKSLinel ( double x1, double y1, double z1,
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_CUBE );
 
-    m_ent->setMaterialName ( materialName );
+   m_ent->setMaterialName ( materialName );
+  m_ent->setCastShadows(true);
   m_bodySceneNode->attachObject ( m_ent );
 
   if ( fabs ( ( x1 - x2 ) ) > 0.001 )
@@ -1525,3 +1539,98 @@ void ViewerOgre3D::flipPlaneVisibility()
 {
 	myPlane->flipVisibility();
 }
+
+/**
+*  Updates the shadow plane position
+*/
+void ViewerOgre3D::updatePlane (  )
+{
+  myPlane->setPosition ( getLowerPosition()-Ogre::Vector3(0.0,100,0.0) );
+}
+
+
+/**
+*  Adds a point light to scene
+*  @param aColor the light's position
+*  @param aPosition the light's Color
+*  @param aCast defines if the light cast's shadows or not
+*/
+void  ViewerOgre3D::addPointLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,bool aCast  )
+{
+  Ogre::Light * light = mySceneMgr->createLight ( "Light" );
+  light->setType ( Ogre::Light::LT_POINT);
+  light->setDiffuseColour ( aColor.red()/255.0,aColor.green()/255.0, aColor.blue()/255.0 );
+  light->setSpecularColour ( aColor.red()/255.0,aColor.green()/255.0, aColor.blue()/255.0  );
+  light->setPosition ( aPosition[0]*scaleFactor, 
+			aPosition[1]*scaleFactor,
+			 aPosition[2]*scaleFactor );
+  light->setCastShadows(aCast);
+}
+
+
+
+
+/**
+*  Adds a spot light to scene
+*  @param aColor the light's position
+*  @param direction the light's direction
+*  @param aPosition the light's Color
+*  @param aCast defines if the light cast's shadows or not
+*/
+void  ViewerOgre3D::addSpotLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,
+			DGtal::Z3i::Point aDirection,bool aCast    )
+{
+  Ogre::Light * light = mySceneMgr->createLight ( "Light" );
+  light->setType ( Ogre::Light::LT_SPOTLIGHT);
+  light->setDirection ( Ogre::Vector3 ( aPosition[0]*scaleFactor, aPosition[1]*scaleFactor, aPosition[2]*scaleFactor  ) );
+  light->setDiffuseColour ( aColor.red()/255.0,aColor.green()/255.0, aColor.blue()/255.0  );
+  light->setSpecularColour ( aColor.red()/255.0,aColor.green()/255.0, aColor.blue()/255.0  );
+  light->setPosition ( aPosition[0]*scaleFactor, aPosition[1]*scaleFactor, aPosition[2]*scaleFactor );
+  light->setCastShadows(aCast);
+}
+
+
+/**
+*  Adds a directionnal light to scene
+*  @param aColor the light's position
+*  @param direction the light's direction
+*  @param aPosition the light's Color
+*  @param aCast defines if the light cast's shadows or not
+*/
+void  ViewerOgre3D::addDirectionalLight ( DGtal::Color aColor, DGtal::Z3i::Point aPosition,
+			DGtal::Z3i::Point aDirection,bool aCast   )
+{
+  Ogre::Light * light = mySceneMgr->createLight ( "Light" );
+  light->setType ( Ogre::Light::LT_DIRECTIONAL);
+  light->setDirection ( Ogre::Vector3 ( aPosition[0]*scaleFactor, 
+			aPosition[1]*scaleFactor, 
+			aPosition[2]*scaleFactor  ) );
+
+  light->setDiffuseColour (  aColor.red()/255.0,aColor.green()/255.0, aColor.blue()/255.0  );
+  light->setSpecularColour ( aColor.red()/255.0,aColor.green()/255.0, aColor.blue()/255.0 	 );
+
+  light->setPosition ( aPosition[0]*scaleFactor, 
+			aPosition[1]*scaleFactor, 
+			aPosition[2]*scaleFactor );
+
+  light->setCastShadows(aCast);
+}
+
+
+/**
+*  Saves the scene to xml format
+*  @param aName is the name of the saved file
+
+void ViewerOgre3D::saveToXML(std::string aName)
+{
+	Ogre::xmlDocPtr doc;
+	// Create a new Xmlm_XmlWriter for DOM, with no compression.
+	m_XmlWriter = xmlNewTextWriterDoc(&doc, 0);
+
+	xmlTextWriterStartDocument(m_XmlWriter, NULL, MY_ENCODING, NULL);
+	SceneExplore(mySceneManager);
+	xmlTextWriterEndDocument(m_XmlWriter);
+	xmlFreeTextWriter(m_XmlWriter);
+	xmlSaveFileEnc(aName+".scene", doc, MY_ENCODING);
+	xmlFreeDoc(doc);
+}*/
