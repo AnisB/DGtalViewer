@@ -93,6 +93,16 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
     myMouseLeftClicked = false ;
 
 
+
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+	// Cursor initating
+	myMouseCursor = new MouseCursor();
+    myMouseCursor->setImage("cursor.png");
+    myMouseCursor->setVisible(true);
+    myMouseCursor->setWindowDimensions(myWindow->getWidth(), myWindow->getHeight());
+#endif    
+    
+    
   const OIS::MouseState &ms = myMouse->getMouseState();
   ms.width = myWindow->getWidth();
   ms.height = myWindow->getHeight();
@@ -374,6 +384,7 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
     }
 
   myCameraMan->handleMouseMove ( e );
+  myMouseCursor->updatePosition(e.state.X.abs,e.state.Y.abs);
 
   return true;
 }

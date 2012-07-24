@@ -124,7 +124,7 @@ endif()
 
 
 set(HDRS ../Functions.h
-	 ../Representation.h
+	     ../Representation.h
          ../DGtalNode.h
          ../Ogre3DDisplayFactory.h
 		 ../mousecursor.h
@@ -147,16 +147,25 @@ include_directories( ${OIS_INCLUDE_DIRS}
 	${OGRE_SAMPLES_INCLUDEPATH}
 )
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+
+if(MINGW OR UNIX)
+	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
+endif(MINGW OR UNIX)
+
+
+
+SET(DGTAL_TESTS_SRC
+  testDGtalSet
+  testDomain
+  testKalimskySpace
+  testManipulate
+  testSelection
+  )
+		
 
 IF(NOT APPLE)
-		SET(DGTAL_TESTS_SRC
-		  testDGtalSet
-		  testDomain
-		  testKalimskySpace
-		  testManipulate
-		  testSelection
-		  )
-		
+
 		FOREACH(FILE ${DGTAL_TESTS_SRC})
 		  add_executable(${FILE} ${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
 		  target_link_libraries (${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
@@ -165,37 +174,40 @@ else()
 
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/Contents/MacOS)
 
-		SET(DGTAL_TESTS_SRC
-		  testDGtalSet
-		  testDomain
-		  testKalimskySpace
-		  testManipulate
-		  testSelection
-		  )
 		
 		FOREACH(FILE ${DGTAL_TESTS_SRC})
-		 	file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${FILE})
+		
+
+  
+		 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${FILE})
 		 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${FILE}/Contents)
 		 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${FILE}/Contents/MacOS)
 		 
-		  add_executable(MacOS/${FILE} MacOS/${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
+		 configure_file(${PROJECT_SOURCE_DIR}/../Requirements/info.plist.in 
+		${PROJECT_BINARY_DIR}/${FILE}/Contents/info.plist)
+  
+		  add_executable(${FILE} ${FILE} ${HDRS}  ${GUI_TYPE} ${SRCS})
 		  
-		  target_link_libraries (MacOS/${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
+		  target_link_libraries (${FILE} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${DGTAL_LIBRARIES}  ${EXTRA_LIBS})
+		  
+			ADD_CUSTOM_COMMAND(TARGET ${FILE}
+			          POST_BUILD
+			          COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/Contents/MacOS/${FILE} ${PROJECT_BINARY_DIR}/${FILE}/Contents/MacOS
+			)
+
+
 		ENDFOREACH(FILE)
 
 ENDIF(NOT APPLE)
  
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+
 
  
-if(MINGW OR UNIX)
-	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
-endif(MINGW OR UNIX)
- 
-
- if(APPLE)
-	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/Contents)
+if(APPLE)
+ADD_DEFINITIONS("-x objective-c++")
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/Contents/MacOS)
 endif(APPLE)
+
 
 configure_file(${PROJECT_SOURCE_DIR}/../Requirements.h.in 
   ${PROJECT_SOURCE_DIR}/../Requirements.h)

@@ -287,6 +287,15 @@ ViewerOgre3D::~ViewerOgre3D()
 
 
 
+
+
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+#include "AppDelegate.h"
+#endif
+
+#include <iostream>
+using namespace std;
+
 /**
   *  Rendering launch method.
   */
@@ -311,10 +320,15 @@ void ViewerOgre3D::start()
 			myRoot->renderOneFrame();
 			timeSinceLastFrame = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - startTime;
 	}
-#endif
-
-
-	
+#else
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    
+    mAppDelegate = [[AppDelegate alloc] init];
+    	
+    [[NSApplication sharedApplication] setDelegate:mAppDelegate];
+	int retVal = NSApplicationMain(0, NULL);
+	[pool release];
+#endif	
 }
 
 

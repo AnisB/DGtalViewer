@@ -8,7 +8,3 @@
 #include "ViewerOgre3D.h"
 #include "OGRE/Ogre.h"
 
-
-#include <iostream>
-using namespace std;
-

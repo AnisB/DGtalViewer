@@ -45,7 +45,10 @@
 #include "OGRE/Ogre.h"
 #include "CameraMan.h"
 #include "mousecursor.h"
-
+			
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+#include "mousecursor.h"			
+#endif 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -254,6 +257,15 @@ namespace DGtal
               * The mouse
               */	      
               OIS::Mouse * myMouse;
+              	     
+              	     
+             /**
+              * The mouse cursor
+              */	
+			#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+				 MouseCursor * myMouseCursor;
+			#endif    
+    
 	      
 	      /**
               * The OIS input listenner
@@ -271,11 +283,6 @@ namespace DGtal
               */		   
               CameraMan * myCameraMan;
 	      
-	      /**
-              * The mouse cursor
-              */		     
-              MouseCursor * myMouseCursor;
-	     
 	      
 	      /**
               *  Free 3D moving flag
