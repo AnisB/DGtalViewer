@@ -472,8 +472,8 @@ void DGtalNode::moreTransparency( )
 {
   if ( myRepresentation->isVirtual() )
     {
-      IncreaseTransparency(mySons.begin()->second->getRepresentation()->getMaterial());
 
+      IncreaseTransparency(mySons.begin()->second->getRepresentation()->getMaterial());
     }
 
 }
