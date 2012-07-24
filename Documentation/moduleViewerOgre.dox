@@ -1,0 +1,262 @@
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+ * @page moduleviewerogre3d ViewerOgre3D : An interactive viewer
+ *
+ * This part of the manual describes how to use the diffenrent modes of the viewer 
+ * 
+
+@author Anis Benyoub
+ 
+=
+  \section DGtalGLV_ViewerOgre ViewerOgre3D: a stream mechanism for interacting with 3D scenes
+
+
+
+  This class ViewerOgre3D defines the stream mechanism to
+  display 3d primitives (like PointVector, DigitalSetBySTLSet, Object
+  ...). It permits to display 3D scenes, with different complex objects
+  and give the possibility to interact with them. 
+ *
+ \section DGtal_Section View mode
+First to use the ViewerOgre3D stream, you need to include the following hearders:
+ *
+@code
+ #include "DGtal/io/3dViewers/OGRE/ViewerOgre3D.h"
+@endcode
+ *	
+ *
+ *	
+
+The first step to visualize 3D object with Viewer3D is to create the Viewer from the main(): 
+@code
+DGtal::ViewerOgre3D viewer;
+@endcode
+
+Then we can display some 3D primitives:
+@code
+ Point p1( 0, 0, 0 );
+ Point p2( 5, 5 ,5 );
+ Point p3( 2, 3, 4 );
+ Domain domain( p1, p2 );
+
+ viewer << domain;  
+ viewer << p1 << p2 << p3; 
+
+* @endcode
+and finnaly, if you just want to visualize your objects.
+@code
+viewer.start();
+@endcode
+
+*
+* You should obtain the following visualisation:
+*
+* \image html viewerogre3Dpointsdomain.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex viewerogre3Dpointsdomain.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+
+
+
+
+
+* \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
+*
+*
+* The ViewerOgre3D class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
+*
+*
+* @code
+
+  ViewerOgre3D viewer;
+  Point p1( 0, 0, 0 );
+  Point p2( 10, 10 , 10 );
+  Domain domain( p1, p2 );
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+  shape_set.erase(Point(3,3,3));
+  shape_set.erase(Point(6,6,6)); 
+  viewer << shape_set;
+  viewer.start(); 
+
+ @endcode
+*
+
+*
+* You should obtain the following visualisation:
+*
+* \image html dgtalsetogre.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex dgtalsetogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+* Node that the set is blue, that's due to selection.
+*
+*
+* \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
+*
+* Some digital elements (like Object, PointVector, ArithmeticalDSS3d) may have several possible ways to be rendered as a graphical object. For instance, a voxel may be seen more as a small sphere or more as a unit cube. In the same idea, a digital object may or may not be represented with its adjacency relations. Otherwise said, one may wish to see the set, another may wish to see the graph.
+
+You may choose a mode for a drawable element by outputing on the stream a SetMode object. You just have to specify the classname (the easiest way is to call the method className() on an instance of the correct type) and the desired mode (a string). An Object is sensitive to the mode "" (default, just the set is displayed).
+*
+*@code
+  ViewerOgre3D viewer;
+  DGtal::Z3i::Point p1 ( 0, 0, 0 );
+  DGtal::Z3i::Point p2 ( 2, 5, 7 );
+  DGtal::Z3i::Point p5 ( 9, -5, 10 );
+  View << DGtal::SetViewerMode3D(p1.className(),"Paving");
+  View << p1;
+  View << DGtal::SetViewerMode3D(p1.className(),"");
+  View << p2;	
+  View << p3;	
+  View.start();
+@endcode
+* 
+*or change the  mode
+*
+@code
+  ViewerOgre3D viewer;
+  DGtal::Z3i::Point p1 ( 0, 0, 0 );
+  DGtal::Z3i::Point p2 ( 2, 5, 7 );
+  DGtal::Z3i::Point p3 ( 9, -5, 10 );
+  View << DGtal::SetViewerMode3D(p1.className(),"Grid");
+  View << p1;
+  View << p2;	
+  View << p3;	
+  View.start();
+@endcode
+
+
+* You should obtain the following visualisation for the first example:
+*
+* \image html pavingogre.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex pavingogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+
+* And for the second:
+*
+* \image html gridogre.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex gridogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+
+* Node that in each example there is a point in red (it's due to selection (see below)).
+
+* \section  DGtalGLV_Mode Useful modes for several 3D drawable elements 
+
+
+\subsection DGtalGLV_ModeListing Listing of different modes
+
+As for \c Board2D the object can be displayed with different possible mode:
+
+  - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
+  - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
+  - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
+  - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+
+
+
+\subsection DGtalGLV_ModeExamplesDomain Examples with \ref Objet modes
+
+
+We can display the set of point and the domain 
+
+@code 
+ Point p1( -1, -1, -2 );
+ Point p2( 2, 2, 3 );
+ Domain domain( p1, p2 );
+ Point p3( 1, 1, 1 );
+ Point p4( 2, -1, 3 );
+ Point p5( -1, 2, 3 );
+ Point p6( 0, 0, 0 );
+ Point p0( 0, 2, 1 );
+@endcode
+
+without mode change (see image (a)):
+@code
+ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
+ viewer << domain;
+@endcode
+
+We can change the mode for displaying the domain (see image (b)):
+@code
+ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
+ viewer << SetMode3D(domain.className(), "PavingGrids");
+ viewer << domain;
+@endcode
+(Note that to avoid transparency displaying artifacts, we need to
+display the domain after the voxel elements included in the domain)
+<BR>
+
+It is also possible to change the mode for displaying the voxels: (see image (c))
+@code 
+viewer << domain;
+viewer <<  SetMode3D( p1.className(), "Grid" );
+viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
+@endcode
+*
+*
+
+\subsection DGtalGLV_ModeOtherExamples Others Examples
+
+
+Others mode examples are illustrated for class KhalimskyCell and class SignedKhalimskyCell in respectively the subsection \ref dgtal_ctopo_sec2_3 and subsection \ref dgtal_ctopo_sec1_6 of the section related to cellular topology ( \ref dgtal_cellular_topology). 
+
+
+
+
+\section  DGtalGLV_Custom Changing the style for displaying drawable elements.
+
+As for Board2D, it is possible to custom the way to display 3D elements by using an instance of the following classes:
+
+
+-  CustomColors3D: to change the color used to display surface primitive (GL_QUADS) and the pen color (LINE/POINTS) ;
+
+
+
+The custom color can be applied by an instance of the CustomColors3D as follow:
+
+@code 
+  viewer << CustomColors3D(DGtal::Color(250, 0,0,255),DGtal::Color(250, 0,0,255));
+  viewer << p4 << p5 ;
+@endcode
+
+
+
+\section DGtalGLV_CLipping Adding clipping planes 
+
+It also possible through the stream mechanism to add clipping plane
+with the object \c ClippingPlane. We just have to add the real plane
+equation and adding as for displaying an element. The file <a
+href="viewer3D-6-clipping_8cpp-example.html"
+>viewer3D-6-clipping.cpp</a> gives a simple example.
+
+From displaying a digital set defined from a Norm2 ball,
+@code
+ Point p1( 0, 0, 0 );
+ Point p2( 20, 20, 20 );
+ Domain domain(p1, p2);
+ DigitalSet shape_set( domain );
+
+ Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+
+ viewer << SetMode3D( shape_set.className(), "Both" );
+ viewer << shape_set;
+ viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
+ viewer <<  SetMode3D( p1.className(), "Paving" );
+@endcode
+
+we can add for instance two differents clipping planes:
+
+@code 
+ viewer << ClippingPlane(1,0,0,-4.9);
+ viewer << ClippingPlane(0,1,0.3,-10);
+@endcode 
+*/
+
+}
+
+

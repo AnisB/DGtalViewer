@@ -591,7 +591,7 @@ public:
       /**
        *  Changes the text position on   a window resize
        */
-       void printScene(std::string name="ScreenShot.bmp");
+       void printScene(std::string name="ScreenShot.png");
        
        
        /**
