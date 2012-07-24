@@ -384,7 +384,11 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
     }
 
   myCameraMan->handleMouseMove ( e );
+
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
   myMouseCursor->updatePosition(e.state.X.abs,e.state.Y.abs);
+#endif    
+
 
   return true;
 }
