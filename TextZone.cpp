@@ -104,6 +104,21 @@ void DGtal::TextZone::setVisible ( bool visible )
     }
 }
 
+/**
+*  Flips the cursor visibility
+*/
+void DGtal::TextZone::flipVisibility ( )
+{
+	if(myPanel->isVisible())
+	{
+   		myPanel->hide();
+	}
+	else
+	{
+	      myPanel->show();
+	}
+}
+
 
 /**
   *  Changes the text position

@@ -84,6 +84,13 @@ namespace DGtal
           void setVisible ( bool visible );
 
 
+          /**
+           *  Flips the cursor visibility
+           */
+          void flipVisibility ( );
+
+
+
 	  /**
 	    *  Changes the text position
 	    */

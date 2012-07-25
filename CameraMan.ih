@@ -270,6 +270,8 @@ void CameraMan::turnCamera ( double x, double y )
   myCameraNode->translate ( temp*norm*0.001);  
   myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
   
+
+
   // Error correction
   double disprime= myCameraNode->_getDerivedPosition().distance(mySceneCenter);
   Ogre::Vector3 aVect=myCameraNode->_getDerivedOrientation().zAxis()/(myCameraNode->_getDerivedOrientation().zAxis().normalise());
@@ -336,10 +338,10 @@ void CameraMan::setInitialPosition(Ogre::Vector3 & newPos)
   */
 void CameraMan::reset()
 {
-//  myCameraNode->setOrientation(mySavedOrientation);
-//  myCameraNode->setPosition(myInitialPosition);
-//  myCameraNode->setPosition(myCameraNode->getPosition());
-//	  myCameraNode->lookAt(mySceneCenter, Ogre::Node::TS_WORLD);
+  myCameraNode->setOrientation(mySavedOrientation);
+  myCameraNode->setPosition(myInitialPosition);
+  myCameraNode->setPosition(myCameraNode->getPosition());
+  myCameraNode->lookAt(mySceneCenter, Ogre::Node::TS_WORLD);
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

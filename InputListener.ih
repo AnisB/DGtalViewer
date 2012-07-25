@@ -273,6 +273,9 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
       break;
        case OIS::KC_X :
 	 myViewer->exportToXml("scene");
+      break;
+       case OIS::KC_T :
+	 myViewer->flipTextVisibility();
       default:
         break;
 

@@ -387,11 +387,11 @@ bool ViewerOgre3D::initConfigs()
   */
 void ViewerOgre3D::createScene()
 {
-  Ogre::TextureManager::getSingleton().setDefaultNumMipmaps ( 5 );
+  Ogre::TextureManager::getSingleton().setDefaultNumMipmaps ( 10 );
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
 
-  mySceneMgr->setAmbientLight ( Ogre::ColourValue ( 0.5, 0.5, 0.5 ) );
+  mySceneMgr->setAmbientLight ( Ogre::ColourValue ( 0.4, 0.4, 0.4 ) );
   mySceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
@@ -399,7 +399,7 @@ void ViewerOgre3D::createScene()
 //  light->setDirection ( Ogre::Vector3 ( 0, -1, 0 ) );
   light->setDiffuseColour ( 1.0, 1.0, 1.0 );
   light->setSpecularColour (1.0, 1.0, 1.0 );
-  light->setPosition ( 0, 600, 0 );
+  light->setPosition ( mySceneCenter);
   light->setCastShadows(true);
 
 
@@ -429,18 +429,17 @@ void ViewerOgre3D::createScene()
   drawAxes();
   drawWrist();
   
-  Ogre::Plane plan1(Ogre::Vector3::UNIT_Y, 0);
-  Ogre::Plane plan2(-Ogre::Vector3::UNIT_Y, 0);
+  Ogre::Plane plan1(Ogre::Vector3::UNIT_Z, 0);
+  Ogre::Plane plan2(-Ogre::Vector3::UNIT_Z, 0);
   Ogre::MeshManager::getSingleton().createPlane("sol1",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
- 				plan1, 1000, 1000, 20, 20, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
+ 				plan1, 500, 500, 10, 10, true, 1, 1, 1,  Ogre::Vector3::UNIT_Y);
   Ogre::MeshManager::getSingleton().createPlane("sol2",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
- 				plan2, 1000, 1000, 20, 20, true, 1, 1, 1,  Ogre::Vector3::UNIT_Z);
+ 				plan2, 500, 500, 10, 10, true, 1, 1, 1,  Ogre::Vector3::UNIT_Y);
   Ogre::Entity *ent1= mySceneMgr->createEntity("EntiteSol", "sol1");
   Ogre::Entity *ent2= mySceneMgr->createEntity("EntiteSol2", "sol2");
 
 
-//  ent1->setMaterialName("Texture/Unselected");
-//  ent2->setMaterialName("Texture/Unselected");
+
   ent1->setCastShadows(false);
   ent2->setCastShadows(false);
   myPlane = mySceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -1038,9 +1037,9 @@ void ViewerOgre3D::changeAxisVisibility()
   */
 Ogre::Vector3 ViewerOgre3D::getLowerPosition()
 {
-  Ogre::Vector3 low = Ogre::Vector3 ( 0, 0, 0 );
-  std::map<std::string, DGtalNode *>::iterator them = myNodes.begin();
 
+  std::map<std::string, DGtalNode *>::iterator them = myNodes.begin();
+  Ogre::Vector3 low = ( *them ).second->getNode()->getPosition();
   while ( them != myNodes.end() )
     {
       if ( ( low.z ) > ( ( *them ).second->getNode()->getPosition().z ) )
@@ -1516,6 +1515,9 @@ void ViewerOgre3D::resetPosition(int h, int w)
 {
   myMode->setPosition(w/10,h-h/10);
   myMode->setSize(36);
+ // Parametrage du point de vue
+  myCamera->setAspectRatio ( Ogre::Real ( myViewPort->getActualWidth() ) / Ogre::Real ( myViewPort->getActualHeight() ) );
+
 
 }
 /**
@@ -1568,7 +1570,7 @@ void ViewerOgre3D::flipPlaneVisibility()
 */
 void ViewerOgre3D::updatePlane (  )
 {
-  myPlane->setPosition ( getLowerPosition()-Ogre::Vector3(0.0,100,0.0) );
+  myPlane->setPosition ( getLowerPosition()-Ogre::Vector3(0.0,0.0,0.0) );
 }
 
 
@@ -1658,3 +1660,11 @@ Ogre::Vector3 ViewerOgre3D::goodCameraPosition()
    return (getLeftestPosition()+ getUpperPosition() +Ogre::Vector3(200.0,200.0,200.0));
 }
 
+
+/**
+* Changes the visibility of the text
+*/
+void ViewerOgre3D::flipTextVisibility()
+{
+	myMode->flipVisibility();
+}

@@ -589,7 +589,10 @@ public:
        */
        Ogre::Vector3 goodCameraPosition();
       
-
+      /**
+	* Changes the visibility of the text
+	*/
+       void flipTextVisibility();
 
       /**
 	* Changes the visibility of the shadow cast plane 
