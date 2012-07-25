@@ -45,7 +45,7 @@
 #include "OGRE/Ogre.h"
 #include "CameraMan.h"
 #include "mousecursor.h"
-			
+#include "DGtalSingleton.h"			
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
 #include "mousecursor.h"			
 #endif 
@@ -63,7 +63,7 @@ namespace DGtal
 
         class ViewerOgre3D;
 
-        class InputListener : public Ogre::Singleton<InputListener> ,
+        class InputListener : public DGtal::Singleton<InputListener> ,
 			      public Ogre::FrameListener,
 			      public OIS::KeyListener, OIS::MouseListener ,
 			      public Ogre::WindowEventListener

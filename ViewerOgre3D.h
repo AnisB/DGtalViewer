@@ -51,6 +51,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "CommonOgre.h"
 #include "TextZone.h"
+#include "DGtalSingleton.h"			
 #include <OgreFontManager.h> 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -69,7 +70,7 @@ const double scaleFactor= 20.0;
 */
 
 
-class ViewerOgre3D : public Ogre::Singleton<ViewerOgre3D>
+class ViewerOgre3D : public DGtal::Singleton<ViewerOgre3D>
 {
 
   // ----------------------- local types ------------------------------

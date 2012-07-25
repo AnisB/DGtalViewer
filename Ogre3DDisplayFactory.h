@@ -28,15 +28,15 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(Ogre3DDisplayFactor_RECURSES)
-#error Recursive header files inclusion detected in Ogre3DDisplayFactor.h
-#else // defined(Ogre3DDisplayFactor_RECURSES)
+#if defined(Ogre3DDisplayFactory_RECURSES)
+#error Recursive header files inclusion detected in Ogre3DDisplayFactory.h
+#else // defined(Ogre3DDisplayFactory_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Ogre3DDisplayFactor_RECURSES
+#define Ogre3DDisplayFactory_RECURSES
 
-#if !defined Ogre3DDisplayFactor_h
+#if !defined Ogre3DDisplayFactory_h
 /** Prevents repeated inclusion of headers. */
-#define Ogre3DDisplayFactor_h
+#define Ogre3DDisplayFactory_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -59,8 +59,8 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
   struct Ogre3DDisplayFactory
         /**
-         * Description of struct 'Ogre3DDisplayFactor' <p>
-         * \brief Ogre Factory for Display3D:
+         * Description of struct 'Ogre3DDisplayFactory' <p>
+         * \brief Ogre Factory for Ogre3DDisplayFactory:
          */
     {
       // ArithmeticalDSS
@@ -168,7 +168,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Ogre3DDisplayFactor_h
+#endif // !defined Ogre3DDisplayFactory_h
 
-#undef Ogre3DDisplayFactor_RECURSES
-#endif // else defined(Ogre3DDisplayFactor_RECURSES)
+#undef Ogre3DDisplayFactory_RECURSES
+#endif // else defined(Ogre3DDisplayFactory_RECURSES)

@@ -20,6 +20,9 @@ if(UNIX AND NOT APPLE)
                 set(OGRE_PLUGINS "/usr/lib/OGRE/")
         elseif (EXISTS "/usr/lib/i386-linux-gnu/OGRE/")
                 set(OGRE_PLUGINS "/usr/lib/i386-linux-gnu/OGRE/")
+        else()
+	     message(SEND_ERROR "Unable to find Ogre plugins, please set OGRE_PLUGINS variable")
+	    
         endif(EXISTS "/usr/local/lib/OGRE/")
 
 
@@ -28,8 +31,9 @@ if(UNIX AND NOT APPLE)
 
 	 elseif(EXISTS "/usr/share/OGRE/cmake")
 	     set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
-	   else ()
-	     message(SEND_ERROR "Failed to find module path.")
+	  else ()
+	     message(SEND_ERROR "Failed to find module path, please set OGRE_FIND variable to the folder containing FindOgre.cmake")
+             find_package(OGRE_FIND REQUIRED)
 	 endif(EXISTS "/usr/local/lib/OGRE/cmake")
 
  endif(UNIX AND NOT APPLE)
