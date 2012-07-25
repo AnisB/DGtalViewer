@@ -14,6 +14,7 @@ endif(WIN32)
 
 if(UNIX AND NOT APPLE)
 
+if(NOT DEFINED OGRE_PLUGINS)
 	if(EXISTS "/usr/local/lib/OGRE/")
                 set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
         elseif(EXISTS "/usr/lib/OGRE/")
@@ -24,7 +25,7 @@ if(UNIX AND NOT APPLE)
 	     message(SEND_ERROR "Unable to find Ogre plugins, please set OGRE_PLUGINS variable")
 	    
         endif(EXISTS "/usr/local/lib/OGRE/")
-
+endif()
 
 	if(EXISTS "/usr/local/lib/OGRE/cmake")
 	  	set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
@@ -32,7 +33,7 @@ if(UNIX AND NOT APPLE)
 	 elseif(EXISTS "/usr/share/OGRE/cmake")
 	     set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
 	  else ()
-	     message(SEND_ERROR "Failed to find module path, please set OGRE_FIND variable to the folder containing FindOgre.cmake")
+	     message(SEND_ERROR "Failed to find module path, please set OGRE_DIR variable to the folder containing FindOgre.cmake")
              find_package(OGRE_FIND REQUIRED)
 	 endif(EXISTS "/usr/local/lib/OGRE/cmake")
 
@@ -41,8 +42,14 @@ if(UNIX AND NOT APPLE)
 
 
 if(APPLE)
+     if(NOT DEFINED OGRE_HOME)
+	     message("The variable OGRE_HOME is unset, please set it")
 	set(CMAKE_MODULE_PATH "${OGRE_DIR}/cmake/;${CMAKE_MODULE_PATH}")
 	set(OGRE_PLUGINS "${OGRE_DIR}/lib/")
+     else()
+	set(CMAKE_MODULE_PATH "${OGRE_HOME}/cmake/;${CMAKE_MODULE_PATH}")
+	set(OGRE_PLUGINS "${OGRE_HOME}/lib/")
+     endif()
 endif(APPLE)
  
 
@@ -119,7 +126,7 @@ endif()
 
 
 set(HDRS ../Functions.h
-	     ../Representation.h
+	 ../Representation.h
          ../DGtalNode.h
          ../Ogre3DDisplayFactory.h
 	 ../mousecursor.h

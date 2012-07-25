@@ -446,6 +446,7 @@ void ViewerOgre3D::createScene()
   myPlane = mySceneMgr->getRootSceneNode()->createChildSceneNode();
   myPlane->attachObject(ent1);
   myPlane->attachObject(ent2);
+  myPlane->setVisible(false);
  
 
 }
