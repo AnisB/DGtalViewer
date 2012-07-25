@@ -1650,3 +1650,11 @@ void ViewerOgre3D::exportToXml(std::string aFileName )
    anExporter.exportToFile(mySceneMgr, aFileName);
 }
 
+/**
+* Returns a good position for the camera 
+*/
+Ogre::Vector3 ViewerOgre3D::goodCameraPosition()
+{
+   return (getLeftestPosition()+ getUpperPosition() +Ogre::Vector3(200.0,200.0,200.0));
+}
+

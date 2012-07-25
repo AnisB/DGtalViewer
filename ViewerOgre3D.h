@@ -584,6 +584,12 @@ public:
        void destroyScene();
       
              
+      /**
+       * Returns a good position for the camera 
+       */
+       Ogre::Vector3 goodCameraPosition();
+      
+
 
       /**
 	* Changes the visibility of the shadow cast plane 

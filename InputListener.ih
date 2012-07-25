@@ -55,6 +55,7 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   // Camera Intiate
   myCamera = aCamera;
   Ogre::SceneNode * aNode=myViewer->getANode();
+  aNode->setPosition(myViewer->goodCameraPosition());
   myCameraMan = new CameraMan (aNode, myCamera );
 
     size_t windowHnd = 0;
