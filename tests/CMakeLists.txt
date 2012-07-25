@@ -131,19 +131,20 @@ set(HDRS ../Functions.h
 	     ../Representation.h
          ../DGtalNode.h
          ../Ogre3DDisplayFactory.h
-		 ../mousecursor.h
-		 ../ViewerOgre3D.h
-		 ../InputListener.h
-		 ../CameraMan.h
-		 ../DrawableWithOgreWrapper.h
-		 ../DrawableWithOgre.h
+	 ../mousecursor.h
+	 ../ViewerOgre3D.h
+	 ../InputListener.h
+	 ../CameraMan.h
+	 ../DrawableWithOgreWrapper.h
+	 ../DrawableWithOgre.h
 )
  
 set(SRCS ../Representation.cpp 
          ../DGtalNode.cpp 
          ../mousecursor.cpp
-	     ../DrawableWithOgre.cpp
+	 ../DrawableWithOgre.cpp
          ../TextZone.cpp
+         ../XMLExporter.cpp
 )
  
 include_directories( ${OIS_INCLUDE_DIRS}

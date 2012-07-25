@@ -53,6 +53,7 @@
 #include "TextZone.h"
 #include "DGtalSingleton.h"			
 #include <OgreFontManager.h> 
+#include "XMLExporter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -214,7 +215,12 @@ public:
        */
       void less( );
       
-      
+      /**
+       *  Exports the scene to an xml file
+       *  @param aFileName name of the file that will contain 
+       *  the xml version of the scene (do not give the extention)
+       */
+      void exportToXml(std::string aFileName );
       
       
       /**
@@ -790,4 +796,4 @@ protected:
 #endif /* VIEWEROGRE3D_H_ */
 
 #undef ViewerOgre3D_RECURSES
-#endif // else defined(Display3D_RECURSES)
+#endif // else defined(VIEWEROGRE3D_RECURSES)

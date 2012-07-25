@@ -269,6 +269,9 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 
        case OIS::KC_G :
 	 myViewer->flipPlaneVisibility();
+      break;
+       case OIS::KC_X :
+	 myViewer->exportToXml("scene");
       default:
         break;
 

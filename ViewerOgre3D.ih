@@ -1642,21 +1642,14 @@ void  ViewerOgre3D::addDirectionalLight ( DGtal::Color aColor, DGtal::Z3i::Point
   light->setCastShadows(aCast);
 }
 
-
 /**
-*  Saves the scene to xml format
-*  @param aName is the name of the saved file
-
-void ViewerOgre3D::saveToXML(std::string aName)
+*  Exports the scene to an xml file
+*  @param aFileName name of the file that will contain 
+*  the xml version of the scene (do not give the extention)
+*/
+void ViewerOgre3D::exportToXml(std::string aFileName )
 {
-	Ogre::xmlDocPtr doc;
-	// Create a new Xmlm_XmlWriter for DOM, with no compression.
-	m_XmlWriter = xmlNewTextWriterDoc(&doc, 0);
+   DGtal::XMLExporter anExporter;
+   anExporter.exportToFile(mySceneMgr, aFileName);
+}
 
-	xmlTextWriterStartDocument(m_XmlWriter, NULL, MY_ENCODING, NULL);
-	SceneExplore(mySceneManager);
-	xmlTextWriterEndDocument(m_XmlWriter);
-	xmlFreeTextWriter(m_XmlWriter);
-	xmlSaveFileEnc(aName+".scene", doc, MY_ENCODING);
-	xmlFreeDoc(doc);
-}*/
