@@ -41,17 +41,8 @@ if(UNIX AND NOT APPLE)
 
 
 if(APPLE)
-	if(EXISTS "/Applications/OgreSDK/lib/")
-                set(OGRE_PLUGINS "/Applications/OgreSDK/lib/")
-    endif(EXISTS "/Applications/OgreSDK/lib/")
-        
-	if(EXISTS "/Applications/OgreSDK/CMake")
-	  	set(CMAKE_MODULE_PATH "/Applications/OgreSDK/CMake/;${CMAKE_MODULE_PATH}")
-	elseif(EXISTS "/usr/lib/OGRE/cmake/")
-	  	set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
-	else ()
-	  	message(SEND_ERROR "Failed to find module path.")
-	endif(EXISTS "/Applications/OgreSDK/CMake")
+	set(CMAKE_MODULE_PATH "${OGRE_DIR}/cmake/;${CMAKE_MODULE_PATH}")
+	set(OGRE_PLUGINS "${OGRE_DIR}/lib/")
 endif(APPLE)
  
 

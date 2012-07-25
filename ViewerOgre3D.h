@@ -710,7 +710,6 @@ protected:
 	*  2D display
 	* 
 	*/
-        TextZone * myTitle;
 	TextZone * myMode;
 	
         /**
