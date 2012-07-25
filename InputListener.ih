@@ -372,7 +372,7 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
 {
   if ( !myIsInShiftMode )
     {
-//      myMouseCursor->updatePosition ( e.state.X.abs, e.state.Y.abs );
+
 
       if ( myMouseLeftClicked && ( ( e.state.X.abs != 0 ) && ( e.state.Y.abs != 0 ) && ( e.state.Y.abs != myWindow->getHeight() ) && ( e.state.X.abs != myWindow->getWidth() ) ) )
         {
