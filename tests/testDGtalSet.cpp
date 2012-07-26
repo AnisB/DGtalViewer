@@ -54,13 +54,15 @@ bool testDGtalSet()
   DGtal::Z3i::Point p4 ( 30, 30 , 30 );
   DGtal::Z3i::Point p5 ( -30, -30 , -30 );
   DGtal::Z3i::Domain domain ( p4, p5 );
-  
-  
+    
+
   View << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),
 				DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),
 				DGtal::Color(255,0,0,100),"unselected.jpg");
 
+
   View << DGtal::SetViewerMode3D(p1.className(),"Paving");
+
   View << p1;
   View << p2;
   View << p3;

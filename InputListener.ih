@@ -53,6 +53,7 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
     myWindow ( aWindow ), myViewer ( aViewer )
 
 {
+
   // Camera Intiate
   myCamera = aCamera;
   Ogre::SceneNode * aNode=aSceneManager->getRootSceneNode()->createChildSceneNode();
@@ -176,7 +177,7 @@ void InputListener::updateViewer(double timeSinceLastFrame)
       if(myMouseLeftClicked && myCameraMan->isTurning() && (abs(myMouse->getMouseState().X.rel) == 0)&&(myMouse->getMouseState().Y.rel==0))
       {
          double a =(double)clock()/CLOCKS_PER_SEC;
-         if(abs(a-myTime)>0.001)
+         if(abs(a-myTime)>0.01)
          { 
 	   myCameraMan->stopTurning();
            myTime=-1;

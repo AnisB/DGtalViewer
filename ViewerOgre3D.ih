@@ -298,6 +298,7 @@ using namespace std;
   */
 void ViewerOgre3D::start()
 {
+
  // myRoot->startRendering();
   myInputManager->startRendering();
   
@@ -1656,7 +1657,7 @@ void ViewerOgre3D::exportToXml(std::string aFileName )
 */
 Ogre::Vector3 ViewerOgre3D::goodCameraPosition()
 {
-   return (getLeftestPosition()+ getUpperPosition() +Ogre::Vector3(200.0,200.0,200.0));
+   return (getLeftestPosition()+ getUpperPosition() +Ogre::Vector3(500.0,500.0,500.0));
 }
 
 

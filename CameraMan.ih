@@ -355,8 +355,8 @@ void CameraMan::zoom(int z)
 void CameraMan::setInitialPosition(Ogre::Vector3 & newPos)
 {
   myInitialPosition =newPos;
-  myCameraNode->lookAt(mySceneCenter,Ogre::Node::TS_WORLD);
-  mySavedOrientation = myCameraNode->getOrientation();
+//  myCameraNode->lookAt(mySceneCenter,Ogre::Node::TS_WORLD);
+//  mySavedOrientation = myCameraNode->getOrientation();
 }
 
 /**
