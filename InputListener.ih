@@ -179,7 +179,7 @@ void InputListener::updateViewer(double timeSinceLastFrame)
          double a =(double)clock()/CLOCKS_PER_SEC;
          if(abs(a-myTime)>0.01)
          { 
-	   myCameraMan->stopTurning();
+	       myCameraMan->stopTurning();
            myTime=-1;
          }
       }
@@ -340,7 +340,7 @@ bool InputListener::mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID
     {
       if(myCameraMan->isTurning() && (myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
       {
-	 myCameraMan->stopTurning();
+	  //   myCameraMan->stopTurning();
          myTime=-1;
       }
       if((myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
