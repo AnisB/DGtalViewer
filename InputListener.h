@@ -297,6 +297,7 @@ namespace DGtal
 	      
 	      int myMouseX;
 	      int myMouseY;
+              double myTime;
 
 	      /**
 	       * The rendering timer

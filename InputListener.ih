@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "InputListener.h"
 #include <iostream>
+#include "time.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -54,7 +55,7 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
 {
   // Camera Intiate
   myCamera = aCamera;
-  Ogre::SceneNode * aNode=myViewer->getANode();
+  Ogre::SceneNode * aNode=aSceneManager->getRootSceneNode()->createChildSceneNode();
   aNode->setPosition(myViewer->goodCameraPosition());
   myCameraMan = new CameraMan (aNode, myCamera );
 
@@ -124,6 +125,8 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   myTimer->reset();
 
   myWindow->setActive(true);
+  myTime =-1;
+
 }
 
 
@@ -167,7 +170,20 @@ bool InputListener::frameRenderingQueued ( const Ogre::FrameEvent & evt )
 */
 void InputListener::updateViewer(double timeSinceLastFrame)
 {
-  myCameraMan->render ( timeSinceLastFrame );
+      myCameraMan->render ( timeSinceLastFrame );
+      myMouseX= myMouse->getMouseState().X.abs;
+      myMouseY=myMouse->getMouseState().Y.abs;
+      if(myMouseLeftClicked && myCameraMan->isTurning() && (abs(myMouse->getMouseState().X.rel) == 0)&&(myMouse->getMouseState().Y.rel==0))
+      {
+         double a =(double)clock()/CLOCKS_PER_SEC;
+         if(abs(a-myTime)>0.001)
+         { 
+	   myCameraMan->stopTurning();
+           myTime=-1;
+         }
+      }
+
+          
 }
 /**
   * Method that initiate the inputManager (First frame)
@@ -321,8 +337,15 @@ bool InputListener::mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID
 {
     if ( !myIsInShiftMode && ( id == OIS::MB_Left ) )
     {
+      if(myCameraMan->isTurning() && (myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
+      {
+	 myCameraMan->stopTurning();
+         myTime=-1;
+      }
       if((myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
-      myViewer->lookForIt ( myMouse->getMouseState().X.abs, myMouse->getMouseState().Y.abs, myWindow->getHeight(), myWindow->getWidth() );
+      {
+         myViewer->lookForIt ( myMouse->getMouseState().X.abs, myMouse->getMouseState().Y.abs, myWindow->getHeight(), myWindow->getWidth() );
+      }
     }
   if ( id == OIS::MB_Left )
     {
@@ -378,10 +401,11 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
         {
           myCameraMan->setSceneCenter ( myViewer->getSceneCenter() );
           myCameraMan->turnCamera ( e.state.X.rel, e.state.Y.rel );
+          myTime =(double)clock()/CLOCKS_PER_SEC;
 
         }
 
-      if ( myMouseRightClicked  && ( ( e.state.X.abs != 0 ) && ( e.state.Y.abs != 0 ) && ( e.state.Y.abs != myWindow->getHeight() ) && ( e.state.X.abs != myWindow->getWidth() ) ) )
+      else if ( myMouseRightClicked  && ( ( e.state.X.abs != 0 ) && ( e.state.Y.abs != 0 ) && ( e.state.Y.abs != myWindow->getHeight() ) && ( e.state.X.abs != myWindow->getWidth() ) ) )
         {
           myCameraMan->setSceneCenter ( myViewer->getSceneCenter() );
           myCameraMan->translateCamera ( e.state.X.rel, e.state.Y.rel );

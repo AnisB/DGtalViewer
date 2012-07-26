@@ -498,7 +498,7 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
 
           if ( Encloser != NULL )
             {
-              Ogre::Vector3 AVector ( myInputManager->getCameraMan()->getSceneNode()->getPosition() - Encloser->getNode()->_getDerivedPosition() );// mSceneMgr->getRootSceneNode()->convertLocalToWorldPosition ( Encloser->getNode()->getPosition() ) );
+              Ogre::Vector3 AVector ( myInputManager->getCameraMan()->getSceneNode()->getPosition() - Encloser->getNode()->_getDerivedPosition() );
               double localDistance = AVector.length();
 
               if ( DistanceToCamera == -1 )

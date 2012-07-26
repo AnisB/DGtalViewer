@@ -62,9 +62,13 @@ CameraMan::CameraMan (Ogre::SceneNode * aNode, Ogre::Camera * aCamera, int aSpee
   // Initial Camera position and orientation
   myCameraNode=aNode;
   myCameraNode->attachObject(myCamera);
+  myCamera->setPosition(Ogre::Vector3 ( 0, 0, 0 ));
   myCameraNode->lookAt ( Ogre::Vector3 ( 0, 0, 0 ) ,Ogre::Node::TS_WORLD);
   mySavedOrientation =myCameraNode->getOrientation();
-  
+  myX=0;
+  myY=0;
+  myIsTurning=false;
+
 }
 
 
@@ -244,9 +248,35 @@ void CameraMan::render ( double timeSinceLastFrame )
     {
       if ( myTempMouseMove.z != 0 )
         {
-          this->myCameraNode->translate ( myCameraNode->getOrientation().zAxis() *myTempMouseMove.z );
+            zoom(myTempMouseMove.z);
         }
+      if((myX!=0) || (myY!=0))
+      {
+	  myCameraNode->setDirection(mySceneCenter - myCameraNode->_getDerivedPosition(), Ogre::Node::TS_WORLD);
 
+
+	  myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD );
+	  Ogre::Vector3 pos =myCameraNode->_getDerivedPosition();
+	  Ogre::Vector3 distance=(myCameraNode->_getDerivedPosition()-mySceneCenter);
+	  double norm= distance.normalise();
+	  Ogre::Vector3 theYAxis =myCameraNode->getOrientation().yAxis()/(myCameraNode->getOrientation().yAxis().normalise());
+	  Ogre::Vector3 theXAxis =myCameraNode->getOrientation().xAxis()/(myCameraNode->getOrientation().xAxis().normalise());
+	  Ogre::Vector3 temp =(theYAxis* myY - theXAxis*myX) ;
+
+
+	  myCameraNode->translate ( temp*norm*timeSinceLastFrame*DefaultCameraRotationSpeed);  
+	  myCameraNode->setDirection(mySceneCenter - myCameraNode->_getDerivedPosition(), Ogre::Node::TS_WORLD);
+
+	  // Error correction
+	  double disprime= myCameraNode->_getDerivedPosition().distance(mySceneCenter);
+	  Ogre::Vector3 aVect=myCameraNode->_getDerivedOrientation().zAxis()/(myCameraNode->_getDerivedOrientation().zAxis().normalise());
+	  myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+aVect*(norm-disprime));
+      }
+      if(!myIsTurning)
+      {
+         myX=0;
+         myY=0;
+      }
       myTempMouseMove = Ogre::Vector3::ZERO;
 
     }
@@ -256,27 +286,13 @@ void CameraMan::render ( double timeSinceLastFrame )
   *  Public method that makes the camera turns around the centralNode
   *
   */
-void CameraMan::turnCamera ( double x, double y )
+void CameraMan::turnCamera ( int x, int y )
 {  
-  if((x!=0.0) || (y !=0.0) )
-  {
-  double dis = myCameraNode->_getDerivedPosition().distance(mySceneCenter);
-  myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
-  Ogre::Vector3 distance=(myCameraNode->_getDerivedPosition()-mySceneCenter);
-  double norm= distance.normalise();
-  Ogre::Vector3 theYAxis =myCameraNode->getOrientation().yAxis()/(myCameraNode->getOrientation().yAxis().normalise());
-  Ogre::Vector3 theXAxis =myCameraNode->getOrientation().xAxis()/(myCameraNode->getOrientation().xAxis().normalise());
-  Ogre::Vector3 temp =(theYAxis* y*4 - theXAxis*x)*4 ;
-
-  myCameraNode->translate ( temp*norm*0.001);  
-  myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
-  
-
-
-  // Error correction
-  double disprime= myCameraNode->_getDerivedPosition().distance(mySceneCenter);
-  Ogre::Vector3 aVect=myCameraNode->_getDerivedOrientation().zAxis()/(myCameraNode->_getDerivedOrientation().zAxis().normalise());
-  myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+aVect*(dis-disprime));
+  if((x!=0) || (y !=0) )
+  {	
+    myX=x;
+    myY=y;
+    myIsTurning=true;
   }
 }
 
@@ -288,7 +304,7 @@ void CameraMan::turnCamera ( double x, double y )
 void CameraMan::translateCamera ( double x, double y )
 {
 
-  myCameraNode->setPosition ( myCameraNode->getPosition() - ( myCameraNode->getOrientation().yAxis() * ( -y*3 ) + myCameraNode->getOrientation().xAxis() *x*3 ) );
+  myCameraNode->setPosition ( myCameraNode->_getDerivedPosition() - ( myCameraNode->getOrientation().yAxis() * ( -y*3 ) + myCameraNode->getOrientation().xAxis() *x*3 ) );
   mySceneCenter = ( mySceneCenter - ( myCameraNode->getOrientation().yAxis() * ( -y * 3 ) + myCameraNode->getOrientation().xAxis() * x * 3 ) );
   myCameraNode->lookAt ( mySceneCenter,Ogre::Node::TS_WORLD  );
 
@@ -310,7 +326,7 @@ void CameraMan::setSceneCenter ( Ogre::Vector3 aSceneCenter )
 */
 void CameraMan::moveCameraman ( Ogre::Vector3 aVector )
 {
-   myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+(mySceneCenter-aVector));
+//   myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+(mySceneCenter-aVector));
 }
 
 
@@ -323,7 +339,16 @@ Ogre::SceneNode * CameraMan::getSceneNode ( )
   return myCameraNode;
 }
 
-
+/**
+*  Public method that permits to zoom
+*/
+void CameraMan::zoom(int z)
+{
+      if ( z != 0 )
+        {
+          this->myCameraNode->translate ( myCameraNode->getOrientation().zAxis() *z );
+	 }
+}
 /**
   *  Public method that sets the initial position
   */
@@ -341,7 +366,7 @@ void CameraMan::reset()
 {
   myCameraNode->setOrientation(mySavedOrientation);
   myCameraNode->setPosition(myInitialPosition);
-  myCameraNode->setPosition(myCameraNode->getPosition());
+  myCameraNode->setPosition(myCameraNode->_getDerivedPosition());
   myCameraNode->lookAt(mySceneCenter, Ogre::Node::TS_WORLD);
 }
 ///////////////////////////////////////////////////////////////////////////////

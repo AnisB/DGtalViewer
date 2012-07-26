@@ -49,7 +49,7 @@
 // Static variables
 
 const double DefaultCameraSpeed = 1;
-const double DefaultCameraRotationSpeed = 500;
+const double DefaultCameraRotationSpeed = 0.0008;
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -126,7 +126,7 @@ class CameraMan
        *  Public method that makes the camera turns around the centralNode
        *
        */
-      void turnCamera ( double x, double y );
+      void turnCamera ( int x, int y );
 
 
       /**
@@ -159,6 +159,24 @@ class CameraMan
       */
       void moveCameraman ( Ogre::Vector3 aVector );
       
+      /**
+      *  Public method that tests if the cameraMan is free turning
+      *
+      */
+      bool isTurning (  )
+      {
+		return myIsTurning;
+      }
+      
+      /**
+      *  Public method that translates the cameraMan by aVector
+      *
+      */
+      void stopTurning ( )
+      {
+	 myIsTurning=false;
+      }
+      
       
       /**
       *  Public method that returns the node
@@ -175,6 +193,11 @@ class CameraMan
        *  Public method that resets the cameraman orientation and position
        */
       void reset();
+
+      /**
+       *  Public method that permits to zoom
+       */
+      void zoom(int z);
       
 
       //--------------------------- Protected attributes---------------------------
@@ -206,6 +229,10 @@ class CameraMan
       // Moving attributes
       int mySpeed;
       int myRotationSpeed;
+      int myX;
+      int myY;
+
+      bool myIsTurning;
 
 
 
