@@ -1,29 +1,29 @@
 /**
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-**/
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
 /**
-* @file DGtalNode.cpp
-* @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
-* Liris CNRS
-*
-* @date 2012/06/10
-*
-*
-* This file is part of the DGtal library.
-*/
+ * @file DGtalNode.cpp
+ * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+ * Liris CNRS
+ *
+ * @date 2012/06/10
+ *
+ *
+ * This file is part of the DGtal library.
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtalNode.h"
@@ -42,10 +42,11 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-
 /**
-* Constructor with a predefined name.
-*/
+ * Constructor with a predefined name.
+ * @param aName the Node's name
+ * @param aSceneMgr the ogre scene manager
+ */
 DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myName ( aName ), mySceneMgr ( aSceneMgr )
 {
   myDGtalObject=NULL;
@@ -54,8 +55,9 @@ DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myN
 
 
 /**
-* Constructor without a name
-*/
+ * Constructor without a name
+ * @param aSceneMgr the ogre scene manager
+ */
 DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr )
 {
   myDGtalObject=NULL;
@@ -63,8 +65,8 @@ DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr
 }
 
 /**
-* Copy constructor
-*/
+ * Copy constructor
+ */
 DGtalNode::DGtalNode ( const DGtalNode& other )
 {
   myDGtalObject=NULL;
@@ -73,45 +75,45 @@ DGtalNode::DGtalNode ( const DGtalNode& other )
 
 
 /**
-* Destructor
-*/
+ * Destructor
+ */
 DGtalNode::~DGtalNode()
 { 
 
-   std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
 
-      while ( it != mySons.end() )
-        {
+  while ( it != mySons.end() )
+    {
 
-	    delete (( *it ).second) ;
-          it++;
-        }
+      delete (( *it ).second) ;
+      it++;
+    }
 
   if(myRepresentation!=NULL)
-  {
-    delete myRepresentation;
-  }
- if(myDGtalObject!=NULL)
-  {
-  	delete myDGtalObject;
-  }
+    {
+      delete myRepresentation;
+    }
+  if(myDGtalObject!=NULL)
+    {
+      delete myDGtalObject;
+    }
 }
 
 
 /**
-* Writes/Displays the object on an output stream.
-* @param out the output stream where the object is written.
-*/
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
 void
 DGtalNode::selfDisplay ( std::ostream & out ) const
-  {
-    out << "[DGtalNode]";
-  }
+{
+  out << "[DGtalNode]";
+}
 
 
 /**
-* Adds a representation to the attributes of this object.
-*/
+ * Adds a representation to the attributes of this object.
+ */
 void
 DGtalNode::setRepresentation ( Representation * newRepresentation )
 {
@@ -121,11 +123,11 @@ DGtalNode::setRepresentation ( Representation * newRepresentation )
 
 
 /**
-* Assignment.
-* @param other the object to copy.
-* @return a reference on 'this'.
-* Forbidden by default.
-*/
+ * Assignment.
+ * @param other the object to copy.
+ * @return a reference on 'this'.
+ * Forbidden by default.
+ */
 DGtalNode& DGtalNode::operator= ( const DGtalNode & other )
 {
   return *this;
@@ -134,29 +136,33 @@ DGtalNode& DGtalNode::operator= ( const DGtalNode & other )
 
 
 /**
-* Assignment.
-* @param other the object to compare.
-* @return a bool wich defines if this two object are the same.
-*/
+ * Assignment.
+ * @param other the object to compare.
+ * @return a bool wich defines if this two object are the same.
+ */
 bool DGtalNode::operator== ( const DGtalNode& other ) const
-  {
-    return ( myName == other.myName );
-  }
+{
+  return ( myName == other.myName );
+}
 
 
 
 /**
-*  Sets this node as the root one
-*/
+ *  Sets this node as the root one
+ */
 void DGtalNode::setRoot()
 {
   myIsRoot = true;
 }
 
+
+
 /**
-  *  Returns back the representation if entity is matching with the name
-  *  If not, returns NULL
-  */
+ *  Returns back an entity matching with the name
+ *  If no entity is matching returns NULL
+ *  @param aName the name to test
+ *  @return myRepresentation if the name matches
+ */
 Representation * DGtalNode::ifRepresentation ( std::string aName )
 {
   if ( !myRepresentation->isVirtual() )
@@ -172,26 +178,20 @@ Representation * DGtalNode::ifRepresentation ( std::string aName )
 }
 
 /**
-  *  Returns back the representation
-  */
+ *  Returns back the representation
+ *  @return myRepresentation
+ */
 Representation * DGtalNode::getRepresentation ( )
 {
   return myRepresentation;
 }
 	  
-	  
-/**
-*  Returns back the representation
-*/
-Representation * DGtalNode::returnRepresentation()
-{
-  return myRepresentation;
-}
+
 
 /**
-* Set this object as a selected one
-*
-*/
+ * Set this object as a selected one
+ *
+ */
 void DGtalNode::select()
 {
   if ( !myRepresentation->isVirtual() )
@@ -212,8 +212,8 @@ void DGtalNode::select()
 
 
 /**
-  *  Displays on the stanard input the node's content
-  */
+ *  Displays on the stanard input the node's content
+ */
 void DGtalNode::display ( int level )
 {
   if ( myType == "PointVector" )
@@ -239,9 +239,9 @@ void DGtalNode::display ( int level )
 
 
 /**
-* Set this object as a unselected
-*
-*/
+ * Set this object as a unselected
+ *
+ */
 void DGtalNode::unselect()
 {
   if ( !myRepresentation->isVirtual() )
@@ -267,9 +267,9 @@ void DGtalNode::unselect()
 
 
 /**
-* Set this virtual object as a selected one
-*
-*/
+ * Set this virtual object as a selected one
+ *
+ */
 void DGtalNode::groupSelect()
 {
   if ( !myRepresentation->isVirtual() )
@@ -288,8 +288,8 @@ void DGtalNode::groupSelect()
 }
 
 /**
-*  Sets the name of the Object
-*/
+ *  Sets the name of the Object
+ */
 void DGtalNode::setName ( std::string aName )
 {
   myName = aName;
@@ -298,8 +298,8 @@ void DGtalNode::setName ( std::string aName )
 
 
 /**
-*  Returns back the scene node matching this object
-*/
+ *  Returns back the scene node matching this object
+ */
 Ogre::SceneNode * DGtalNode::getNode()
 {
   return myRepresentation->getNode();
@@ -310,8 +310,8 @@ Ogre::SceneNode * DGtalNode::getNode()
 
 
 /**
-*  Sets the DGtal associated object
-*/
+ *  Sets the DGtal associated object
+ */
 void DGtalNode::setDGtalObject ( DGtal::DrawableWithOgre  * obj )
 {
   myDGtalObject = obj;
@@ -320,8 +320,8 @@ void DGtalNode::setDGtalObject ( DGtal::DrawableWithOgre  * obj )
 
 
 /**
-*  Returns back the DGtal associated object
-*/
+ *  Returns back the DGtal associated object
+ */
 DGtal::DrawableWithOgre * DGtalNode::getDGtalObject()
 {
   return myDGtalObject;
@@ -331,13 +331,13 @@ DGtal::DrawableWithOgre * DGtalNode::getDGtalObject()
 
 
 /**
-*  Adds a son the the sons list
-*/
+ *  Adds a son the the sons list
+ */
 void DGtalNode::addSon ( DGtal::DGtalNode  * newNode )
 {
-  if ( !newNode->returnRepresentation()->isVirtual() )
+  if ( !newNode->getRepresentation()->isVirtual() )
     {
-      mySons[newNode->returnRepresentation()->getEntityName() ] = newNode;
+      mySons[newNode->getRepresentation()->getEntityName() ] = newNode;
     }
   else
     {
@@ -347,8 +347,8 @@ void DGtalNode::addSon ( DGtal::DGtalNode  * newNode )
 
 
 /**
-*  Sets the father's Node
-*/
+ *  Sets the father's Node
+ */
 void DGtalNode::setFather ( DGtal::DGtalNode  * newNode )
 {
   myFather = newNode;
@@ -356,8 +356,8 @@ void DGtalNode::setFather ( DGtal::DGtalNode  * newNode )
 
 
 /**
-*  Returns the father's Node
-*/
+ *  Returns the father's Node
+ */
 DGtal::DGtalNode  * DGtalNode::getFather( )
 {
   return myFather;
@@ -366,8 +366,8 @@ DGtal::DGtalNode  * DGtalNode::getFather( )
 
 
 /**
-*  Says if this node is the root node of the DGtal tree or not.
-*/
+ *  Says if this node is the root node of the DGtal tree or not.
+ */
 bool  DGtalNode::isRoot( )
 {
   return myIsRoot;
@@ -376,9 +376,9 @@ bool  DGtalNode::isRoot( )
 
 
 /**
-* Delete the Node's sons and it's self
-*
-*/
+ * Delete the Node's sons and it's self
+ *
+ */
 void DGtalNode::clear()
 {
   std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
@@ -399,15 +399,15 @@ void DGtalNode::clear()
 
 
 /**
-*  Returns the UNRN
-*/
+ *  Returns the UNRN
+ */
 DGtalNode  * DGtalNode::getUpperNonRootNode()
 {
   DGtalNode * UNRN = this;
     
-    if(UNRN!=NULL)
+  if(UNRN!=NULL)
     {
-	if (UNRN->getFather()!= NULL)
+      if (UNRN->getFather()!= NULL)
 	{
 	  while ( ! UNRN->getFather()->isRoot() )
 	    {
@@ -419,16 +419,16 @@ DGtalNode  * DGtalNode::getUpperNonRootNode()
 }
 
 /**
-*  Returns the DGtalObject type
-*/
+ *  Returns the DGtalObject type
+ */
 std::string   DGtalNode::getType()
 {
   return myType;
 }
 
 /**
-  *  
-  */
+ *  
+ */
 void DGtalNode::more( )
 {
   if ( !myRepresentation->isVirtual() )
@@ -447,8 +447,8 @@ void DGtalNode::more( )
 
 
 /**
-  *  
-  */
+ *  
+ */
 void DGtalNode::less( )
 {
   if ( !myRepresentation->isVirtual() )
@@ -466,8 +466,8 @@ void DGtalNode::less( )
 }
 
 /**
-*  
-*/
+ *  
+ */
 void DGtalNode::moreTransparency( )
 {
   if ( myRepresentation->isVirtual() )
@@ -479,8 +479,8 @@ void DGtalNode::moreTransparency( )
 }
 
 /**
-*  
-*/
+ *  
+ */
 void DGtalNode::lessTransparency( )
 {
   if ( myRepresentation->isVirtual() )
@@ -501,45 +501,45 @@ void DGtalNode::IncreaseTransparency(Ogre::MaterialPtr  aMaterial)
   Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
   
   if((lFirstPass->getSelfIllumination().a*0.5)>0.05)
-  {
-    Ogre::ColourValue lSelfIllumnationColour ( ( double ) lFirstPass->getSelfIllumination().r,
-					      ( double ) lFirstPass->getSelfIllumination().g, 
-					      ( double ) lFirstPass->getSelfIllumination().b ,
-					      ( double ) lFirstPass->getSelfIllumination().a*0.5);
-    lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
-  }
+    {
+      Ogre::ColourValue lSelfIllumnationColour ( ( double ) lFirstPass->getSelfIllumination().r,
+						 ( double ) lFirstPass->getSelfIllumination().g, 
+						 ( double ) lFirstPass->getSelfIllumination().b ,
+						 ( double ) lFirstPass->getSelfIllumination().a*0.5);
+      lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
+    }
 
   if((lFirstPass->getDiffuse().a*0.5)>0.05)
-  {
-    Ogre::ColourValue lDiffuseColour ( ( double ) lFirstPass->getDiffuse().r,
-				      ( double )  lFirstPass->getDiffuse().g , 
-				      ( double )  lFirstPass->getDiffuse().b , 
-				      ( double )  lFirstPass->getDiffuse().a*0.5);
-    lFirstPass->setDiffuse ( lDiffuseColour );
-  }
+    {
+      Ogre::ColourValue lDiffuseColour ( ( double ) lFirstPass->getDiffuse().r,
+					 ( double )  lFirstPass->getDiffuse().g , 
+					 ( double )  lFirstPass->getDiffuse().b , 
+					 ( double )  lFirstPass->getDiffuse().a*0.5);
+      lFirstPass->setDiffuse ( lDiffuseColour );
+    }
    
   if((lFirstPass->getAmbient().a*0.5)>0.05)
-  {
-    Ogre::ColourValue lAmbientColour (( double )  lFirstPass->getAmbient().r, 
-				      ( double ) lFirstPass->getAmbient().g ,
-				      ( double ) lFirstPass->getAmbient().b , 
-				      ( double ) lFirstPass->getAmbient().a*0.5 );
-    lFirstPass->setAmbient ( lAmbientColour );
-  }
+    {
+      Ogre::ColourValue lAmbientColour (( double )  lFirstPass->getAmbient().r, 
+					( double ) lFirstPass->getAmbient().g ,
+					( double ) lFirstPass->getAmbient().b , 
+					( double ) lFirstPass->getAmbient().a*0.5 );
+      lFirstPass->setAmbient ( lAmbientColour );
+    }
   
   if((lFirstPass->getSpecular().a*0.5)>0.05)
-  {
-  Ogre::ColourValue lSpecularColour ( ( double ) lFirstPass->getSpecular().r ,
-				      ( double ) lFirstPass->getSpecular().g , 
-				      ( double ) lFirstPass->getSpecular().b,
-				      ( double )lFirstPass->getSpecular().a *0.5);
-  lFirstPass->setSpecular ( lSpecularColour );
-  }
+    {
+      Ogre::ColourValue lSpecularColour ( ( double ) lFirstPass->getSpecular().r ,
+					  ( double ) lFirstPass->getSpecular().g , 
+					  ( double ) lFirstPass->getSpecular().b,
+					  ( double )lFirstPass->getSpecular().a *0.5);
+      lFirstPass->setSpecular ( lSpecularColour );
+    }
 }
       
       
       
-      /**
+/**
  * 
  */
 void DGtalNode::DecreaseTransparency(Ogre::MaterialPtr  aMaterial)
@@ -548,41 +548,41 @@ void DGtalNode::DecreaseTransparency(Ogre::MaterialPtr  aMaterial)
   Ogre::Technique* lFirstTechnique = aMaterial->getTechnique ( 0 );
   Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
     
- if((lFirstPass->getSpecular().a*2.0)<1.1)
- {
-  Ogre::ColourValue lSelfIllumnationColour ( ( double ) lFirstPass->getSelfIllumination().r,
-					      ( double ) lFirstPass->getSelfIllumination().g, 
-					      ( double ) lFirstPass->getSelfIllumination().b ,
-					      ( double ) lFirstPass->getSelfIllumination().a*2.0);
-    lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
- }
+  if((lFirstPass->getSpecular().a*2.0)<1.1)
+    {
+      Ogre::ColourValue lSelfIllumnationColour ( ( double ) lFirstPass->getSelfIllumination().r,
+						 ( double ) lFirstPass->getSelfIllumination().g, 
+						 ( double ) lFirstPass->getSelfIllumination().b ,
+						 ( double ) lFirstPass->getSelfIllumination().a*2.0);
+      lFirstPass->setSelfIllumination ( lSelfIllumnationColour );
+    }
 
   if((lFirstPass->getDiffuse().a*2.0)<1.1)
- {
-  Ogre::ColourValue lDiffuseColour ( ( double ) lFirstPass->getDiffuse().r,
-				     ( double )  lFirstPass->getDiffuse().g , 
-				     ( double )  lFirstPass->getDiffuse().b , 
-				     ( double )  lFirstPass->getDiffuse().a*2.0);
-  lFirstPass->setDiffuse ( lDiffuseColour );
- }
+    {
+      Ogre::ColourValue lDiffuseColour ( ( double ) lFirstPass->getDiffuse().r,
+					 ( double )  lFirstPass->getDiffuse().g , 
+					 ( double )  lFirstPass->getDiffuse().b , 
+					 ( double )  lFirstPass->getDiffuse().a*2.0);
+      lFirstPass->setDiffuse ( lDiffuseColour );
+    }
  
  
- if((lFirstPass->getAmbient().a*2.0)<1.1)
- {
-  Ogre::ColourValue lAmbientColour (( double )  lFirstPass->getAmbient().r, 
-				    ( double ) lFirstPass->getAmbient().g ,
-				    ( double ) lFirstPass->getAmbient().b , 
-				    ( double ) lFirstPass->getAmbient().a*2.0 );
-  lFirstPass->setAmbient ( lAmbientColour );
- }
+  if((lFirstPass->getAmbient().a*2.0)<1.1)
+    {
+      Ogre::ColourValue lAmbientColour (( double )  lFirstPass->getAmbient().r, 
+					( double ) lFirstPass->getAmbient().g ,
+					( double ) lFirstPass->getAmbient().b , 
+					( double ) lFirstPass->getAmbient().a*2.0 );
+      lFirstPass->setAmbient ( lAmbientColour );
+    }
 
   if((lFirstPass->getSpecular().a*2.0)<1.1)
- {
-  Ogre::ColourValue lSpecularColour ( ( double ) lFirstPass->getSpecular().r ,
-				      ( double ) lFirstPass->getSpecular().g , 
-				      ( double ) lFirstPass->getSpecular().b,
-				      ( double )lFirstPass->getSpecular().a *2.7);
-  lFirstPass->setSpecular ( lSpecularColour );
- }
+    {
+      Ogre::ColourValue lSpecularColour ( ( double ) lFirstPass->getSpecular().r ,
+					  ( double ) lFirstPass->getSpecular().g , 
+					  ( double ) lFirstPass->getSpecular().b,
+					  ( double )lFirstPass->getSpecular().a *2.7);
+      lFirstPass->setSpecular ( lSpecularColour );
+    }
 }
       

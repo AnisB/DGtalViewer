@@ -41,15 +41,19 @@ endif()
 
 
 
+
 if(APPLE)
+     set( OGRE_HOME $ENV{OGRE_HOME})
      if(NOT DEFINED OGRE_HOME)
 	     message("The variable OGRE_HOME is unset, please set it, this cake lists has very low chances to compile")
 	set(CMAKE_MODULE_PATH "${OGRE_DIR}/cmake/;${CMAKE_MODULE_PATH}")
 	set(OGRE_PLUGINS "${OGRE_DIR}/lib/")
      else()
-        set(OGRE_DIR ${OGRE_HOME})
-	set(CMAKE_MODULE_PATH "${OGRE_HOME}/cmake/;${CMAKE_MODULE_PATH}")
-	set(OGRE_PLUGINS "${OGRE_HOME}/lib/")
+        message ("Ogre home variable defined")
+        set(OGRE_HOME "$ENV{OGRE_HOME}")
+        set(OGRE_DIR OGRE_HOME)
+		set(CMAKE_MODULE_PATH "${OGRE_HOME}/cmake/;${CMAKE_MODULE_PATH}")
+		set(OGRE_PLUGINS "${OGRE_HOME}/lib/")
      endif()
 endif(APPLE)
  
