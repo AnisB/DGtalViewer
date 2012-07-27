@@ -434,6 +434,8 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
 void InputListener::windowResized ( Ogre::RenderWindow* rw )
 {
   myViewer->resetPosition(rw->getHeight(),rw->getWidth());
+  myMouseCursor->setWindowDimensions(rw->getWidth(), rw->getHeight());
+
 
 }
 
