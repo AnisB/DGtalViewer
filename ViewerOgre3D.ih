@@ -524,10 +524,7 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
       mySelectedDGtalNode = temp->getAttachedParent();
       myUpperFatherNonRoot = mySelectedDGtalNode->getUpperNonRootNode();
 
-      if ( mySelectionMode )
-        {
-          myInputManager->stopRendering();
-        }
+	
 
       if ( myUpperFatherNonRoot != NULL )
         {
