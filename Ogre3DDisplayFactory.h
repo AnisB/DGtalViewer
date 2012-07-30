@@ -42,7 +42,7 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DrawableWithOgreWrapper.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"

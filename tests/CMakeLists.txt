@@ -164,11 +164,13 @@ endif(MINGW OR UNIX)
 
 
 SET(DGTAL_TESTS_SRC
+  testMemoryLeak
   testDGtalSet
   testDomain
   testKalimskySpace
   testManipulate
   testSelection
+
   )
 		
 

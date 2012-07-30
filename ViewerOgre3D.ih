@@ -185,6 +185,35 @@ DGtal::ViewerOgre3D::getMode ( const std::string & objectName ) const
     return itm == myModes.end() ? "" : itm->second;
   }
 
+/**
+  *  Destructor.
+  */
+ViewerOgre3D::~ViewerOgre3D()
+{  
+  delete myInputManager;
+  delete myMode;
+  destroyScene();
+  
+  myWindow->removeAllViewports();
+  mySceneMgr->destroyAllCameras();
+  mySceneMgr->destroyAllManualObjects();
+  mySceneMgr->destroyAllEntities();
+  mySceneMgr->destroyAllLights();
+  getRootSceneNode()->removeAndDestroyAllChildren();
+
+
+  Ogre::ResourceGroupManager& lRgMgr = Ogre::ResourceGroupManager::getSingleton();
+
+  lRgMgr.destroyResourceGroup("General");
+
+  myRoot->destroySceneManager(mySceneMgr);
+
+  myRoot->shutdown();
+  delete myRoot;
+  delete myLogManager;
+}
+
+
 
 /**
   *  Constructor.
@@ -211,22 +240,7 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
   myWindow = myRoot->initialise ( true	, "ViewerOgre3D" );
 
    //----------------- Fonts loading
-  // get the resource manager
-  Ogre::ResourceGroupManager &resGroupMgr = Ogre::ResourceGroupManager::getSingleton();
-  // get the font manager
-  Ogre::FontManager &fontMgr = Ogre::FontManager::getSingleton();
-  // create a font resource
-  Ogre::ResourcePtr font = fontMgr.create("MyFont","General");
-  // set as truetype
-  font->setParameter("type","truetype");
-  // set the .ttf file name
-  font->setParameter("source","bluecond.ttf");
-  // set the size
-  font->setParameter("size","26");
-  // set the dpi
-  font->setParameter("resolution","96");
-  // load the ttf
-  font->load();
+   loadFonts();
  
 
   //CREATION DE LA SCENE
@@ -257,29 +271,6 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 
   myBackgroundBlackColor=true;
 
-}
-
-/**
-  *  Destructor.
-  */
-ViewerOgre3D::~ViewerOgre3D()
-{
-  delete myMode;
-  delete myInputManager;
-  destroyScene();
-  
-  myWindow->removeAllViewports();
-  mySceneMgr->destroyAllCameras();
-  mySceneMgr->destroyAllManualObjects();
-  mySceneMgr->destroyAllEntities();
-  mySceneMgr->destroyAllLights();
-  getRootSceneNode()->removeAndDestroyAllChildren();
-  Ogre::ResourceGroupManager& lRgMgr = Ogre::ResourceGroupManager::getSingleton();
-  lRgMgr.destroyResourceGroup("General");
-  
-  myRoot->shutdown();
-  delete myRoot;
-  delete myLogManager;
 }
 
 
@@ -1099,6 +1090,28 @@ Ogre::Vector3 ViewerOgre3D::getLeftestPosition()
   return up;
 }
 
+/**
+*  Loads the fonts
+*/
+void ViewerOgre3D::loadFonts()
+{
+  // get the resource manager
+  Ogre::ResourceGroupManager &resGroupMgr = Ogre::ResourceGroupManager::getSingleton();
+  // get the font manager
+  Ogre::FontManager &fontMgr = Ogre::FontManager::getSingleton();
+  // create a font resource
+  Ogre::ResourcePtr font = fontMgr.create("MyFont","General");
+  // set as truetype
+  font->setParameter("type","truetype");
+  // set the .ttf file name
+  font->setParameter("source","bluecond.ttf");
+  // set the size
+  font->setParameter("size","26");
+  // set the dpi
+  font->setParameter("resolution","96");
+  // load the ttf
+  font->load();
+}
 
 /**
   *  Returns the Fowardest point
@@ -1368,7 +1381,7 @@ void ViewerOgre3D::setDiphuseIlluminationColor(DGtal::Color aColor)
 inline
 void ViewerOgre3D::setTexture(std::string aTexture)
 {
-  
+  myTexture=aTexture;
 }
 
 
@@ -1667,4 +1680,24 @@ Ogre::Vector3 ViewerOgre3D::goodCameraPosition()
 void ViewerOgre3D::flipTextVisibility()
 {
 	myMode->flipVisibility();
+}
+
+/**
+* This method validates the user seletion 
+*/
+void ViewerOgre3D::confirmSelection()
+{
+      if ( mySelectionMode )
+        {
+          myInputManager->stopRendering();
+        }
+}
+
+
+/**
+*  Tells if the viewer is in selection mode
+*/
+bool ViewerOgre3D::isInSelectionMode()
+{ 
+  return mySelectionMode;
 }

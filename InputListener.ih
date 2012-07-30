@@ -293,6 +293,10 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
       break;
        case OIS::KC_T :
 	 myViewer->flipTextVisibility();
+	break;
+       case OIS::KC_S :
+	if((!myIsInShiftMode)&&(myViewer->isInSelectionMode()))
+	 myViewer->confirmSelection();
       default:
         break;
 

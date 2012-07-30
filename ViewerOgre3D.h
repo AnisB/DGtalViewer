@@ -154,6 +154,12 @@ namespace DGtal
     { 
       return myRootNode;
     }
+        
+   
+    /**
+     *  Loads the fonts
+     */
+    void loadFonts();
       
       
       
@@ -593,6 +599,11 @@ namespace DGtal
     void flipPlaneVisibility();
 
     /**
+     * This method validates the user seletion 
+     */
+    void confirmSelection();
+
+    /**
      *  Resets some viewer attributes  on a window resize
      *  @param the new window height
      *  @param the new window width
@@ -607,6 +618,10 @@ namespace DGtal
      */
     void printScene(std::string name="ScreenShot.png");
        
+    /**
+     *  Tells if the viewer is in selection mode
+     */
+    bool isInSelectionMode();
        
     /**
      *  Shows the commands on the standard output
@@ -666,6 +681,7 @@ namespace DGtal
     Ogre::RaySceneQuery* myRayScnQuery;	//pointer to our ray scene query
     DGtalNode * mySelectedDGtalNode;
     DGtalNode * myUpperFatherNonRoot;
+
 	
 	
     /**
