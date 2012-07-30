@@ -44,7 +44,7 @@ class DigitalSetBySTLSet;
   /**
    * Default style for the paving  mode.
    */
-  struct DefaultDrawStyle_ArithmeticalDSS3d : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyle_ArithmeticalDSS3d : public DrawableWithViewerOgre3D
   {
     /**
      * Draw the DSS3d on a viewer
@@ -64,7 +64,7 @@ class DigitalSetBySTLSet;
   /** 
    * Default style with paving.
    */
-  struct DefaultDrawStylePaving_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStylePaving_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -80,7 +80,7 @@ class DigitalSetBySTLSet;
   /** 
    * Default style wtih grid.
    */
-  struct DefaultDrawStyleGrid_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyleGrid_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -98,7 +98,7 @@ class DigitalSetBySTLSet;
     /** 
    * Default style wtih transparent paving .
    */
-  struct DefaultDrawStyleTransparentPaving_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -120,7 +120,7 @@ class DigitalSetBySTLSet;
   /** 
    * Default style with paving.
    */
-  struct DefaultDrawStylePaving_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStylePaving_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -131,7 +131,7 @@ class DigitalSetBySTLSet;
     /** 
    * Default style with transparent paving.
    */
-  struct DefaultDrawStyleTransparentPaving_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -143,7 +143,7 @@ class DigitalSetBySTLSet;
     /** 
    * Default style with grid.
    */
-  struct DefaultDrawStyleGrid_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyleGrid_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -160,7 +160,7 @@ class DigitalSetBySTLSet;
   /**
    * Default style.
    */
-  struct DefaultDrawStyle_HyperRectDomain : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyle_HyperRectDomain : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -175,7 +175,7 @@ class DigitalSetBySTLSet;
   /**
    * Default style.
    */
-  struct DefaultDrawStyle_KhalimskyCell : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyle_KhalimskyCell : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -189,7 +189,7 @@ class DigitalSetBySTLSet;
   /**
    * Default style.
    */
-  struct DefaultDrawStyle_Object : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyle_Object : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -205,7 +205,7 @@ class DigitalSetBySTLSet;
   /**
    * Default styles.
    */
-  struct DefaultDrawStylePaving_PointVector : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStylePaving_PointVector : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -216,7 +216,7 @@ class DigitalSetBySTLSet;
   /**
    *  Style based in grid representation.
    */
-  struct DefaultDrawStyleGrid_PointVector : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyleGrid_PointVector : public DrawableWithViewerOgre3D
   {
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
@@ -231,7 +231,7 @@ class DigitalSetBySTLSet;
   /**
    * Default style.
    */
-  struct DefaultDrawStyle_SignedKhalimskyCell : public DrawableWithViewerOgre3D
+  struct Ogre_DefaultDrawStyle_SignedKhalimskyCell : public DrawableWithViewerOgre3D
   {
     virtual void setStyle( Board2D & aBoard ) const
     {
@@ -253,7 +253,7 @@ inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a,
 					   std::string mode  )
 {
-    return new DefaultDrawStyle_ArithmeticalDSS3d;
+    return new Ogre_DefaultDrawStyle_ArithmeticalDSS3d;
 }
 //------------------------------------------------------------------------------------  ArithmeticalDSS3d
 
@@ -269,16 +269,16 @@ inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::DigitalSetBySTLSet<Domain> & s, std::string mode )
 {
   if ( mode == "Paving" || ( mode == "" ) )
-    return new DefaultDrawStylePaving_DigitalSetBySTLSet;
+    return new Ogre_DefaultDrawStylePaving_DigitalSetBySTLSet;
   else if ( mode == "PavingTransp" )
   {
-    return new DefaultDrawStyleTransparentPaving_DigitalSetBySTLSet;
+    return new Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLSet;
   }
   else if ( mode == "Grid" )
-      return new DefaultDrawStyleGrid_DigitalSetBySTLSet;
+      return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLSet;
   else if ( ( mode == "Both" ) )
     {
-      return new DefaultDrawStyleGrid_DigitalSetBySTLSet;
+      return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLSet;
     }
     
     return 0;
@@ -296,16 +296,16 @@ inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::DigitalSetBySTLVector<Domain> & v, std::string mode  )
 {
   if ( mode == "Paving" || ( mode == "" ) )
-    return new DefaultDrawStylePaving_DigitalSetBySTLVector;
+    return new Ogre_DefaultDrawStylePaving_DigitalSetBySTLVector;
   else if ( mode == "PavingTransp" )
   {
-    return new DefaultDrawStyleTransparentPaving_DigitalSetBySTLVector;
+    return new Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLVector;
   }
   else if ( mode == "Grid" )
-      return new DefaultDrawStyleGrid_DigitalSetBySTLVector;
+      return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLVector;
   else if ( ( mode == "Both" ) )
     {
-      return new DefaultDrawStyleGrid_DigitalSetBySTLVector;
+      return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLVector;
     }
 }
 //------------------------------------------------------------------------------------  DigitalSetBySTLVector
@@ -321,7 +321,7 @@ template<typename TSpace>
 inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::HyperRectDomain<TSpace> & h, std::string mode )
 {
-    return new DefaultDrawStyle_HyperRectDomain;
+    return new Ogre_DefaultDrawStyle_HyperRectDomain;
 
 }
 //------------------------------------------------------------------------------------  HyperRectDomain
@@ -333,7 +333,7 @@ template < Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::KhalimskyCell<dim, TInteger> & k, std::string mode)
 {
-  return new DefaultDrawStyle_KhalimskyCell;
+  return new Ogre_DefaultDrawStyle_KhalimskyCell;
 }
 //------------------------------------------------------------------------------------  KhalimskyCell
 
@@ -347,7 +347,7 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::Object<TDigitalTopology, TDigitalSet> & o, std::string mode  )
 {
-  return new DefaultDrawStyle_Object;
+  return new Ogre_DefaultDrawStyle_Object;
 }
 //------------------------------------------------------------------------------------  Object
 
@@ -361,9 +361,9 @@ inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::PointVector<dim,TComponent> & p, std::string mode )
 {
   if ( ( mode == "" ) || ( mode == "Paving" ) ) 
-    return new DefaultDrawStylePaving_PointVector;
+    return new Ogre_DefaultDrawStylePaving_PointVector;
   else // mode == "Grid"
-    return new DefaultDrawStyleGrid_PointVector;  
+    return new Ogre_DefaultDrawStyleGrid_PointVector;  
 }
 //------------------------------------------------------------------------------------  PointVector
 
@@ -373,7 +373,7 @@ template < Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::SignedKhalimskyCell<dim, TInteger> & sk, std::string mode )
 {
-  return new DefaultDrawStyle_SignedKhalimskyCell;
+  return new Ogre_DefaultDrawStyle_SignedKhalimskyCell;
 }
 //------------------------------------------------------------------------------------   SignedKhalimskyCell
 
