@@ -1687,7 +1687,7 @@ void ViewerOgre3D::flipTextVisibility()
 */
 void ViewerOgre3D::confirmSelection()
 {
-      if ( mySelectionMode )
+      if ( mySelectedDGtalNode!=NULL )
         {
           myInputManager->stopRendering();
         }

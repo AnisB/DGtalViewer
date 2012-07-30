@@ -321,7 +321,7 @@ bool InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonI
       myMouseY=myMouse->getMouseState().Y.abs;
     }
 
-  if ( id == OIS::MB_Left )
+  if ( id == OIS::MB_Left)
     {
       myMouseLeftClicked = true;
     }
