@@ -215,18 +215,14 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 
       case OIS::KC_ESCAPE:
         myShutdown = true;
-        return false;
-        break;
-
-
-      case::OIS::KC_E:
-
         if ( myViewer->isInManupulatingMode() )
           {
             myViewer->abortManupulating();
           }
 
+        return false;
         break;
+
 
       case::OIS::KC_SUBTRACT:
 
@@ -243,8 +239,9 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
           {
             myViewer->newManipulatingValue ( 1 );
           }
-
         break;
+
+
 
       case OIS::KC_P:
 
@@ -252,13 +249,11 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
         break;
 	
 	
-      case OIS::KC_C :
+      case OIS::KC_R :
 	  resetSCPosition();
        break;
-      case OIS::KC_R :
-	  myCameraMan->reset();
-       break;
-       
+
+      
        case OIS::KC_M :
 	  myViewer->more();
        break;
@@ -266,24 +261,33 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 	  myViewer->less();
        break;
        
+
+
        case OIS::KC_N :
 	  myViewer->moreTransparency();
        break;
        case OIS::KC_B :
 	  myViewer->lessTransparency();
        break;
+
+
        case OIS::KC_H :
 	  myViewer->showHelp();
        break;
-       case OIS::KC_F12 :
+       case OIS::KC_C :
 	  myViewer->printScene();
        break;
+
+
        case OIS::KC_O :
 	  myViewer->changeWristVisibility();
        break;
+
+
        case OIS::KC_F :
 	  myViewer->flipBackgroundColor();
        break;
+
 
        case OIS::KC_G :
 	 myViewer->flipPlaneVisibility();
@@ -291,12 +295,18 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
        case OIS::KC_X :
 	 myViewer->exportToXml("scene");
       break;
+
+
        case OIS::KC_T :
 	 myViewer->flipTextVisibility();
 	break;
+
+
        case OIS::KC_S :
 	if((!myIsInShiftMode)&&(myViewer->isInSelectionMode()))
 	 myViewer->confirmSelection();
+
+
       default:
         break;
 

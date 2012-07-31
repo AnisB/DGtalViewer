@@ -1634,22 +1634,39 @@ void ViewerOgre3D::showHelp()
   cout<<"\t\t\t Mouse roll: Zoom.\n"<<endl;
   
   
-  cout<<"\t\t Commands without selection\n"<<endl;
-  cout<<"\t\t\t P: Show/Hide the orthonormal basis."<<endl;
-  cout<<"\t\t\t C: Resets the position."<<endl;
-  cout<<"\t\t\t R: Resets the position and the orientation.\n"<<endl;
+  cout <<"\t\t Commands without selection\n"<<endl;
+  cout <<"\t\t\t P: Show/Hide the orthonormal basis."<<endl;
+  cout <<"\t\t\t O: Shows/Hides the wirsts."<<endl;
+  cout <<"\t\t\t G: Shows/Hides the shadow plane."<<endl;
+  cout <<"\t\t\t T: Shows/Hides the text."<<endl;
+  cout <<"\t\t\t F: Changes the background color, from black to white and the inverse operation."<<endl;
+  cout <<"\t\t\t R: Resets the camera position."<<endl;
+ 
+  cout <<"\t\t\t X: Exports the scene to XML format and saves it to scene.scene."<<endl;
+  cout <<"\t\t\t C: Takes a screen capture of the viewer and saves it to ScreenShot.png "<<endl;
+  cout <<"\t\t\t H: Shows the user help on the standard output. "<<endl;
+  cout <<"\t\t\t Escape: Shuts down the viewer.  "<<endl;
+
   
-  cout<<"\t\t Commands with selection\n"<<endl;
+  cout<<"\t\t Commands when something is selected\n"<<endl;
+
   cout<<"\t\t\t M: Sizes up the selection."<<endl;
   cout<<"\t\t\t L: Sizes down the selection."<<endl;
+
   cout<<"\t\t\t N: Increases the selection's transparency."<<endl;
   cout<<"\t\t\t B: Decreases the selection's transparency.\n"<<endl;
 
+
   cout<<"\tSpecific commands\n"<<endl;
   cout<<"\t\t\tOn view mode:\n"<<endl;
+
   cout <<"\t\t\tOn manipulate mode:\n"<<endl;
+  cout <<"\t\t\t + : Gets to the upper value of the manipulating. "<<endl;
+  cout <<"\t\t\t - : Gets to the lower value of the manipulating. "<<endl;
+
+
   cout <<"\t\t\tOn selection mode:\n"<<endl;
-  
+    cout <<"\t\t\t S : Confirms the selection.\n "<<endl;
   
   cout <<"\tOn free 3D explore: (To switch to this mode press MAJ button)\n"<<endl;
   cout <<"-------------------------------------------------------------------------------------------"<<endl;
