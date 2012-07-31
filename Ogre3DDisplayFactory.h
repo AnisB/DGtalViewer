@@ -50,7 +50,7 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
 #include  "DrawWithViewerOgre3DModifier.h"
-
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 namespace DGtal
   {
 

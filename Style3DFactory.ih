@@ -37,7 +37,22 @@ namespace DGtal
 
 template<class TDomain >
 class DigitalSetBySTLSet;
+  
+  // ------------------------------------------------------------------------------------- MeshFromPoints	
+  /**
+   * Default style for the paving  mode.
+   */
+  struct Ogre_DefaultDrawStyle_MeshFromPoints : public DrawableWithViewerOgre3D
+  {
+    /**
+     * Draw the DSS3d on a viewer
+     * @param board the output board where the object is drawn.
+     */
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
 
+    }
+  };
 
   
   // ------------------------------------------------------------------------------------- ArithmeticalDSS3d
@@ -261,7 +276,14 @@ DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal
 
 
 
-
+//------------------------------------------------------------------------------------  MeshFromPoints
+template <typename TPoint>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::Style3DFactory::defaultStyle(const DGtal::MeshFromPoints<TPoint> & m,
+					   std::string mode  )
+{
+    return new Ogre_DefaultDrawStyle_MeshFromPoints;
+}
 
 //------------------------------------------------------------------------------------  DigitalSetBySTLSet
 template<typename Domain>

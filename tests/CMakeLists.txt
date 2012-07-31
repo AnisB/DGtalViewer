@@ -133,7 +133,7 @@ endif(MINGW OR UNIX)
 
 
 SET(DGTAL_TESTS_SRC
-
+  testMeshImport
   testDGtalSet
   testDomain
   testKalimskySpace

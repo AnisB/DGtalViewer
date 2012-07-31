@@ -98,7 +98,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
       }
       
       
-      // Apply customized style for specific mode.
+      // Apply customized style for specific mode
       std::string specific_style = object.className() + "/" + itm->second;
       it = myStyles.find( specific_style );
       if ( it != myStyles.end() ) 
@@ -581,7 +581,12 @@ Representation * ViewerOgre3D::addTriangle(double x1, double y1, double z1,
   m_ent->colour ( 0.5, 0.0, 1.0 );
   m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
   m_ent->position ( x2*scaleFactor, y2*scaleFactor, z2*scaleFactor );
+
+  m_ent->position ( x2*scaleFactor, y2*scaleFactor, z2*scaleFactor );
   m_ent->position ( x3*scaleFactor, y3*scaleFactor, z3*scaleFactor );
+
+  m_ent->position ( x3*scaleFactor, y3*scaleFactor, z3*scaleFactor );
+  m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
   m_ent->end();
   m_bodySceneNode->attachObject ( m_ent );
 
@@ -623,8 +628,17 @@ Representation * ViewerOgre3D::addQuad(double x1, double y1, double z1,
   m_ent->colour ( 0.5, 0.0, 1.0 );
   m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
   m_ent->position ( x2*scaleFactor, y2*scaleFactor, z2*scaleFactor );
+
+  m_ent->position ( x2*scaleFactor, y2*scaleFactor, z2*scaleFactor );
+  m_ent->position ( x3*scaleFactor, y3*scaleFactor, z3*scaleFactor );
+
   m_ent->position ( x3*scaleFactor, y3*scaleFactor, z3*scaleFactor );
   m_ent->position ( x4*scaleFactor, y4*scaleFactor, z4*scaleFactor );
+
+  m_ent->position ( x4*scaleFactor, y4*scaleFactor, z4*scaleFactor );
+  m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
+
+
   m_ent->end();
   m_bodySceneNode->attachObject ( m_ent );
 
@@ -642,16 +656,25 @@ Representation * ViewerOgre3D::addQuad(double x1, double y1, double z1,
 * 
 *  @return the new representation
 */
- Representation * ViewerOgre3D::addPolygon(std::vector<PointVector>  vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName)
+ Representation * ViewerOgre3D::addPolygon(std::vector<PointOgre3D>  vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName)
  {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::ManualObject  * m_ent  = mySceneMgr->createManualObject ( );
   m_ent->begin ( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
   m_ent->colour ( 0.5, 0.0, 1.0 );
-  std::vector<PointVector>::iterator it:
+  std::vector<PointOgre3D>::iterator it;
   for (it=vectPointsPolygon.begin();it!=vectPointsPolygon.end();it++ )
   {
-	m_ent->position ( (*it)[0]  *scaleFactor,  (*it)[1]*scaleFactor,  (*it)[2]*scaleFactor );
+        if((it+1)!=vectPointsPolygon.end())
+	{
+		m_ent->position ( (*it).x  *scaleFactor,  (*it).y*scaleFactor,  (*it).z*scaleFactor );
+        	m_ent->position ( (*(it+1)).x  *scaleFactor,  (*(it+1)).y*scaleFactor,  (*(it+1)).z*scaleFactor );
+	}
+	else
+	{
+		m_ent->position ( (*it).x  *scaleFactor,  (*it).y*scaleFactor,  (*it).z*scaleFactor );
+        	m_ent->position ( (*vectPointsPolygon.begin()).x  *scaleFactor,  (*vectPointsPolygon.begin()).y*scaleFactor,  (*vectPointsPolygon.begin()).z*scaleFactor );
+	}
   }
   m_ent->end();
   m_bodySceneNode->attachObject ( m_ent );

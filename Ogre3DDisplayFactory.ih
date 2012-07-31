@@ -53,8 +53,14 @@ void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display,
 
 template <typename TPoint>
 inline
-void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & display, const  DGtal::MeshFromPoints<TPoint> & aMesh )
+void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DGtal::MeshFromPoints<TPoint> & aMesh )
 {
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
 
   for(unsigned int i=0; i< aMesh.nbFaces(); i++)
   {
@@ -67,29 +73,32 @@ void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & display, const  D
        TPoint  p3 = aMesh.getVertex(aFace.at(2));
        TPoint  p4 = aMesh.getVertex(aFace.at(3));
        
-       display.addQuad(p1[0], p1[1], p1[2], 
+       viewer.addQuad(p1[0], p1[1], p1[2], 
 		       p2[0], p2[1], p2[2], 
 		       p3[0], p3[1], p3[2], 
-		       p4[0], p4[1], p4[2], aMesh.getFaceColor(i));
+		       p4[0], p4[1], p4[2], theNode->createChildSceneNode() ,theNode->getName());
      }
      else if(aNum==3)
      {
        TPoint  p1 = aMesh.getVertex(aFace.at(0));
        TPoint  p2 = aMesh.getVertex(aFace.at(1));
        TPoint  p3 = aMesh.getVertex(aFace.at(2));
-       display.addTriangle(p1[0], p1[1], p1[2], 
+       viewer.addTriangle(p1[0], p1[1], p1[2], 
 			   p2[0], p2[1], p2[2], 
-			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
+			   p3[0], p3[1], p3[2], theNode->createChildSceneNode() ,theNode->getName());
      }
      else if(aNum>4)
      {
-       vector<PointVector> vectPoly;
+       vector<PointOgre3D> vectPoly;
        for(int j=0; j< aFace.size(); j++)
        {
-		 PointVector pt(aMesh.getVertex(aFace.at(j))[0],Mesh.getVertex(aFace.at(j))[1],aMesh.getVertex(aFace.at(j))[2]);
-		 vectPoly.push_back(pt);	 
+		 PointOgre3D pt;
+                 pt.x=aMesh.getVertex(aFace.at(j))[0];
+		 pt.y =aMesh.getVertex(aFace.at(j))[1];
+		 pt.z =aMesh.getVertex(aFace.at(j))[2];
+                 vectPoly.push_back(pt);	 
        }
-       display.addPolygon(vectPoly, aMesh.getFaceColor(i));
+       viewer.addPolygon(vectPoly,theNode->createChildSceneNode() ,theNode->getName());
      }
      else
      {

@@ -43,6 +43,8 @@
 #include <iostream>
 #include "OGRE/Ogre.h"
 #include <list>
+
+#include <vector>
 #include <DGtal/io/Color.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Shapes.h"
@@ -58,6 +60,14 @@
 
 namespace DGtal
 {
+
+  typedef struct TPointOgre3D
+  { 
+    double x ;
+    double y ;
+    double z ;
+  } PointOgre3D;
+
   class Ogre3DDisplayFactory;
 
   class InputListener;
@@ -73,7 +83,7 @@ namespace DGtal
 
   class ViewerOgre3D : public DGtal::Singleton<ViewerOgre3D>
   {
-
+    
     // ----------------------- local types ------------------------------
   public:
     
@@ -350,7 +360,7 @@ namespace DGtal
 * 
 *  @return the new representation
 */
- Representation *  addPolygon(std::vector<PointVector> vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName);
+ Representation *  addPolygon(std::vector<PointOgre3D> vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName);
 
 
 
