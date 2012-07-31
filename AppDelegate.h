@@ -73,7 +73,7 @@ static id mAppDelegate;
 
 - (void)startRendering {
     
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+//	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     mLastFrameTime = 1;
     mStartTime = 0;
     mTimer = nil;
@@ -83,9 +83,8 @@ static id mAppDelegate;
                                             selector:@selector(renderOneFrame:)
                                             userInfo:nil
                                              repeats:YES];
-    [pool release];
+//    [pool release];
 }
-
 - (void)applicationDidFinishLaunching:(NSNotification *)application {
     mLastFrameTime = 1;
     mStartTime = 0;

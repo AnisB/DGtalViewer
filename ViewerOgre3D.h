@@ -294,23 +294,82 @@ namespace DGtal
     Representation  * addVoxel(double x,double y, double z,
 			       Ogre::SceneNode * aNode 
 			       ,std::string materialName);
-      
-      
+        
     /**
-     *  Creates a line and returns it's representation
+     *  Creates a triangle  and returns it's representation
      *  @param x1 xCoordinate for the first point
      *  @param y1 yCoordinate for the first point
      *  @param z1 zCoordinate for the first point
      *  @param x2 xCoordinate for the second point
      *  @param y2 yCoordinate for the second point
      *  @param z2 zCoordinate for the second point
+     *  @param x3 xCoordinate for the second point
+     *  @param y3 yCoordinate for the second point
+     *  @param z3 zCoordinate for the second point
      *  @param aNode the future representation node
      *  @param materialNode the material name (should be precreated)
      * 
      *  @return the new representation
      */
-    Representation * addLine(double x1, double y1, double z1,
-			     double x2, double y2,double z2,Ogre::SceneNode * aNode,std::string materialName);
+    Representation * addTriangle(double x1, double y1, double z1,
+			     double x2, double y2,double z2,
+			     double x3, double y3,double z3,
+			     Ogre::SceneNode * aNode,std::string materialName);    
+      
+
+/**
+*  Creates a quad  and returns it's representation
+*  @param x1 xCoordinate for the first point
+*  @param y1 yCoordinate for the first point
+*  @param z1 zCoordinate for the first point
+*  @param x2 xCoordinate for the second point
+*  @param y2 yCoordinate for the second point
+*  @param z2 zCoordinate for the second point
+*  @param x3 xCoordinate for the second point
+*  @param y3 yCoordinate for the second point
+*  @param z3 zCoordinate for the second point
+*  @param x4 xCoordinate for the second point
+*  @param y4 yCoordinate for the second point
+*  @param z4 zCoordinate for the second point
+*  @param aNode the future representation node
+*  @param materialNode the material name (should be precreated)
+* 
+*  @return the new representation
+*/
+    Representation * ViewerOgre3D::addQuad(double x1, double y1, double z1,
+					   double x2, double y2,double z2,
+					   double x3, double y3,double z3,
+					   double x4, double y4,double z4,
+					   Ogre::SceneNode * aNode,std::string materialName);
+
+/**
+*  Creates a polygon  and returns it's representation
+*  @param vectPontsPolygon it's a list of the point that makes the polygon
+*  @param aNode the future representation node
+*  @param materialNode the material name (should be precreated)
+* 
+*  @return the new representation
+*/
+ Representation *  addPolygon(std::vector<PointVector> vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName);
+
+
+
+
+/**
+ *  Creates a line and returns it's representation
+ *  @param x1 xCoordinate for the first point
+ *  @param y1 yCoordinate for the first point
+ *  @param z1 zCoordinate for the first point
+ *  @param x2 xCoordinate for the second point
+ *  @param y2 yCoordinate for the second point
+ *  @param z2 zCoordinate for the second point
+ *  @param aNode the future representation node
+ *  @param materialNode the material name (should be precreated)
+ * 
+ *  @return the new representation
+ */
+ Representation * addLine(double x1, double y1, double z1,
+			  double x2, double y2,double z2,Ogre::SceneNode * aNode,std::string materialName);
       
     /**
      *  Creates a point and returns it's representation

@@ -63,6 +63,16 @@ namespace DGtal
          * \brief Ogre Factory for Ogre3DDisplayFactory:
          */
     {
+    	
+      // MeshFromPoints    
+    
+	  template <typename TPoint>
+	  static void drawAsFaces( ViewerOgre3D & display,  const DGtal::MeshFromPoints<TPoint> & );
+	
+	  template <typename TPoint>
+	  static void draw( ViewerOgre3D & display, const  DGtal::MeshFromPoints<TPoint> &  );
+
+
       // ArithmeticalDSS
       template < typename TIterator,typename TInteger, int connectivity>
       static void draw ( ViewerOgre3D & display, const DGtal::ArithmeticalDSS3d <TIterator, TInteger,connectivity> & c);
