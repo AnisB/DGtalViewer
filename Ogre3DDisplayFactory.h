@@ -50,7 +50,7 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
 #include  "DrawWithViewerOgre3DModifier.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+//#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 namespace DGtal
   {
 
@@ -65,13 +65,13 @@ namespace DGtal
     {
     	
       // MeshFromPoints    
-    
+    /*
 	  template <typename TPoint>
 	  static void drawAsFaces( ViewerOgre3D & display,  const DGtal::MeshFromPoints<TPoint> & );
 	
 	  template <typename TPoint>
 	  static void draw( ViewerOgre3D & display, const  DGtal::MeshFromPoints<TPoint> &  );
-
+*/
 
       // ArithmeticalDSS
       template < typename TIterator,typename TInteger, int connectivity>

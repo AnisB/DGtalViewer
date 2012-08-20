@@ -37,7 +37,7 @@
 // Implementation of inline functions and external operators                 //
 
 
-
+/*
 
 // MeshFromPoints    
 template <typename TPoint>
@@ -112,7 +112,7 @@ void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DG
 }
 
 
-
+*/
 
 // ArithmeticalDSS
 template <typename TIterator, typename TInteger, int connectivity>

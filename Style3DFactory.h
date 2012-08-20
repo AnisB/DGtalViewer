@@ -63,12 +63,14 @@ struct Style3DFactory
 	style->setStyle(aBoard);
     }
 
-  
+  /*
 //------------------------------------------------------------------------------------  MeshFromPoints
 template <typename TPoint>
 static
-DGtal::DrawableWithViewerOgre3D* defaultStyle(const DGtal::MeshFromPoints<TPoint> & /*m*/,
+DGtal::DrawableWithViewerOgre3D* defaultStyle(const DGtal::MeshFromPoints<TPoint> & ,
 					   std::string mode  = "" );
+					   
+					   */
 //------------------------------------------------------------------------------------  ArithmeticalDSS3d
 template <typename TIterator, typename TInteger, int connectivity>
 static DGtal::DrawableWithViewerOgre3D* defaultStyle(const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & /*a*/,
